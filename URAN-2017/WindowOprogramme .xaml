@@ -1,0 +1,84 @@
+﻿<Window x:Class="URAN_2017.WindowOprogramme"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:URAN_2017"
+        mc:Ignorable="d"
+        Title="WindowOprogramme" Height="450" Width="800">
+    <Grid>
+        <FlowDocumentScrollViewer>
+            <FlowDocument>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.3.10</Run>
+                </Paragraph>
+                <Paragraph>В настройках добавленны параметры триггера и порога для плат без хвостпа</Paragraph>
+                <Paragraph></Paragraph>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.3.0</Run>
+                </Paragraph>
+                <Paragraph>Обалина возможность работы с платами БААК12-200 (только сохранение бинарного файла)</Paragraph>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.2.19</Run>
+                </Paragraph>
+                <Paragraph>Исправлены выявленные ошибки</Paragraph>
+                <Paragraph>Добавлин флаг вида платы в окно добавления кластера</Paragraph>
+                <Paragraph>Добавлин клас платы БААК12-200</Paragraph>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.2.18</Run>
+                </Paragraph>
+                <Paragraph>Исправлена выявленная ошибка</Paragraph>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.2.17</Run>
+                </Paragraph>
+                <Paragraph>Отдельная БД тля тестового набора</Paragraph>
+                <Paragraph>График хранит только 72 точки</Paragraph>
+                <Paragraph>ГСортировка отображения кластеров по имени </Paragraph>
+
+                <Paragraph>
+                    <Run>Версия программы: 1.0.2.16</Run>
+                </Paragraph>
+                <Paragraph>Исправление оси Х графика</Paragraph>
+                
+                <Paragraph>
+                    <Run>Версия программы: 1.0.2.15</Run>
+                </Paragraph>
+                <Paragraph>Исправление в графике фона</Paragraph>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.2.14</Run>
+                </Paragraph>
+                <Paragraph>Изменен вид имени файла, иеперь 1_24.05.2018 11.08.28</Paragraph>
+                <Paragraph>Добавлен график темпа счета</Paragraph>
+                <Paragraph>График имеет маштабирование и прокрутку, а так же автомаштаб</Paragraph>
+                <Paragraph>Подпист на оси Х имеет формат ДД.ММ ЧЧ:мм</Paragraph>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.2.8</Run>
+                    
+                </Paragraph>
+                <Paragraph>Улучшено время записи в БД</Paragraph>
+                <Paragraph>Задавать параметры нейтрона в настройках</Paragraph>
+                <Paragraph>
+                    <Run>Версия программы: 1.0.1.12</Run>
+                </Paragraph>
+                <Paragraph>
+                    <Run>Что нового!</Run>
+                </Paragraph>
+                <Paragraph>Дескретность хвоста</Paragraph>
+                <Paragraph>Добавление неограниченного числа методических наборов с индивидулбными параметрами(по количеству программных триггеров, по продолжительности набора)</Paragraph>
+                <Paragraph>Ручной запуск методического набора через контекстное меню</Paragraph>
+                <Paragraph>Улучшена обработки ошибок при старте, изменен алгоритм определения сбоя</Paragraph>
+                <Paragraph>Мелкие исправления</Paragraph>
+                <Paragraph>БД формата accdb(нужно ставить AccessDatabaseEngine https://www.microsoft.com/en-us/download/confirmation.aspx?id=13255)</Paragraph>
+                <Paragraph>При методическом наборе не пишется информация о событии в БД</Paragraph>
+                <Paragraph>Задержка остановки записи после триггера 650 кодов</Paragraph>
+                <Paragraph>Расчет нулевой линии и запись в БД</Paragraph>
+                <Paragraph>Расчет сигма нулевой линии и запись в БД</Paragraph>
+                <Paragraph>Определение числа нейтронов в хвосте по стандартной методике(амплитуда, длительность) и запись в БД</Paragraph>
+                <Paragraph>В БД поле авто расчета суммарной амплитуды события и числа нейтронов</Paragraph>
+                <Paragraph>В таблицу нейтроны пишет основную информацию о каждом нейтроне в событие</Paragraph>
+                <Paragraph>Для расчета сигма используется 150 первых точек</Paragraph>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+
+    </Grid>
+</Window>

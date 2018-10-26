@@ -1,0 +1,55 @@
+﻿<Window x:Class="URAN_2017.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:URAN_2017"
+        mc:Ignorable="d"
+          Title="УРАН управление питанием (ver. Beta)-2017"  Height="679.359" Width="970.9" MinWidth="966.776" MinHeight="679.359" Background="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
+    <Grid RenderTransformOrigin="0.5,0.5" MinWidth="958.776" MinHeight="648.359" SizeChanged="Grid_SizeChanged" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <ToolBar Grid.Row="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.ColumnSpan="2">
+            <Button Content="Образец" VerticalAlignment="Stretch" Click="Button_Click" VerticalContentAlignment="Center"/>
+            <Button Content="Построиить точку" VerticalAlignment="Stretch" Click="Button_Click_1" VerticalContentAlignment="Center"/>
+        </ToolBar>
+
+        <Grid ShowGridLines="True" x:Name="MyGraw" Grid.Row="1" Margin="0,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="NameGraw" Text="Имя графика" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="OxeX" Text="Ось Х" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="OxeY" Grid.Column="0" Text="Ось Y" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="270"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+            <Canvas x:Name="CanG" Grid.Column="1" Grid.Row="1">
+                <Polyline x:Name="PoLin"  Stroke="Black" StrokeThickness="5"  Points=""/>
+                <Polyline x:Name="PoLin1"  Stroke="Red" StrokeThickness="5"  Points=""/>
+                <Polyline x:Name="PoLin2"  Stroke="Green" StrokeThickness="5"  Points=""/>
+            </Canvas>
+            <TextBox x:Name="XText" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="120" Grid.Row="1"/>
+            <TextBox x:Name="YText" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,33,0,0" TextWrapping="Wrap" Text="Y" VerticalAlignment="Top" Width="120" Grid.Row="1"/>
+
+        </Grid>
+
+
+    </Grid>
+
+</Window>

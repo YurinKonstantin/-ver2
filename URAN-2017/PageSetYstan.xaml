@@ -1,0 +1,59 @@
+﻿<Page xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"  x:Class="URAN_2017.PageSetYstan"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:URAN_2017"
+      mc:Ignorable="d" 
+      d:DesignHeight="329.237"
+      Title="PageSetYstan" d:DesignWidth="583.856">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+            <Label Grid.Column="1" FontSize="18" Content="Автоматически определять кластеры для подключения " Grid.ColumnSpan="2" HorizontalAlignment="Left"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="auto" Grid.Row="0" Checked="Auto_Checked" Unchecked="auto_Unchecked" HorizontalAlignment="Left" />
+            <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="3" Content="Использовать следующее IP адреса для кластеров"/>
+            <ListView x:Name="list" Grid.Row="4" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Кластер №"/>
+                            <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}"></TextBlock>
+                            <TextBox FontSize="16" Grid.Column="3" Text="{Binding KLIP, Mode=TwoWay}"></TextBox>
+                            <TextBox FontSize="16" Grid.Column="4" Text="{Binding BAAK12NoT}"></TextBox>
+
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Удалить" Click="MenuItem_Click"></MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListView>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Добавить" Click="Button_Click_1" HorizontalAlignment="Left" Height="26" Margin="40,0"  VerticalAlignment="Top"/>
+                <Button Content="Удалить"  HorizontalAlignment="Left"  Width="75" Click="Button_Click_2" Margin="4,0"/>
+            </StackPanel>
+            <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="6" Content="Использовать следующее Модули синхронизации"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms" Grid.Row="0" Checked="Auto_Checked" Unchecked="auto_Unchecked" HorizontalAlignment="Left" Margin="8"/>
+            <TextBox x:Name="NameMS" FontSize="16" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Left" TextChanged="NameMS_TextChanged" Text="192.168.2.190" />
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms1" Grid.Row="0" Checked="Auto_Checked" Unchecked="auto_Unchecked" HorizontalAlignment="Left" Margin="8,16,8,8"/>
+            <TextBox x:Name="NameMS1" FontSize="16" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Left" TextChanged="NameMS1_TextChanged" Text="192.168.2.191" />
+        </StackPanel>
+        <Button Content="Сохранить" Margin="8" Grid.Row="1" HorizontalAlignment="Left" Click="Button_Click"/>
+    </Grid>
+</Page>

@@ -1,0 +1,34 @@
+﻿<Page x:Class="URAN_2017.PageSetData"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:URAN_2017"
+      mc:Ignorable="d"
+      Title="PageSetData" MinHeight="4" Height="336.59" Width="420.782" HorizontalAlignment="Left">
+
+    <Grid  HorizontalAlignment="Left">
+
+
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" Content="Папка для сохранения данных "/>
+            <TextBox x:Name="Way" FontSize="16"  BorderThickness="0" TextChanged="Way_TextChanged"/>
+            <Button x:Name="ButWay" Content="Путь" Click="ButWay_Click" HorizontalAlignment="Left"   Width="53" />
+            <Label/>
+            <Label  Content="Расположение Базы Данных"  FontSize="18" />
+            <TextBox x:Name="WayBd" FontSize="16"   BorderThickness="0" TextChanged="WayBd_TextChanged"/>
+            <Button x:Name="ButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="ButWayBd_Click" />
+            <Label/>
+
+            <Label  Content="Расположение Базы Данных Тестового набора"  FontSize="18" />
+            <TextBox x:Name="TestWayBd" FontSize="16"   BorderThickness="0" TextChanged="TestWayBd_TextChanged" />
+            <Button x:Name="TestButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="TestButWayBd_Click" />
+            <Label/>
+
+            <Label Content="Интервал создания нового файла, час" FontSize="18" />
+            <TextBox x:Name="interval" FontSize="16"  BorderThickness="0" TextChanged="Interval_TextChanged"/>
+            <Button Content="Сохранить"  HorizontalAlignment="Left" Click="Button_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Page>
