@@ -57,8 +57,22 @@ namespace URAN_2017
             }
             try
                 {
-                    String sd = Time();
-                    NameFile = NameFileWay + @"\" + NamKl + "_" + "Test" + "_" + sd+"_"+tipPl + ".bin";
+                string path = NameFileWay;
+                string subpath = @"Test";
+                DirectoryInfo dirInfo = new DirectoryInfo(path);
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                dirInfo = new DirectoryInfo(path+@"\"+ subpath);
+
+               if(!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                
+                String sd = Time();
+                    NameFile = NameFileWay+@"\"+ subpath + @"\" + NamKl + "_" + "Test" + "_" + sd+"_"+tipPl + ".bin";
                     data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
                     data_w = new BinaryWriter(data_fs);
                     BDReadFile(NamKl + "_" + "Test" + "_" + sd, NameBAAK12, sd, BAAK12T.NameRan);

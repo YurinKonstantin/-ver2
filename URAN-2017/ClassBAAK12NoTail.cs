@@ -454,10 +454,23 @@ namespace URAN_2017
          // {
             try
             {
+                string path = NameFileWay;
+                string subpath = @"7d";
+                DirectoryInfo dirInfo = new DirectoryInfo(path);
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                dirInfo = new DirectoryInfo(path +@"\"+ subpath);
+
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
                 string tipPl;
                 tipPl = "N";
                 String sd = Time();
-                NameFile = NameFileWay + @"\" + NamKl + "_" + sd + "_" +"N" + ".bin";
+                NameFile = NameFileWay +@"\"+ subpath+ @"\" + NamKl + "_" + sd + "_" +"N" + ".bin";
                 data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
                 data_w = new BinaryWriter(data_fs);
                 BDReadFile(NamKl + "_" + sd+"_"+"N", NameBAAK12, sd, BAAK12T.NameRan);
@@ -1150,8 +1163,21 @@ namespace URAN_2017
             }
             try
             {
+                string path = NameFileWay;
+                string subpath = @"Test7d";
+                DirectoryInfo dirInfo = new DirectoryInfo(path);
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
+                dirInfo = new DirectoryInfo(path + @"\" + subpath);
+
+                if (!dirInfo.Exists)
+                {
+                    dirInfo.Create();
+                }
                 String sd = Time();
-                NameFile = NameFileWay + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + tipPl + ".bin";
+                NameFile = NameFileWay + @"\" + subpath + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + tipPl + ".bin";
                 data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
                 data_w = new BinaryWriter(data_fs);
                 BDReadFile(NamKl + "_" + "Test" + "_" + sd, NameBAAK12, sd, BAAK12T.NameRan);

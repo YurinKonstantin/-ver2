@@ -243,7 +243,55 @@ namespace URAN_2017
             try
             {
 
-               await Task.Run(() => dd1());
+                
+                    string path = @"c:\setUranTest";
+                    string subpath = @"7d";
+                    DirectoryInfo dirInfo = new DirectoryInfo(path);
+                    if (!dirInfo.Exists)
+                    {
+                        dirInfo.Create();
+                    }
+                    dirInfo = new DirectoryInfo(path +@"\"+ subpath);
+
+                    if (!dirInfo.Exists)
+                    {
+                        dirInfo.Create();
+                    }
+                    string tipPl;
+                    tipPl = "N";
+                  
+                   string NameFile = path +@"\"+ subpath + @"\" + 2 + "_" + 11 + "_" + "N" + ".bin";
+                   var  data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
+                   var data_w = new BinaryWriter(data_fs);
+                
+                  string  NameFileClose = 2 + "_" + 11 + "_" + tipPl;
+                if (data_w != null)
+                {
+                    try
+                    {
+                        data_w.Close();
+                        data_w = null;
+                  
+                    }
+                    catch (Exception)
+                    {
+                       
+                    }
+                    // }
+                    if (data_fs != null)
+                    {
+                        try
+                        {
+                            data_fs.Close();
+                            data_fs.Dispose();
+                        }
+                        catch (Exception)
+                        {
+                           
+                        }
+                    }
+                }
+
             }
             catch
             {

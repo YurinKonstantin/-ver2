@@ -167,6 +167,8 @@ namespace URAN_2017
             {
                 InitializeMS(set.MS);
                 toggle.IsEnabled = true;
+                MS1View.Visibility = Visibility.Visible;
+                MS.text = "Ip " + set.MS.ToString();
             }
             else
             {
@@ -182,7 +184,9 @@ namespace URAN_2017
             if (LocalPing(set.MS1))
             {
                 InitializeMS1(set.MS1);
-               
+                MS2View.Visibility = Visibility.Visible;
+                MS1.text = "Ip " + set.MS1.ToString();
+
             }
             else
             {

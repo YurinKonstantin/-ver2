@@ -124,9 +124,9 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid UseLayoutRounding="True"  Margin="6" ShowGridLines="False">
+                            <Grid UseLayoutRounding="True"  Margin="4" ShowGridLines="False">
                                 <Grid.Effect>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0"/>
+                                    <DropShadowEffect BlurRadius="8" ShadowDepth="0"/>
                                 </Grid.Effect>
                                 <Grid.Background>
                                     <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
@@ -207,9 +207,9 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid UseLayoutRounding="True"  Margin="6" ShowGridLines="False">
+                            <Grid UseLayoutRounding="True"  Margin="4" ShowGridLines="False">
                                 <Grid.Effect>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0"/>
+                                    <DropShadowEffect BlurRadius="8" ShadowDepth="0"/>
                                 </Grid.Effect>
                                 <Grid.Background>
                                     <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
@@ -267,7 +267,10 @@
             
         </Grid>
 
-        <TabControl Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="3" Margin="0,0,8,0" TabStripPlacement="Bottom">
+        <TabControl Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="3" Margin="8,0,8,0" TabStripPlacement="Bottom">
+            <TabControl.Effect>
+                <DropShadowEffect BlurRadius="-18" ShadowDepth="0"/>
+            </TabControl.Effect>
             <TabItem x:Name="tempSob" IsSelected="True" >
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -340,25 +343,54 @@
                 </TabItem.Content>
             </TabItem>
         </TabControl>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1">
-            <Label FontSize="16" x:Name="stMS" Content="Не обнаружен" HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Top"  />
-            <Label Content="Режим работы с МС:" VerticalAlignment="Top" Margin="8,0,0,0"/>
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="toggle" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Center" Checked="Toggle_Checked" Unchecked="Toggle_Unchecked">
-                <ToggleSwitch:HorizontalToggleSwitch.Effect>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="0"/>
-                </ToggleSwitch:HorizontalToggleSwitch.Effect>
-            </ToggleSwitch:HorizontalToggleSwitch>
-            <Label x:Name="ServisMonitor" Margin="16,0,0,0" Content="служба мониторинга запущена" Visibility="Hidden"/>
-        </StackPanel>
-        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5" Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
-        <Grid Grid.ColumnSpan="5" Grid.RowSpan="5" Background="#09000000"  Visibility="Visible" x:Name="GridStartInfo" Margin="50">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        <Grid Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2"  Margin="4">
+          
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="4">
+                <Label FontSize="16" x:Name="stMS" Content="Не обнаружен" HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Top"  />
+                <Label Content="Режим работы с МС:" VerticalAlignment="Top" Margin="8,0,0,0"/>
+                <ToggleSwitch:HorizontalToggleSwitch x:Name="toggle" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Center" Checked="Toggle_Checked" Unchecked="Toggle_Unchecked">
+                    <ToggleSwitch:HorizontalToggleSwitch.Effect>
+                        <DropShadowEffect BlurRadius="10" ShadowDepth="0"/>
+                    </ToggleSwitch:HorizontalToggleSwitch.Effect>
+                </ToggleSwitch:HorizontalToggleSwitch>
+                <Label x:Name="ServisMonitor" Margin="16,0,0,0" Content="служба мониторинга запущена" Visibility="Hidden"/>
+            </StackPanel>
+            <StackPanel  Grid.Column="0" Grid.Row="1" Background="WhiteSmoke" Margin="8" x:Name="MS1View" Visibility="Collapsed">
+                <StackPanel.Effect>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="1"/>
+                </StackPanel.Effect>
+                <Label Content="MC 1 работает"/>
+                <Label x:Name="labMC1"/>
+            </StackPanel>
+            <StackPanel  Grid.Column="1" Grid.Row="1" Background="WhiteSmoke" Margin="8" x:Name="MS2View" Visibility="Collapsed">
+                <StackPanel.Effect>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="1"/>
+                </StackPanel.Effect>
+                <Label Content="MC 2 работает"/>
+                <Label x:Name="labMC2"/>
+            </StackPanel>
+        </Grid>
+      
+        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <Grid Grid.ColumnSpan="5" Grid.RowSpan="5" Background="#0a000000"  Visibility="Visible" x:Name="GridStartInfo" VerticalAlignment="Center" >
+          
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50,0,50">
                 <Label Content="Подготавливаем установку к старту" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 <Label Content="пожайлуста подождите" VerticalAlignment="Center" HorizontalAlignment="Center"/>
            
             </StackPanel>
             
         </Grid>
-        <Label Grid.Row="4" Grid.Column="2"  Content="" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="20"  FontFamily="Times New Roman" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="40" Width="207" Grid.ColumnSpan="2"/>
-    </Grid>
+         </Grid>
 </Window>
