@@ -78,6 +78,9 @@ namespace URAN_2017
                     BAAK12T.Time0x12 = Convert.ToUInt32(ox12);
                     BAAK12T.Time0x14 = Convert.ToUInt32(ox14);
                     BAAK12T.Time0x16 = Convert.ToUInt32(ox16);
+                    ClassBAAK12NoTail.Time0x12 = Convert.ToUInt32(ox12);
+                    ClassBAAK12NoTail.Time0x14 = Convert.ToUInt32(ox14);
+                    ClassBAAK12NoTail.Time0x16 = Convert.ToUInt32(ox16);
                     TimeTaimer1 = Convert.ToString(taimer.Day) + " " + Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(taimer.Millisecond);
                     //BAAK12T.NameRan = Convert.ToString(taimer.Day) + "." + Convert.ToString(taimer.Month) + "." + Convert.ToString(taimer.Year) + " " + Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(taimer.Millisecond);
                 }
@@ -94,6 +97,9 @@ namespace URAN_2017
                 BAAK12T.Time0x12 = Convert.ToUInt32(ox12);
                 BAAK12T.Time0x14 = Convert.ToUInt32(ox14);
                 BAAK12T.Time0x16 = Convert.ToUInt32(ox16);
+                ClassBAAK12NoTail.Time0x12 = Convert.ToUInt32(ox12);
+                ClassBAAK12NoTail.Time0x14 = Convert.ToUInt32(ox14);
+                ClassBAAK12NoTail.Time0x16 = Convert.ToUInt32(ox16);
                 //BAAK12T.NameRan = Convert.ToString(taimer.Day) + "." + Convert.ToString(taimer.Month) + "." + Convert.ToString(taimer.Year) + " " + Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(taimer.Millisecond);
 
             }
@@ -152,8 +158,9 @@ namespace URAN_2017
                   rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Подготовка МС"; }));
                     //TimeTaimer(ожидание);
                     BAAK12T.ЗаписьВремяРегистрDelegate?.Invoke();
+                    ClassBAAK12NoTail.ЗаписьВремяРегистрDelegate?.Invoke();
                     //СтартЧасовDelegate();
-                   // Thread.Sleep(ожидание * 1000);
+                    // Thread.Sleep(ожидание * 1000);
                     int min = 0;
                     while (min < ожидание * 1000)
                     {
@@ -161,7 +168,22 @@ namespace URAN_2017
                         Thread.Sleep(1000);
                         min = min + 1000;
                     }
-                    MS.АвтономныйКлокРазрешен(1);
+                    try
+                    {
+                        MS.АвтономныйКлокРазрешен(1);
+                    }
+                 catch
+                    {
+
+                    }
+                    try
+                    {
+                        MS1.АвтономныйКлокРазрешен(1);
+                    }
+                    catch
+                    {
+
+                    }
                 }
                 else//запуск с МГВМ
                 {
@@ -195,6 +217,7 @@ namespace URAN_2017
                 rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Запуск без синхронизации"; }));
                 //TimeTaimer(5);
                 BAAK12T.ЗаписьВремяРегистрDelegate?.Invoke();
+                ClassBAAK12NoTail.ЗаписьВремяРегистрDelegate?.Invoke();
                 // СтартЧасовDelegate();
             }
 

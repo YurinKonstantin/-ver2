@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:URAN_2017"
       mc:Ignorable="d"
-      Title="PageSetData" MinHeight="4" Height="336.59" Width="420.782" HorizontalAlignment="Left">
+      Title="PageSetData" MinHeight="4" Height="336.59" Width="420.782" VerticalAlignment="Top" HorizontalAlignment="Left">
 
     <Grid  HorizontalAlignment="Left">
 

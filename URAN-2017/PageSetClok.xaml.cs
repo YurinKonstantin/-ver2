@@ -28,7 +28,16 @@ namespace URAN_2017
         public PageSetClok()
         {
             InitializeComponent();
-            DeSerial();
+            try
+            {
+             DeSerial();
+            }
+          catch
+            {
+                Serial();
+                DeSerial();
+                MessageBox.Show("Произошла ошибка серилизации, задайте параметры в меню настройки");
+            }
             FlafMGVS.IsChecked = set.FlagClok;
             delay.Text= set.DelayClok.ToString();
             linc.Text = set.LincClok.ToString();
@@ -56,31 +65,19 @@ namespace URAN_2017
         }
         private void DeSerial()
         {
-            try
-            {
+           
                 Bak.InstCol();
                 string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
                 FileStream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
-                try
-                {
+               
                     BinaryFormatter bf = new BinaryFormatter();
                     set = (UserSetting)bf.Deserialize(fs);
 
-                }
-                catch (SerializationException)
-                {
-                    System.Windows.MessageBox.Show("ошибка");
-                }
-                finally
-                {
+                
+                
                     fs.Close();
-                }
+                
 
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Ошибка серилизации");
-            }
 
         }
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -7,7 +7,7 @@
       xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
       mc:Ignorable="d"
       Title="PageSetClok">
-    <Grid VerticalAlignment="Center">
+    <Grid VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto" />

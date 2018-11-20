@@ -47,33 +47,33 @@
                 <SolidColorBrush Color="#FFFCFCFC"/>
             </ToolBar.Background>
             <ToolBar.Effect>
-                <DropShadowEffect BlurRadius="10" ShadowDepth="0"/>
+                <DropShadowEffect BlurRadius="4" ShadowDepth="0" />
             </ToolBar.Effect>
             <StackPanel Orientation="Horizontal">
                 <StackPanel.Effect>
                     <DropShadowEffect BlurRadius="10" ShadowDepth="0"/>
                 </StackPanel.Effect>
-                <Button  x:Name="Start" Content="Старт" HorizontalContentAlignment="Center" Margin="1,1,1,0" Click="Start_Click" FontSize="18" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31" Height="31" VerticalAlignment="Top">
+                <Button  x:Name="Start" Content="Старт" HorizontalContentAlignment="Center" Margin="1,1,0,0" Click="Start_Click" FontSize="18" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31" Height="31" VerticalAlignment="Top">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="Stop" IsEnabled="False" Content="Стоп" HorizontalContentAlignment="Center" Margin="1" FontSize="18" Click="Stop_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button x:Name="Stop" IsEnabled="False" Content="Стоп" HorizontalContentAlignment="Center" Margin="1,1,0,0" FontSize="18" Click="Stop_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Button Content="Графики" HorizontalContentAlignment="Center" Margin="1" FontSize="18" Click="Button_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button Content="Графики" HorizontalContentAlignment="Center" Margin="1,1,0,0" FontSize="18" Click="Button_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="dd" Content="Настройка" HorizontalContentAlignment="Center" FontSize="18" Margin="1" Click="Button_Click_1" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button x:Name="dd" Content="Настройка" HorizontalContentAlignment="Center" FontSize="18" Margin="1,1,0,0" Click="Button_Click_1" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="Obnoviti" Content="Обновить" Margin="1" Click="Button_Click_3">
+                <Button x:Name="Obnoviti" Content="Обновить" Margin="1,1,0,0" Click="Button_Click_3">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
