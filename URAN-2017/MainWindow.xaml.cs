@@ -34,6 +34,7 @@ using LiveCharts.Wpf;
 using LiveCharts.Events;
 using System.ComponentModel;
 using System.Net;
+using System.Drawing;
 
 namespace URAN_2017
 {
@@ -42,7 +43,7 @@ namespace URAN_2017
     /// </summary>
     public partial class MainWindow : Window
     {
-       // MyGrafic nf;
+        // MyGrafic nf;
         public MainWindow()
         {
             InitializeComponent();
@@ -52,65 +53,65 @@ namespace URAN_2017
             List1.ItemsSource = _DataColecViev;
             List2.ItemsSource = _DataColecVievList2;
             DataContext = customer;
-           nf = new MyGrafic { }; 
-             nf.NewCol();
+            nf = new MyGrafic { };
+            nf.NewCol();
             DataContext = nf;
-           
+
         }
-        
-     /// <summary>
-     /// зупускает набор
-     /// </summary>
-     /// 
-     
-     
-     private async void StartRun()
+
+        /// <summary>
+        /// зупускает набор
+        /// </summary>
+        /// 
+
+
+        private async void StartRun()
         {
             if (BAAK12T.ConnnectURANDelegate != null)
             {
-               Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { progres.IsIndeterminate = true; }));
-                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { progres.IsIndeterminate = true; }));
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
 
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Obnoviti.IsEnabled = false; }));
 
-               Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
-              
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+
                 try
                 {
-                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Подготовка к запуску"; }));
-                    
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Подготовка к запуску"; }));
+
                     cancellationTokenSource = new CancellationTokenSource();
                     CancellationToken cancellationToken = cancellationTokenSource.Token;
                     RanName();
-                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Загрузка регистров плат"; }));
-                   
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Загрузка регистров плат"; }));
+
                     await ЗапускНастройкиТаск();
-                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка режима синхронизации"; }));
-                    
+
                     await РежимСинхИлиНетТаск(set.DelayClok);
-                   rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Разрешаем работу"; }));
-                    
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Разрешаем работу"; }));
+
                     await ПускURANDТаск();
 
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Запись в БД"; }));
                     BDReadRAN(BAAK12T.NameRan, ClassParentsBAAK.Синхронизация, true, BAAK12T.PorogAll, BAAK12T.TrgAll, TimeTaimer1);
                     BdAddRANTimeПуск(BAAK12T.NameRan, TimeПуск());
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Black; }));
-                   
+
                     ЗапускРеадТаск(IntervalNewFile, set.КолТригТест, set.ИнтервалТригТест, set.TimeRanHors, set.TimeRanMin, cancellationToken);
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = true; }));
-                
+
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = true; }));
-                   
+
                     ZapicDataBDTasc1(cancellationToken);
-                   rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; }));
                     await ZapicDataTasc1(cancellationToken);
                 }
                 catch (NullReferenceException e)
                 {
                     MessageBox.Show("Нет доступных плат" + e.ToString());
-                  
+
                 }
                 catch (Exception ex)
                 {
@@ -127,14 +128,14 @@ namespace URAN_2017
                 try
                 {
 
-                   rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
-   rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
                     try
                     {
 
-                  
-                    if (ClassParentsBAAK.Синхронизация)
-                    {
+
+                        if (ClassParentsBAAK.Синхронизация)
+                        {
                             try
                             {
                                 MS.АвтономныйКлокРазрешен(0);
@@ -151,10 +152,10 @@ namespace URAN_2017
                             {
                                 MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки");
                             }
-                           
+
+                        }
                     }
-                    }
-                    catch(Exception )
+                    catch (Exception)
                     {
                         MessageBox.Show("Произошла ошибка при Остановке MS" + "  " + "Имя ошибки");
                     }
@@ -187,24 +188,24 @@ namespace URAN_2017
             {
                 MessageBox.Show("Нет доступных плат");
             }
-        
+
         }
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-          StartRun();
+            StartRun();
         }
         private async void Stop_Click(object sender, RoutedEventArgs e)
         {
             Stop.IsEnabled = false;
             contextTestRan.IsEnabled = false;
-             rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
+            rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
 
             try
             {
                 if (cancellationTokenSource != null)
                 {
                     cancellationTokenSource.Cancel();
-                    
+
                 }
 
             }
@@ -212,7 +213,7 @@ namespace URAN_2017
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString());
-             
+
 
             }
             finally
@@ -220,17 +221,17 @@ namespace URAN_2017
                 Stop.IsEnabled = false;
                 Start.IsEnabled = true;
             }
-        }  
-        private  void  Button_Click_1(object sender, RoutedEventArgs e)
+        }
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             NastroikiAll Window2 = new NastroikiAll
             {
                 Owner = this
             };
             this.Hide();
-          Window2.Show();
+            Window2.Show();
         }
-      
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Window1 Window11 = new Window1
@@ -252,69 +253,19 @@ namespace URAN_2017
             }
             return res;
         }
-       
+
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            try
-            {
-
-                
-                    string path = @"c:\setUranTest";
-                    string subpath = @"7d";
-                    DirectoryInfo dirInfo = new DirectoryInfo(path);
-                    if (!dirInfo.Exists)
-                    {
-                        dirInfo.Create();
-                    }
-                    dirInfo = new DirectoryInfo(path +@"\"+ subpath);
-
-                    if (!dirInfo.Exists)
-                    {
-                        dirInfo.Create();
-                    }
-                    string tipPl;
-                    tipPl = "N";
-                  
-                   string NameFile = path +@"\"+ subpath + @"\" + 2 + "_" + 11 + "_" + "N" + ".bin";
-                   var  data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
-                   var data_w = new BinaryWriter(data_fs);
-                
-                  string  NameFileClose = 2 + "_" + 11 + "_" + tipPl;
-                if (data_w != null)
-                {
-                    try
-                    {
-                        data_w.Close();
-                        data_w = null;
-                  
-                    }
-                    catch (Exception)
-                    {
-                       
-                    }
-                    // }
-                    if (data_fs != null)
-                    {
-                        try
-                        {
-                            data_fs.Close();
-                            data_fs.Dispose();
-                        }
-                        catch (Exception)
-                        {
-                           
-                        }
-                    }
-                }
-
-            }
-            catch
-            {
-
-            }
            
+          
+
+
+
+
 
         }
+
+
        public async void dd1()
         {
             try
@@ -578,7 +529,7 @@ namespace URAN_2017
             if(первая_активация)
             {
                 первая_активация = false;
-                await  Запуск();
+                await Запуск();
               
                 ВремяОтобрTask();
 
@@ -832,20 +783,9 @@ namespace URAN_2017
             }
         }
 
+        private void MyGif_MediaEnded(object sender, RoutedEventArgs e)
+        {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
     }
 }

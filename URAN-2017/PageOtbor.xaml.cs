@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -16,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using ToggleSwitch;
 
 namespace URAN_2017
 {
@@ -24,6 +26,7 @@ namespace URAN_2017
     /// </summary>
     public partial class PageOtbor : Page
     {
+        UserSetting set = new UserSetting();
         ClassOtborNeutron otb = new ClassOtborNeutron();
         public PageOtbor()
         {
@@ -31,6 +34,7 @@ namespace URAN_2017
             DeSerial();
             DlitNeu.Text = otb.Dlit.ToString();
             PorogNeutrona.Text = otb.Porog.ToString();
+            checOtbor.IsChecked = UserSetting.FlagOtbor;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -55,7 +59,20 @@ namespace URAN_2017
 
             }
             fs.Close();
-           
+
+         
+            if (Directory.Exists(md + "\\UranSetUp") == false)
+            {
+                Directory.CreateDirectory(md + "\\UranSetUp");
+            }
+            XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Bak>));
+            using (StreamWriter wr = new StreamWriter(md + "\\UranSetUp\\" + "setting1.xml"))
+            {
+                xs.Serialize(wr, Bak._DataColec1);
+                //  xs.Serialize(wr, Bak._DataColec1NoTail);
+                wr.Close();
+            }
+
 
         }
         private void DeSerial()
@@ -82,7 +99,44 @@ namespace URAN_2017
                 {
                     fs.Close();
                 }
-              
+
+                Bak.InstCol();
+               
+
+                FileStream fs1 = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
+                try
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    set = (UserSetting)bf.Deserialize(fs1);
+
+                }
+                catch (SerializationException)
+                {
+                    System.Windows.MessageBox.Show("ошибка");
+                }
+                finally
+                {
+                    fs1.Close();
+                }
+                try
+                {
+
+
+                    XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Bak>));
+                    using (StreamReader wr = new StreamReader(md + "\\UranSetUp\\" + "setting1.xml"))
+                    {
+                        Bak._DataColec1 = (ObservableCollection<Bak>)xs.Deserialize(wr);
+                        wr.Close();
+
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+
+
+
             }
             catch (Exception)
             {
@@ -99,6 +153,18 @@ namespace URAN_2017
         private void PorogNeutrona_TextChanged(object sender, TextChangedEventArgs e)
         {
             otb.Porog = Convert.ToInt32(PorogNeutrona.Text);
+        }
+
+        private void HorizontalToggleSwitch_Checked(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            UserSetting.FlagOtbor = rb.IsChecked;
+        }
+
+        private void HorizontalToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            UserSetting.FlagOtbor = rb.IsChecked;
         }
     }
 }

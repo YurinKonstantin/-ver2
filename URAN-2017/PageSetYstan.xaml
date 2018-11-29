@@ -7,53 +7,123 @@
       mc:Ignorable="d" 
       d:DesignHeight="329.237"
       Title="PageSetYstan" d:DesignWidth="583.856">
-    <Grid Margin="0,0,0,0">
+  
+    <Grid Margin="0,0,0,0" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" Margin="8,0,0,0">
             <Label Grid.Column="1" FontSize="18" Content="Автоматически определять кластеры для подключения " Grid.ColumnSpan="2" HorizontalAlignment="Left"/>
             <ToggleSwitch:HorizontalToggleSwitch x:Name="auto" Grid.Row="0" Checked="Auto_Checked" Unchecked="auto_Unchecked" HorizontalAlignment="Left" />
             <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="3" Content="Использовать следующее IP адреса для кластеров"/>
-            <ListView x:Name="list" Grid.Row="4" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="Кластер №"/>
-                            <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}"></TextBlock>
-                            <TextBox FontSize="16" Grid.Column="3" Text="{Binding KLIP, Mode=TwoWay}"></TextBox>
-                            <TextBox FontSize="16" Grid.Column="4" Text="{Binding BAAK12NoT}"></TextBox>
+   
+         
+            <TabControl Margin="0,0,4,0">
+                <TabItem IsSelected="True" IsEnabled="True">
+                    <TabItem.Header>
+                        <Label Content="БААК12-200Т"/>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <StackPanel>
 
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Удалить" Click="MenuItem_Click"></MenuItem>
-                    </ContextMenu>
-                </ListBox.ContextMenu>
-            </ListView>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Добавить" Click="Button_Click_1" HorizontalAlignment="Left" Height="26" Margin="40,0"  VerticalAlignment="Top"/>
-                <Button Content="Удалить"  HorizontalAlignment="Left"  Width="75" Click="Button_Click_2" Margin="4,0"/>
-            </StackPanel>
-            <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="6" Content="Использовать следующее Модули синхронизации"/>
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms" Grid.Row="0" Checked="Auto_Checked" Unchecked="auto_Unchecked" HorizontalAlignment="Left" Margin="8"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="+" FontSize="20" BorderThickness="0" Background="Transparent"  Width="28" Foreground="Green" VerticalAlignment="Stretch" Click="Button_Click_1"  Margin="4,0, 4,0"  />
+                                <Button Content="-" FontSize="20" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="Red" Width="28"    Click="Button_Click_2" />
+                            </StackPanel>
+                           
+                            <Border CornerRadius="8"  Background="Transparent" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" Margin="4">
+                                <ListView x:Name="list1"  BorderThickness="0"  HorizontalAlignment="Left" Margin="8" >
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="16"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="Кластер №"/>
+                                                <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}"></TextBlock>
+                                                <TextBox FontSize="16" Grid.Column="3" Text="{Binding KLIP, Mode=TwoWay}"></TextBox>
+                                                <TextBox FontSize="16" Grid.Column="4" Text="{Binding BAAK12NoT1}"></TextBox>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Удалить" Click="MenuItem_Click"></MenuItem>
+                                        </ContextMenu>
+                                    </ListBox.ContextMenu>
+                                </ListView>
+                            </Border>
+                        </StackPanel>
+                    </TabItem.Content>
+
+                </TabItem>
+                <TabItem IsSelected="True" IsEnabled="True">
+                    <TabItem.Header>
+                        <Label Content="БААК12-200"/>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="+" FontSize="20" BorderThickness="0" Background="Transparent"  Width="28" Foreground="Green" VerticalAlignment="Stretch" Click="Button_Click_3"  Margin="4,0, 4,0"  />
+                                <Button Content="-" FontSize="20" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="Red" Width="28"    Click="Button_Click_4" />
+                            </StackPanel>
+                            <Border CornerRadius="8"  Background="Transparent" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" Margin="4">
+                                <ListView x:Name="listNoTail" BorderThickness="0"  HorizontalAlignment="Left" Margin="8" >
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="16"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="Кластер №"/>
+                                                <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}"></TextBlock>
+                                                <TextBox FontSize="16" Grid.Column="3" Text="{Binding KLIP, Mode=TwoWay}"></TextBox>
+                                                <TextBox FontSize="16" Grid.Column="4" Text="{Binding BAAK12NoT1}"></TextBox>
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Удалить" Click="MenuItem_Click"></MenuItem>
+                                        </ContextMenu>
+                                    </ListBox.ContextMenu>
+                                </ListView>
+                            </Border>
+                         
+                        </StackPanel>
+                    </TabItem.Content>
+                </TabItem>
+            </TabControl>
+           <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="6" Margin="0,8,0,0" Content="Использовать следующее Модули синхронизации"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms" Grid.Row="0" IsEnabled="False" HorizontalAlignment="Left" Margin="8"/>
             <TextBox x:Name="NameMS" FontSize="16" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Left" TextChanged="NameMS_TextChanged" Text="192.168.2.190" />
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms1" Grid.Row="0" Checked="Auto_Checked" Unchecked="auto_Unchecked" HorizontalAlignment="Left" Margin="8,16,8,8"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms1" Grid.Row="0" IsEnabled="False" HorizontalAlignment="Left" Margin="8,16,8,8"/>
             <TextBox x:Name="NameMS1" FontSize="16" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Left" TextChanged="NameMS1_TextChanged" Text="192.168.2.191" />
         </StackPanel>
-        <Button Content="Сохранить" Margin="8" Grid.Row="1" HorizontalAlignment="Left" Click="Button_Click"/>
+        <Grid Grid.Row="1"  Background="WhiteSmoke">
+            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+                <Button.Effect>
+                    <DropShadowEffect />
+                </Button.Effect>
+            </Button>
+        </Grid>
+       
     </Grid>
 </Page>

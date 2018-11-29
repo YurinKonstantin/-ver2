@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using ToggleSwitch;
 
 
 
@@ -37,6 +38,8 @@ namespace URAN_2017
             WayBd.Text = set.WayDATABd;
             TestWayBd.Text = set.TestWayDATABd;
             interval.Text = Convert.ToString(set.IntervalFile);
+            chekTogleBinSave.IsChecked = UserSetting.FlagSaveBin;
+            chekTogleBinSave1.IsChecked = UserSetting.FlagSaveBD;
 
         }
         private void Serial()
@@ -177,6 +180,57 @@ namespace URAN_2017
             if (myDialog.ShowDialog() == DialogResult.OK)
             {
                 TestWayBd.Text = myDialog.FileName;
+            }
+        }
+
+        private void HorizontalToggleSwitch_Checked(object sender, RoutedEventArgs e)
+        {
+            
+        ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            UserSetting.FlagSaveBin = rb.IsChecked;
+            if (rb!=null && Way != null)
+            {
+                    Way.IsEnabled = true;
+                    ButWay.IsEnabled = true;
+                    labP.IsEnabled = true;
+                    labS.IsEnabled = true; 
+            }
+        }
+
+     
+
+        private void ChekTogleBinSave_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            if (rb != null && Way != null)
+            {
+                UserSetting.FlagSaveBin = rb.IsChecked;
+                Way.IsEnabled = false;
+                ButWay.IsEnabled = false;
+                labP.IsEnabled = false;
+                labS.IsEnabled = false;
+            }
+        }
+
+        private void ChekTogleBinSave1_Checked(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            UserSetting.FlagSaveBD = rb.IsChecked;
+           if (rb != null && WayBd != null)
+            {
+                WayBd.IsEnabled = true;
+               
+           }
+        }
+
+        private void ChekTogleBinSave1_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            if (rb != null && Way != null)
+            {
+                UserSetting.FlagSaveBD = rb.IsChecked;
+                WayBd.IsEnabled = false;
+                
             }
         }
     }

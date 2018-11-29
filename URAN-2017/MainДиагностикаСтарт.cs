@@ -23,14 +23,14 @@ namespace URAN_2017
         /// </summary>
         /// <param name="ip"></param>
         /// <returns></returns>
-        private  bool LocalPing(string ip)//Сканер адресов IP
+        private async Task<bool> LocalPing(string ip)//Сканер адресов IP
         {
             try
             {
 
 
                 Ping pingSender = new Ping();
-                PingReply reply = pingSender.Send(ip, 500);
+                PingReply reply = await pingSender.SendPingAsync(ip, 500);
                 if (reply.Status == IPStatus.Success)
                 {
                     return true;
@@ -45,7 +45,7 @@ namespace URAN_2017
                 return false;
             }
         }
-       
+  
         /// <summary>
         /// Из файла настроек загрузаем настройки
         /// (нужно ли сразу производить конект, тест, ip адреса для кластеров и модуля синхронизации)
@@ -53,8 +53,8 @@ namespace URAN_2017
         public async Task НачальныеНастройки()//Из файла настроек загрузаем настройки(нужно ли сразу производить конект, тест, ip адреса для кластеров и модуля синхронизации)
         {
 
-            
-            DeSerial();
+            GridStartInfo.Visibility = Visibility.Visible;
+          await  DeSerial();
             diag = true;//При загрузке применять диагностику
             conectsr = true;//при загрузке конектится к платам
             IntervalNewFile = set.IntervalFile;
@@ -96,26 +96,26 @@ namespace URAN_2017
 
             GridStartInfo.Visibility = Visibility.Visible;
 
-            Thread.Sleep(1000);
+          
            
        await  rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
-            Thread.Sleep(1000);
-          rezimYst.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Начальные настройки из файла"; }));
+            
+         await rezimYst1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Начальные настройки из файла"; }));
           
-            Thread.Sleep(1000);
+           
           await  НачальныеНастройки();//загрузаем настройки
             if (diag)
             {
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
                 await FirstDiagnosticaSistem();//Определяем к каким кластерам можно подключиться и модулю синхронизации
             }
             if (conectsr)
             {
-                Thread.Sleep(2000);
-               Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Конект"; }));
-           await rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { rezimYst.Content = "Конект"; }));
+              //  Thread.Sleep(2000);
+            
+           await rezimYst1.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { rezimYst1.Content = "Конект"; }));
                
-                Thread.Sleep(4000);
+               // Thread.Sleep(4000);
                await Conect();//Конектимся к доступным кластерам
             }
             GridStartInfo.Visibility = Visibility.Hidden;
@@ -128,25 +128,29 @@ namespace URAN_2017
         {
             try
             {
-                Thread.Sleep(1000);
+               // Thread.Sleep(1000);
+               if(ConnnectURANDelegate != null)
+                {
+                    ConnnectURANDelegate?.Invoke();
+                }
                 if (BAAK12T.ConnnectURANDelegate!=null)
                 {
                     await BAAK12T.ConnnectURANDelegate?.Invoke();
-                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка готова к старту"; }));
+                 await   rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка готова к старту"; }));
 
                 }
                 else
                 {
-                Thread.Sleep(1000);
-                rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Плат для подключения не обнаружено"; }));
+             
+               await rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Плат для подключения не обнаружено"; }));
                 }
                
           
-                Thread.Sleep(500);
+               
             }
             catch (NullReferenceException e)
             {
-                Thread.Sleep(500);
+               
                 MessageBox.Show(e.ToString()+ "Conect1()");
                 
              
@@ -163,7 +167,7 @@ namespace URAN_2017
         public async Task FirstDiagnosticaSistem()//Определяем к каким кластерам можно подключиться и модулю синхронизации
         {
            
-            if (LocalPing(set.MS))
+            if (await LocalPing(set.MS))
             {
                 InitializeMS(set.MS);
                 toggle.IsEnabled = true;
@@ -172,18 +176,19 @@ namespace URAN_2017
             }
             else
             {
-                Thread.Sleep(1000);
+               
               await stMS.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {  stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен";}));
                
-                Thread.Sleep(500);
+              
                 ClassParentsBAAK.Синхронизация = false;
                 toggle.IsChecked = false;
                 toggle.IsEnabled = false;
 
             }
-            if (LocalPing(set.MS1))
+            if (await LocalPing(set.MS1))
             {
                 InitializeMS1(set.MS1);
+                toggle.IsEnabled = true;
                 MS2View.Visibility = Visibility.Visible;
                 MS1.text = "Ip " + set.MS1.ToString();
 
@@ -211,7 +216,7 @@ namespace URAN_2017
                         case 1:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
 
 
@@ -220,11 +225,13 @@ namespace URAN_2017
                                         Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер1_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер1_2);
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible;}));
                                      await  klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                       await  List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(()=>List2.Visibility=Visibility.Visible));
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -254,19 +261,21 @@ namespace URAN_2017
                         case 2:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
                                         Кластер2_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер2_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер2_2);
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                         await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
 
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер2 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -294,10 +303,11 @@ namespace URAN_2017
                         case 3:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         Кластер3_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер3_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер3_2);
@@ -307,6 +317,7 @@ namespace URAN_2017
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер3 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -332,10 +343,11 @@ namespace URAN_2017
                         case 4:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         Кластер4_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер4_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер4_2);
@@ -346,6 +358,7 @@ namespace URAN_2017
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер4 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -372,10 +385,11 @@ namespace URAN_2017
                         case 5:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         Кластер5_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp,  Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер5_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер5_2);
@@ -385,6 +399,7 @@ namespace URAN_2017
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер5 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -409,10 +424,11 @@ namespace URAN_2017
                         case 6:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         Кластер6_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер6_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер6_2);
@@ -422,6 +438,7 @@ namespace URAN_2017
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер6 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -446,10 +463,11 @@ namespace URAN_2017
                         case 7:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         Кластер7_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер7_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер7_2);
@@ -459,6 +477,7 @@ namespace URAN_2017
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер7 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -483,10 +502,11 @@ namespace URAN_2017
                         case 8:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         Кластер8_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер8_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер8_2);
@@ -496,6 +516,7 @@ namespace URAN_2017
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер8 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
@@ -520,10 +541,11 @@ namespace URAN_2017
                         case 9:
                             if (bak.FkagNameBAAK)
                             {
-                                if (LocalPing(bak.KLIP))
+                                if (await LocalPing(bak.KLIP))
                                 {
                                     if (bak.BAAK12NoT)
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         Кластер9_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp,  Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
                                         Кластер9_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер9_2);
@@ -534,6 +556,7 @@ namespace URAN_2017
                                     }
                                     else
                                     {
+                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                         await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                         await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
                                         Кластер9 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };

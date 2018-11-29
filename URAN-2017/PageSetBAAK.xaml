@@ -13,9 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="8"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="8"/>
         </Grid.RowDefinitions>
       
         <ScrollViewer Grid.Row="1">
@@ -51,6 +49,12 @@
         </ListView>
             </StackPanel>
         </ScrollViewer>
-        <Button Content="Сохранить"  Grid.Row="3" Margin="0,8,16,8" HorizontalAlignment="Right" Click="Button_Click"/>
+        <Grid Grid.Row="2"  Background="WhiteSmoke">
+            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+                <Button.Effect>
+                    <DropShadowEffect />
+                </Button.Effect>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

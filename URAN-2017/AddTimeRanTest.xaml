@@ -30,7 +30,8 @@
         <Label FontSize="18" Grid.ColumnSpan="4" HorizontalAlignment="Center">Введите параметры тестоого набора: </Label>
         <Label Content="Время тест набора" FontSize="14" Grid.Column="0" Grid.Row="1"/>
         <TextBox FontSize="14" Name="hors" Grid.Row="1" Grid.Column="1" MinWidth="27" HorizontalAlignment="Left">10</TextBox>
-        
+        <DatePicker Grid.Row="1" Grid.Column="3"/>
+
         <Label x:Name="kol" FontSize="14" Grid.Column="0" Grid.Row="4" Content="Количество событий"/>
         <TextBox FontSize="14" x:Name="kolSob"  Grid.Row="4" Grid.Column="1" MinWidth="27" Text="100" HorizontalAlignment="Left"></TextBox>
         <Label FontSize="14" Grid.Column="0" Grid.Row="5" Content="интервал событий"/>

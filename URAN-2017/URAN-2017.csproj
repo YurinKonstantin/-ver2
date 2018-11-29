@@ -29,7 +29,7 @@
     <ProductName>URAN</ProductName>
     <PublisherName>YuKO</PublisherName>
     <MinimumRequiredVersion>1.0.2.10</MinimumRequiredVersion>
-    <ApplicationRevision>51</ApplicationRevision>
+    <ApplicationRevision>56</ApplicationRevision>
     <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -226,6 +226,9 @@
     <Compile Include="NastroikiAll.xaml.cs">
       <DependentUpon>NastroikiAll.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PageAddKlNoTail.xaml.cs">
+      <DependentUpon>PageAddKlNoTail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PageOtbor.xaml.cs">
       <DependentUpon>PageOtbor.xaml</DependentUpon>
     </Compile>
@@ -249,9 +252,6 @@
     </Compile>
     <Compile Include="PageTestRAN.xaml.cs">
       <DependentUpon>PageTestRAN.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PageTestSet.xaml.cs">
-      <DependentUpon>PageTestSet.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainSerilizacia.cs" />
     <Compile Include="UserSetting.cs" />
@@ -301,6 +301,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PageAddKlNoTail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PageOtbor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -330,10 +334,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PageTestRAN.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PageTestSet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -415,6 +415,9 @@
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="Homegroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Wrench.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,31 +4,46 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:URAN_2017"
+      xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
       mc:Ignorable="d"
-      Title="PageSetData" MinHeight="4" Height="336.59" Width="420.782" VerticalAlignment="Top" HorizontalAlignment="Left">
+      Title="PageSetData" >
 
-    <Grid  HorizontalAlignment="Left">
+    <Grid  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0">
+            <StackPanel Margin="8,0,0,0">
+                <Label x:Name="labP" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" Content="Папка для сохранения данных "/>
+                <Label x:Name="labS" Content="Сохранять бинарный файл"/>
+                <ToggleSwitch:HorizontalToggleSwitch x:Name="chekTogleBinSave" HorizontalAlignment="Left" IsChecked="True" Checked="HorizontalToggleSwitch_Checked" Unchecked="ChekTogleBinSave_Unchecked"/>
+                <TextBox x:Name="Way" FontSize="16"  BorderThickness="0" TextChanged="Way_TextChanged"/>
+                <Button x:Name="ButWay" Content="Путь" Click="ButWay_Click" HorizontalAlignment="Left"   Width="53" />
+                <Label/>
+                <Label  Content="Расположение Базы Данных"  FontSize="18" />
+                <Label  Content="Сохранять данные о работе установки в БД"/>
+                <ToggleSwitch:HorizontalToggleSwitch x:Name="chekTogleBinSave1" HorizontalAlignment="Left" IsChecked="True" Checked="ChekTogleBinSave1_Checked" Unchecked="ChekTogleBinSave1_Unchecked"/>
+                <TextBox x:Name="WayBd" FontSize="16"   BorderThickness="0" TextChanged="WayBd_TextChanged"/>
+                <Button x:Name="ButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="ButWayBd_Click" />
+                <Label/>
 
+                <Label  Content="Расположение Базы Данных Тестового набора"  FontSize="18" />
+                <TextBox x:Name="TestWayBd" FontSize="16"   BorderThickness="0" TextChanged="TestWayBd_TextChanged" />
+                <Button x:Name="TestButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="TestButWayBd_Click" />
+                <Label/>
 
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" Content="Папка для сохранения данных "/>
-            <TextBox x:Name="Way" FontSize="16"  BorderThickness="0" TextChanged="Way_TextChanged"/>
-            <Button x:Name="ButWay" Content="Путь" Click="ButWay_Click" HorizontalAlignment="Left"   Width="53" />
-            <Label/>
-            <Label  Content="Расположение Базы Данных"  FontSize="18" />
-            <TextBox x:Name="WayBd" FontSize="16"   BorderThickness="0" TextChanged="WayBd_TextChanged"/>
-            <Button x:Name="ButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="ButWayBd_Click" />
-            <Label/>
-
-            <Label  Content="Расположение Базы Данных Тестового набора"  FontSize="18" />
-            <TextBox x:Name="TestWayBd" FontSize="16"   BorderThickness="0" TextChanged="TestWayBd_TextChanged" />
-            <Button x:Name="TestButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="TestButWayBd_Click" />
-            <Label/>
-
-            <Label Content="Интервал создания нового файла, час" FontSize="18" />
-            <TextBox x:Name="interval" FontSize="16"  BorderThickness="0" TextChanged="Interval_TextChanged"/>
-            <Button Content="Сохранить"  HorizontalAlignment="Left" Click="Button_Click"/>
-        </StackPanel>
-
+                <Label Content="Интервал создания нового файла, час" FontSize="18" />
+                <TextBox x:Name="interval" FontSize="16"  BorderThickness="0" TextChanged="Interval_TextChanged"/>
+ 
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Row="2"  Background="WhiteSmoke">
+            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+                <Button.Effect>
+                    <DropShadowEffect />
+                </Button.Effect>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

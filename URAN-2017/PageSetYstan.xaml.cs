@@ -32,8 +32,16 @@ namespace URAN_2017
            
             InitializeComponent();
             DeSerial();
-            list.ItemsSource = Bak._DataColec1;
-          
+            var BakGroups1 = from user in Bak._DataColec1
+                             where user.BAAK12NoT == false orderby user.KLIP
+                             select user;
+            list1.ItemsSource = BakGroups1.ToList();
+            var BakGroups2 =  from user in Bak._DataColec1
+                                where user.BAAK12NoT == true
+                                                   select user;
+
+            listNoTail.ItemsSource= BakGroups2.ToList();
+
             NameMS.Text = set.MS;
             if(set.MS1==null)
             {
@@ -96,6 +104,7 @@ namespace URAN_2017
                     using (StreamReader wr = new StreamReader(md + "\\UranSetUp\\" + "setting1.xml"))
                     {
                         Bak._DataColec1 = (ObservableCollection<Bak>)xs.Deserialize(wr);
+                     
                         wr.Close();
 
                     }
@@ -130,6 +139,12 @@ namespace URAN_2017
             {
                 
                 Bak.AddKl(winAddKl.Name2, winAddKl.IP, winAddKl.NameB, winAddKl.BAAK12NoTail);
+                var BakGroups1 = from user in Bak._DataColec1
+                                 where user.BAAK12NoT == false
+                                 orderby user.KLIP
+                                 select user;
+                list1.ItemsSource = BakGroups1.ToList();
+
             }
             else
             {
@@ -141,9 +156,18 @@ namespace URAN_2017
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            int eh = list.SelectedIndex;
-           
-            Bak.DelKl(eh);
+            object f = list1.SelectedItem;
+            Bak bak = (Bak)f;
+       
+            int xx = Bak._DataColec1.IndexOf(bak);
+            Bak.DelKl(xx);
+            var BakGroups1 = from user in Bak._DataColec1
+                             where user.BAAK12NoT == false
+                             orderby user.KLIP
+                             select user;
+            list1.ItemsSource = BakGroups1.ToList();
+
+
         }
 
         private void auto_Unchecked(object sender, RoutedEventArgs e)
@@ -153,14 +177,49 @@ namespace URAN_2017
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            int eh = list.SelectedIndex;
+          //  int eh = list.SelectedIndex;
 
-            Bak.DelKl(eh);
+            //Bak.DelKl(eh);
         }
 
         private void NameMS1_TextChanged(object sender, TextChangedEventArgs e)
         {
             set.MS1 = NameMS1.Text;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            PageAddKlNoTail winAddKl1 = new PageAddKlNoTail();
+
+            if (winAddKl1.ShowDialog() == true)
+            {
+
+                Bak.AddKl(winAddKl1.Name2, winAddKl1.IP, winAddKl1.NameB, true);
+                var BakGroups2 = from user in Bak._DataColec1
+                                 where user.BAAK12NoT == true
+                                 orderby user.KLIP
+                                 select user;
+                listNoTail.ItemsSource = BakGroups2.ToList();
+
+            }
+            else
+            {
+
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            object f = listNoTail.SelectedItem;
+            Bak bak = (Bak)f;
+
+            int xx = Bak._DataColec1.IndexOf(bak);
+            Bak.DelKl(xx);
+            var BakGroups2 = from user in Bak._DataColec1
+                             where user.BAAK12NoT == true
+                             orderby user.KLIP
+                             select user;
+            listNoTail.ItemsSource = BakGroups2.ToList();
         }
     }
 }

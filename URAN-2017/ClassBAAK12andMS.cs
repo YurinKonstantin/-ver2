@@ -168,39 +168,41 @@ namespace URAN_2017
 
         }
         private void СохраняемДанныеНужные()
-        { 
-            while (true)
+        { if (UserSetting.FlagSaveBin)
             {
-                try
+                while (true)
                 {
-                    DataYu clasdata = new DataYu();
-                    OcherediNaZapic.TryDequeue(out clasdata);
-                    if (clasdata.ListData != null)
+                    try
                     {
-                        int f = clasdata.ListData.Count;
-                        byte[] d = new byte[f];
-                        int x = 0;
-                        foreach (Byte b in clasdata.ListData)
+                        DataYu clasdata = new DataYu();
+                        OcherediNaZapic.TryDequeue(out clasdata);
+                        if (clasdata.ListData != null)
                         {
-                            d[x] = b;
-                            x++;
+                            int f = clasdata.ListData.Count;
+                            byte[] d = new byte[f];
+                            int x = 0;
+                            foreach (Byte b in clasdata.ListData)
+                            {
+                                d[x] = b;
+                                x++;
+                            }
+                            data_w.Write(d);
+                            clasdata.ListData.Clear();
+                            Array.Clear(d, 0, f);
                         }
-                        data_w.Write(d);
-                        clasdata.ListData.Clear();
-                        Array.Clear(d, 0, f);
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
+                    catch (InvalidOperationException)
                     {
                         break;
                     }
-                }
-                catch (InvalidOperationException)
-                {
-                    break;
-                }
-                catch(NullReferenceException)
-                {
-                    break;
+                    catch (NullReferenceException)
+                    {
+                        break;
+                    }
                 }
             }
             
@@ -620,17 +622,23 @@ namespace URAN_2017
                         d[x] = b;
                         x++;
                     }
-                    if (data_w != null)
+                    if (UserSetting.FlagSaveBin)
                     {
-                        data_w.Write(d);
+                        if (data_w != null)
+                        {
+                            data_w.Write(d);
+                        }
                     }
-                    int[] coutN = new int[12];
-                
-                    Double[] sigm = new double[12];
-                    if (BAAKTAIL)
+                    if (UserSetting.FlagOtbor)
                     {
-                        Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out int[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
-                        OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
+                        int[] coutN = new int[12];
+
+                        Double[] sigm = new double[12];
+                        if (BAAKTAIL)
+                        {
+                            Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out int[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
+                            OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
+                        }
                     }
                         КолПакетовОчер++;
                    DataBAAKList1=null;

@@ -12,11 +12,40 @@ namespace URAN_2017
     public class Bak
     {
         public static ObservableCollection<Bak> _DataColec1;
-      
+        public static ObservableCollection<Bak> _DataColec1NoTail;
+        bool _BAAK12NoT = false;
         public string Klname { get; set; }
         public string KLIP { get; set; }
         public string NameBAAK { get; set; }
-        public bool BAAK12NoT { get; set; }
+        public string BAAK12NoT1
+        {
+            get
+            {if(_BAAK12NoT==true)
+                {
+                    return "БААК12-200";
+                }
+                else
+                {
+                    return "БААК12-200Т";
+                }
+               
+            }
+            set
+            {
+               
+            }
+          
+        }
+        public bool BAAK12NoT {
+            get
+            {
+                return _BAAK12NoT;
+            }
+            set
+            {
+                _BAAK12NoT = value;
+            }
+        }
         private bool fkagNameBAAK = true;
         public bool FkagNameBAAK
         {
@@ -43,7 +72,8 @@ namespace URAN_2017
 
         public static void InstCol()
         {
-            _DataColec1 = new ObservableCollection<Bak>();    
+            _DataColec1 = new ObservableCollection<Bak>();
+            _DataColec1NoTail = new ObservableCollection<Bak>();
         }
         public static void AddKl(string klname1, string KlIp1, String nameBAAK1, bool fBAAK)
         {

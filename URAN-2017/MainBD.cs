@@ -58,41 +58,44 @@ namespace URAN_2017
         /// <param name="time"></param>
         private void BDReadRAN(string nameRan, bool sinx, bool allPorog, uint porog, UInt32 trg, string time)
         {
-            string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-
-            // Создание подключения
-            var podg = new OleDbConnection(connectionString);
-            try
+            if (UserSetting.FlagSaveBD)
             {
+                string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
 
-                // Открываем подключение
-                podg.Open();
-                // MessageBox.Show("Подключение открыто");
-                new OleDbCommand
+                // Создание подключения
+                var podg = new OleDbConnection(connectionString);
+                try
                 {
-                    Connection = podg,
-                    CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                    // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                }.Connection = podg;
-                new OleDbCommand
+
+                    // Открываем подключение
+                    podg.Open();
+                    // MessageBox.Show("Подключение открыто");
+                    new OleDbCommand
+                    {
+                        Connection = podg,
+                        CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                        // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                    }.Connection = podg;
+                    new OleDbCommand
+                    {
+                        Connection = podg,
+                        CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                        // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                    }.ExecuteNonQuery();
+
+
+
+                }
+                catch
                 {
-                    Connection = podg,
-                    CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                    // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                }.ExecuteNonQuery();
+                    // MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    // закрываем подключение
+                    podg.Close();
 
-
-
-            }
-            catch 
-            {
-               // MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                // закрываем подключение
-                podg.Close();
-
+                }
             }
         }
         /// <summary>
@@ -102,40 +105,45 @@ namespace URAN_2017
         /// <param name="time"></param>
         private void BdAddRANTimeПуск(string nameRan, string time)
         {
-            string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-
-            // Создание подключения
-            var podg = new OleDbConnection(connectionString);
-            try
+            if (UserSetting.FlagSaveBD)
             {
+                string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
 
-                // Открываем подключение
-                podg.Open();
-                // MessageBox.Show("Подключение открыто");
-                new OleDbCommand
+                // Создание подключения
+                var podg = new OleDbConnection(connectionString);
+                try
                 {
-                    Connection = podg,
-                    //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                    CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
-                }.Connection = podg;
-                new OleDbCommand
+
+                    // Открываем подключение
+                    podg.Open();
+                    // MessageBox.Show("Подключение открыто");
+                    new OleDbCommand
+                    {
+                        Connection = podg,
+                        //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                        CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
+                    }.Connection = podg;
+                    new OleDbCommand
+                    {
+                        Connection = podg,
+                        //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                        CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
+                    }.ExecuteNonQuery();
+
+
+
+                }
+                catch
                 {
-                    Connection = podg,
-                    //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                    CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
-                }.ExecuteNonQuery();
 
+                }
+                finally
+                {
+                    // закрываем подключение
+                    podg.Close();
 
+                }
 
-            }
-            catch 
-            {
-              
-            }
-            finally
-            {
-                // закрываем подключение
-                podg.Close();
 
             }
         }
@@ -146,37 +154,40 @@ namespace URAN_2017
         /// <param name="time"></param>
         private void BdAddRANTimeСтоп(string nameRan, string time)
         {
-            string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-
-            // Создание подключения
-            var podg = new OleDbConnection(connectionString);
-            try
+            if (UserSetting.FlagSaveBD)
             {
+                string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
 
-                // Открываем подключение
-                podg.Open();
-                // MessageBox.Show("Подключение открыто");
-                var camand = new OleDbCommand
+                // Создание подключения
+                var podg = new OleDbConnection(connectionString);
+                try
                 {
-                    Connection = podg,
-                    //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                    CommandText = "update [RAN] set ВремяОстанова=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
-                };
-                camand.Connection = podg;
-                camand.ExecuteNonQuery();
+
+                    // Открываем подключение
+                    podg.Open();
+                    // MessageBox.Show("Подключение открыто");
+                    var camand = new OleDbCommand
+                    {
+                        Connection = podg,
+                        //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                        CommandText = "update [RAN] set ВремяОстанова=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
+                    };
+                    camand.Connection = podg;
+                    camand.ExecuteNonQuery();
 
 
 
-            }
-            catch 
-            {
-               // MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                // закрываем подключение
-                podg.Close();
+                }
+                catch
+                {
+                    // MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    // закрываем подключение
+                    podg.Close();
 
+                }
             }
         }
     }

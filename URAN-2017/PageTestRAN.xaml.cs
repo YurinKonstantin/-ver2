@@ -33,6 +33,7 @@ namespace URAN_2017
             DeSerial();
             FlagTestRan.IsChecked = set.FlagTestRan;
             listView2.ItemsSource = ClassTestRan._DataColec2;
+
         }
         private void Serial()
         {
@@ -131,6 +132,16 @@ namespace URAN_2017
             int eh = listView2.SelectedIndex;
 
             ClassTestRan.DelTestRan(eh);
+        }
+
+        private void FlagTestRan_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FlagTestRan_Unchecked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

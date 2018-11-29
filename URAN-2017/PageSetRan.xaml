@@ -5,28 +5,66 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:URAN_2017"
       mc:Ignorable="d"
-      Title="PageSetRan" Width="629.5">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+      Title="PageSetRan">
+
         <Grid >
-        <StackPanel Orientation="Vertical" ScrollViewer.VerticalScrollBarVisibility="Auto" >
-            <Label FontSize="18" Grid.Column="1" Grid.Row="0" Content="Использовать общий порог" Grid.ColumnSpan="2"/>
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="Allporog" Grid.Column="0" Grid.Row="0" Checked="CheckBox_Checked" Unchecked="HorizontalToggleSwitch_Unchecked" HorizontalAlignment="Left" />
-            <Label Content="Порог для платы с хвостом" FontSize="16" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
-                <TextBox  x:Name="porog"   FontSize="16" Grid.Column="2" Grid.Row="2" BorderThickness="0" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" TextChanged="Porog_TextChanged" HorizontalContentAlignment="Center"/>
-            <Label Content="Порог для платы без хвоста" FontSize="16" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
-            <TextBox x:Name="porogNO" FontSize="16" Grid.Column="2" Grid.Row="2" BorderThickness="0" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" TextChanged="porogNO_TextChanged"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical"  VerticalAlignment="Top" Margin="8,0,0,0">
+            <Label FontSize="18" Grid.Column="1" Grid.Row="0" Content="Использовать общий порог" IsEnabled="False" Grid.ColumnSpan="2"/>
+             
+                <ToggleSwitch:HorizontalToggleSwitch IsEnabled="False" x:Name="Allporog" Grid.Column="0" Grid.Row="0" Checked="CheckBox_Checked" Unchecked="HorizontalToggleSwitch_Unchecked" HorizontalAlignment="Left" />
+                <Label Content="Порог для плат БААК12" FontSize="16" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
+                <TabControl HorizontalAlignment="Left">
+                    <TabItem IsSelected="True" IsEnabled="True" HorizontalAlignment="Left">
+                        <TabItem.Header>
+                            <Label Content="БААК12-200Т"/>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <TextBox  x:Name="porog"   FontSize="16" Grid.Column="2" Grid.Row="2" BorderThickness="0" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" TextChanged="Porog_TextChanged" HorizontalContentAlignment="Center"/>
+                        </TabItem.Content>
 
-            <Label FontSize="18" Content="Использовать общий триггер" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"/>
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="AllTrg" Grid.Column="0" Grid.Row="3" Checked="AllTrg_Checked" Unchecked="HorizontalToggleSwitch_Unchecked_1" HorizontalAlignment="Left"  />
-            
-                <Label Content="Триггер для платы с хвостом" FontSize="16" Grid.Column="1" Grid.Row="5"/>
-                <TextBox x:Name="trg" Grid.Column="2" BorderThickness="0" Grid.Row="5" FontSize="16" TextChanged="Trg_TextChanged" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,5,82,5"/>
+                    </TabItem>
+                    <TabItem IsSelected="True" IsEnabled="True" HorizontalAlignment="Left">
+                        <TabItem.Header>
+                            <Label Content="БААК12-200"/>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <TextBox x:Name="porogNO" FontSize="16" Grid.Column="2" Grid.Row="2" BorderThickness="0" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" TextChanged="porogNO_TextChanged"/>
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+                <Label FontSize="18" Content="Использовать общий триггер" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" IsEnabled="False"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="AllTrg" IsEnabled="False" Grid.Column="0" Grid.Row="3" Checked="AllTrg_Checked" Unchecked="HorizontalToggleSwitch_Unchecked_1" HorizontalAlignment="Left"  />
 
-            <Label Content="Триггер для платы без хвоста" FontSize="16" Grid.Column="1" Grid.Row="5"/>
-            <TextBox x:Name="trgNO" Grid.Column="2" BorderThickness="0" Grid.Row="5" FontSize="16" VerticalAlignment="Center" TextChanged="trgNO_TextChanged" HorizontalAlignment="Left" Margin="0,5,82,5"/>
+                <Label Content="Триггер для плат БААК12" FontSize="16" Grid.Column="1" Grid.Row="5"/>
+                <TabControl HorizontalAlignment="Left">
+                    <TabItem IsSelected="True" IsEnabled="True">
+                        <TabItem.Header>
+                            <Label Content="БААК12-200Т"/>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <TextBox x:Name="trg" Grid.Column="2" BorderThickness="0" Grid.Row="5" FontSize="16" TextChanged="Trg_TextChanged" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,5,82,5"/>
+                        </TabItem.Content>
 
+                    </TabItem>
+                    <TabItem IsSelected="True" IsEnabled="True">
+                        <TabItem.Header>
+                            <Label Content="БААК12-200"/>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <TextBox x:Name="trgNO" Grid.Column="2" BorderThickness="0" Grid.Row="5" FontSize="16" VerticalAlignment="Center" TextChanged="trgNO_TextChanged" HorizontalAlignment="Left" Margin="0,5,82,5"/>
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+             
+           
+           
             <StackPanel Orientation="Horizontal">
-            <Label Content="длина данных" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left"/>
+            <Label Content="длина данных (для платы БААК12-200)" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left"/>
             <TextBox x:Name="lenght" Grid.Column="2" BorderThickness="0" Grid.Row="6" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="Lenght_TextChanged" Margin="0,5,82,5"/>
             </StackPanel>
             <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="13" Content="Использовать следующее кластеры"/>
@@ -55,18 +93,25 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Label Content="Отображать доступные но не используемые кластеры" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left"/>
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagIspol" Checked="FlagIspol_Checked" Unchecked="FlagIspol_Unchecked" HorizontalAlignment="Left" />
+            <Label Content="Отображать доступные но не используемые кластеры" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" IsEnabled="False"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagIspol" Checked="FlagIspol_Checked" Unchecked="FlagIspol_Unchecked" HorizontalAlignment="Left" IsEnabled="False" />
             <Label  FontSize="18" Content="Использовать синхронизацию" />
-                <Label  FontSize="12" Content="Установка будет запушена с синхронизацие" />
-                <Label  FontSize="12" Content="используя модули указанные в разделе " />
+                <Label  FontSize="12" Content="Установка будет запушена с синхронизацие используя модули указанные в разделе " Margin="0,-8,0,0"/>
                 <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagMS"  Checked="FlagMS_Checked" Unchecked="FlagMS_UnChecked" HorizontalAlignment="Left" />
-            <Label FontSize="18" Content="Проводить ТЕСТОВЫЙ набор"   />
+            <Label FontSize="18" Content="Проводить ТЕСТОВЫЙ набор" Margin="0,16,0,0"  />
             <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagTestRan"  Checked="FlagTestRan_Checked" Unchecked="FlagTestRan_UnChecked" HorizontalAlignment="Left" />
-            <Label Content="Частота выборке хвоста, мГц" FontSize="16"  HorizontalAlignment="Left" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+            <Label Content="Частота выборке хвоста, мГц (для платы БААК12-200Т)" FontSize="16"  HorizontalAlignment="Left" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
             <TextBox x:Name="dickTail"  BorderThickness="0" FontSize="16" VerticalAlignment="Center"   TextChanged="dickTail_TextChanged"/>
-            <Button Content="Сохранить"  HorizontalAlignment="Left" Click="Button_Click" Height="20" VerticalAlignment="Top" />
+           
         </StackPanel>
-    </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+        <Grid Grid.Row="1"  Background="WhiteSmoke">
+                <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+                    <Button.Effect>
+                        <DropShadowEffect />
+                    </Button.Effect>
+                </Button>
+            </Grid>
+        </Grid>
+
 </Page>

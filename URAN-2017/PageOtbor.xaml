@@ -14,19 +14,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="8"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="8"/>
         </Grid.RowDefinitions>
         <Label Grid.Column="1" Grid.Row="0" FontSize="20" Content="Параметры обработки событий" Grid.ColumnSpan="1" HorizontalAlignment="Center"/>
         <ScrollViewer Grid.Row="1">
             <StackPanel >
             <Label Grid.Column="1" Grid.Row="1" FontSize="18" Content="Производить обработку онлайн"  HorizontalAlignment="Left" Margin="16,8,0,0"/>
-            <ToggleSwitch:HorizontalToggleSwitch  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,0,0,0"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="checOtbor" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,0,0,0" Checked="HorizontalToggleSwitch_Checked" Unchecked="HorizontalToggleSwitch_Unchecked"/>
             <Label Grid.Column="1" Grid.Row="2" FontSize="18" Content="Число точек от начала для поиска нулевой линнии" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="16,8,0,0"/>
             <TextBox Grid.Column="2" Grid.Row="2" Text="150" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="16,0,0,0" />
             <Label Grid.Column="1" Grid.Row="3" FontSize="18" Content="Сохранять информацию о событии" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="16,8,0,0"/>
-            <ToggleSwitch:HorizontalToggleSwitch Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,0,0,0"/>
+            <ToggleSwitch:HorizontalToggleSwitch Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,0,0,0" IsEnabled="False"/>
             <Label Grid.Column="1" Grid.Row="4" FontSize="20" Content="Параметры обработки нейтрона" Grid.ColumnSpan="1" HorizontalAlignment="Center" Margin="0,16,0,0"/>
             <Label Grid.Column="1" Grid.Row="5" FontSize="18" Content="Длительность нейтрона на заданной высоте" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="16,8,0,0"/>
             <TextBox Grid.Column="2" Grid.Row="5" x:Name="DlitNeu" Text="2" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" TextChanged="DlitNeu_TextChanged" Margin="16,0,0,0"/>
@@ -38,6 +36,13 @@
             <TextBox Grid.Column="2" Grid.Row="8" x:Name="PorogNeutrona" Text="6" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" TextChanged="PorogNeutrona_TextChanged" Margin="16,0,0,0"/>
         </StackPanel>
  </ScrollViewer>
-                <Button Content="Сохранить" Grid.Row="3" HorizontalAlignment="Right" Margin="0,1,16,1" Click="Button_Click" VerticalAlignment="Top" />
+             
+        <Grid Grid.Row="2"  Background="WhiteSmoke">
+            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+                <Button.Effect>
+                    <DropShadowEffect />
+                </Button.Effect>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

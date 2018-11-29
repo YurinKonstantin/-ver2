@@ -19,7 +19,7 @@ namespace URAN_2017
         public ObservableCollection<Bak> _DataColec1;
         public ObservableCollection<ClassTestRan> _DataColecClassTestRan;
 
-        public void DeSerial()
+        public async Task DeSerial()
         {
             // using (FileStream fs = new FileStream("setting.dat", FileMode.Open)) 
             string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам

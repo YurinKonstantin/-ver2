@@ -27,6 +27,7 @@ namespace URAN_2017
             using (StreamWriter wr = new StreamWriter(md + "\\UranSetUp\\"+"setting1.xml"))
             {
                 xs.Serialize(wr, Bak._DataColec1);
+              //  xs.Serialize(wr, Bak._DataColec1NoTail);
                 wr.Close();
             }
         }
@@ -41,6 +42,44 @@ namespace URAN_2017
             set
             {
                 _FlagPorog = value;
+            }
+        }
+
+        private static bool _FlagOtbor;
+        public static  bool FlagOtbor
+        {
+            get
+            {
+                return _FlagOtbor;
+            }
+            set
+            {
+                _FlagOtbor = value;
+            }
+        }
+        private static bool _FlagSaveBin=true;
+        public static bool FlagSaveBin
+        {
+            get
+            {
+                return _FlagSaveBin;
+            }
+            set
+            {
+                _FlagSaveBin = value;
+            }
+        }
+
+        private static bool _FlagSaveBD = true;
+        public static bool FlagSaveBD
+        {
+            get
+            {
+                return _FlagSaveBD;
+            }
+            set
+            {
+                _FlagSaveBD = value;
             }
         }
         private bool _FlagTestRan;
@@ -127,7 +166,7 @@ namespace URAN_2017
                 delayClok = value;
             }
         }
-        private int lincClok = 250;
+        private int lincClok = 512;
         public int LincClok
         {
             get

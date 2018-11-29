@@ -9,7 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240"/>
-            <ColumnDefinition Width="28"/>
+            
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -34,7 +34,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Frame x:Name="frameName" Grid.Column="2" Grid.ColumnSpan="1" HorizontalContentAlignment="Left"  VerticalContentAlignment="Top" NavigationUIVisibility="Hidden" />
+        <Frame x:Name="frameName" Grid.Column="1" Grid.ColumnSpan="1" HorizontalContentAlignment="Left"  VerticalContentAlignment="Top" NavigationUIVisibility="Hidden" />
 
     </Grid>
 
