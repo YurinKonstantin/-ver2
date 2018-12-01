@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:URAN_2017"
       mc:Ignorable="d" 
-      d:DesignHeight="329.237"
-      Title="PageSetYstan" d:DesignWidth="583.856">
+    
+      Title="PageSetYstan" >
   
     <Grid Margin="0,0,0,0" >
         <Grid.RowDefinitions>

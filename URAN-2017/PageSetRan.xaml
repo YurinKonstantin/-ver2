@@ -38,6 +38,7 @@
                     </TabItem>
                 </TabControl>
                 <Label FontSize="18" Content="Использовать общий триггер" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" IsEnabled="False"/>
+                
             <ToggleSwitch:HorizontalToggleSwitch x:Name="AllTrg" IsEnabled="False" Grid.Column="0" Grid.Row="3" Checked="AllTrg_Checked" Unchecked="HorizontalToggleSwitch_Unchecked_1" HorizontalAlignment="Left"  />
 
                 <Label Content="Триггер для плат БААК12" FontSize="16" Grid.Column="1" Grid.Row="5"/>
