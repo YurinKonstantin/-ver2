@@ -181,6 +181,7 @@
                 <TextBlock Name="klP1" Grid.Column="0" Grid.Row="0" Margin="16,0,0,0" FontSize="14" Text="Плата БААК12-200Т" Visibility="Collapsed"/>
                 <ListView x:Name="List1" Grid.Row="1" Grid.Column="0" MouseRightButtonDown="List1_MouseRightButtonDown" MouseLeftButtonDown="List1_MouseLeftButtonDown" Visibility="Collapsed"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0" SelectionChanged="List1_SelectionChanged">
+                  
                     <ListView.BorderBrush>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </ListView.BorderBrush>
@@ -189,6 +190,7 @@
                     </ListView.Background>
                     <ListView.ItemTemplate>
                         <DataTemplate>
+                          
                             <Grid UseLayoutRounding="True"  Margin="4" ShowGridLines="False">
                                 <Grid.Effect>
                                     <DropShadowEffect BlurRadius="4" ShadowDepth="0"/>
@@ -203,6 +205,22 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Vertical">
+                                    <ToolTip Background="#60AA4030" Foreground="White" HasDropShadow="False"
+                Placement="Relative" HorizontalOffset="15" VerticalOffset="10">
+                                        <StackPanel>
+                                            <TextBlock>Дополнительная информация:</TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="Имя платы: "/>
+                                                <Label Content="{Binding NameBAAK12}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="Интервал темпа счета"/>
+                                                <Label Content="{Binding ИнтервалТемпаСчета}"/>
+                                            </StackPanel>
+                                            <TextBlock/>
+                                            <TextBlock/>
+                                        </StackPanel>
+                                    </ToolTip>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Кластер №" Padding="1" Margin="4,0,2,0"/>
                                         <Label FontSize="14" Padding="1" Margin="0,0,2,0"  Content="{Binding NamKl}" VerticalAlignment="Center"/>
@@ -212,23 +230,41 @@
                                         <Label FontSize="15" Padding="1" Margin="4,0,0,0" Content="Статус:" VerticalAlignment="Stretch"/>
                                         <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" VerticalAlignment="Stretch"/>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Пакетов" VerticalAlignment="Stretch"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетов}" VerticalAlignment="Stretch" />
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер2}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовEr}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                    </StackPanel>
+                                    <Expander Header="События/нейтроны/среднее значение">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Пакетов" VerticalAlignment="Stretch"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетов}" VerticalAlignment="Stretch" />
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер2}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовEr}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Нейтронов" VerticalAlignment="Stretch"/>
+                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетовN}" VerticalAlignment="Stretch" />
+                                        </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Нейтроны/события" VerticalAlignment="Stretch"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетовN}" VerticalAlignment="Stretch" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Expander>
+                                   
+                                    
                                     <StackPanel Orientation="Horizontal">
                                         <Label FontSize="15" Padding="1" Margin="4,0,0,0"   Content="Темп счета:" VerticalAlignment="Stretch"/>
                                         <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding ТемпПакетов}" VerticalAlignment="Stretch"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label FontSize="15" Padding="1" Margin="4,0,0,0"   Content="Темп счета нейтронов:" VerticalAlignment="Stretch"/>
+                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding ТемпПакетовN}" VerticalAlignment="Stretch"/>
                                     </StackPanel>
 
                                 </StackPanel>
@@ -309,6 +345,7 @@
                                         <Label FontSize="15" Padding="1" Margin="4,0,0,0"   Content="Темп счета:" VerticalAlignment="Stretch"/>
                                         <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding ТемпПакетов}" VerticalAlignment="Stretch"/>
                                     </StackPanel>
+                                   
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -323,8 +360,13 @@
 
             </Grid>
         </Border>
-       
-            <TabControl Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="3" Margin="4,0,4,0" TabStripPlacement="Bottom"   Style="{DynamicResource TabControlStyle1}">
+        <Grid Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="3" Margin="4,0,4,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TabControl   Grid.Row="0" Margin="4,0,4,0" TabStripPlacement="Bottom"   Style="{DynamicResource TabControlStyle1}">
                 <TabControl.Effect>
                     <DropShadowEffect BlurRadius="2" ShadowDepth="0"/>
                 </TabControl.Effect>
@@ -364,13 +406,13 @@
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                                 <Button  Width="40" Height="40" VerticalAlignment="Top"
                     Click="Button_Click_4" Margin="0, 0, 0, 0" IsEnabled="True" Panel.ZIndex="4">
-                                <Button.Effect>
-                                    <DropShadowEffect BlurRadius="4" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="0"/>
-                                </Button.Effect>
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="4" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="0"/>
+                                    </Button.Effect>
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Grid>
-                                               
+
                                                 <Ellipse Stroke="White" StrokeThickness="1" Fill="Green">
                                                 </Ellipse>
                                                 <Path Width="20" Height="20" Stretch="Fill" Fill="White" Data="F1 M 58,33.5001L 58,27L 49,19L 40,27.5001L 40,33.5001L 46,28.2097L 46,40.5C 46,46.299 41.299,51 35.5,51C 29.701,51 25,46.299 25,40.5C 25,34.8686 29.4332,30.2727 35,30.0117L 35,24.0074C 26.1186,24.2718 19,31.5546 19,40.5C 19,49.6127 26.3873,57 35.5,57C 44.6127,57 52,49.6127 52,40.5L 52,28.125L 58,33.5001 Z "/>
@@ -401,6 +443,87 @@
                     </TabItem.Content>
                 </TabItem>
             </TabControl>
+
+            <TabControl   Grid.Row="2" Margin="4,0,4,0" TabStripPlacement="Bottom"   Style="{DynamicResource TabControlStyle1}">
+                <TabControl.Effect>
+                    <DropShadowEffect BlurRadius="2" ShadowDepth="0"/>
+                </TabControl.Effect>
+                <TabItem x:Name="tempSob1" IsSelected="True" >
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0" Text="Темп счета нейтронов"></TextBlock>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <Grid Margin="0,0,8,0">
+                            <Grid.RowDefinitions>
+
+                                <RowDefinition Height="*"/>
+
+                            </Grid.RowDefinitions>
+
+                            <lvc:CartesianChart    Series="{Binding SeriesCollectionN}" Name="Chart1" Zoom="Xy" MouseMove="ChartMouseMove" DataClick="ChartOnDataClick" DataHover="Chart_OnDataHover"  UpdaterTick="ChartOnUpdaterTick"  DataClickCommand="{Binding DataClickCommand}" DataHoverCommand="{Binding DataHoverCommand}" UpdaterTickCommand="{Binding UpdaterTickCommand}" >
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Время" x:Name="X11" Labels="{Binding LabelsN}" RangeChanged="Axis_OnRangeChanged" RangeChangedCommand="{Binding RangeChangedCommand}">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator  IsEnabled="True" Step="1"></lvc:Separator>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Name="Y11" Title="Темп счета Нейтронов"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                            <StackPanel Orientation="Horizontal"  Margin="24,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <Label Content="X:"/>
+                            
+                                <Label Content="  "/>
+                                <Label Content="Y:"/>
+                            
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                                <Button  Width="40" Height="40" VerticalAlignment="Top"
+                    Click="Button_Click_4" Margin="0, 0, 0, 0" IsEnabled="True" Panel.ZIndex="4">
+                                    <Button.Effect>
+                                        <DropShadowEffect BlurRadius="4" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="0"/>
+                                    </Button.Effect>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid>
+
+                                                <Ellipse Stroke="White" StrokeThickness="1" Fill="Green">
+                                                </Ellipse>
+                                                <Path Width="20" Height="20" Stretch="Fill" Fill="White" Data="F1 M 58,33.5001L 58,27L 49,19L 40,27.5001L 40,33.5001L 46,28.2097L 46,40.5C 46,46.299 41.299,51 35.5,51C 29.701,51 25,46.299 25,40.5C 25,34.8686 29.4332,30.2727 35,30.0117L 35,24.0074C 26.1186,24.2718 19,31.5546 19,40.5C 19,49.6127 26.3873,57 35.5,57C 44.6127,57 52,49.6127 52,40.5L 52,28.125L 58,33.5001 Z "/>
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem.Content>
+                </TabItem>
+                <TabItem IsSelected="True" IsEnabled="True">
+                    <TabItem.Header>
+                        <Label Content="Нейтроны"/>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <Label Content="ghjgjgj"/>
+                    </TabItem.Content>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Label Content="Развертка"/>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <Label Content="ghjgjgj"/>
+                    </TabItem.Content>
+                </TabItem>
+            </TabControl>
+            <GridSplitter Grid.Row="1" Height="5"  VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        </Grid>
+           
       
         <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2"  Margin="4" Background="Transparent" BorderThickness="1" BorderBrush="Black" CornerRadius="8">
             <Grid >

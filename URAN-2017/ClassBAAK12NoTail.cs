@@ -1254,6 +1254,7 @@ namespace URAN_2017
             КолПакетовОчер2 = 0;
             КолПакетовEr = 0;
             КолПакетов = 0;
+          
             Пакетов = 0;
             ТемпПакетов = 0;
             Flagtest = false;
@@ -1271,6 +1272,7 @@ namespace URAN_2017
         private long колПакетовОчер = 0;
         private long колПакетовОчер2 = 0;
         private long колПакетовEr = 0;
+    
         private static uint _PorogAll = 10;
         private static uint time0x10 = 0;
         private static uint time0x12 = 0;

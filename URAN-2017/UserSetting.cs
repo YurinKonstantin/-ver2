@@ -45,7 +45,7 @@ namespace URAN_2017
             }
         }
 
-        private static bool _FlagOtbor;
+        private static bool _FlagOtbor=true;
         public static  bool FlagOtbor
         {
             get

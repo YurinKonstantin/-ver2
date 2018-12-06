@@ -144,8 +144,8 @@ namespace URAN_2017
                    
                 }
               Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.Labels.Add(taimer2.Hour.ToString() + ":" + taimer2.Minute.ToString() + " " + taimer2.Day.ToString() + "." + taimer2.Month.ToString()); }));
-               
-                
+                Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsN.Add(taimer2.Hour.ToString() + ":" + taimer2.Minute.ToString() + " " + taimer2.Day.ToString() + "." + taimer2.Month.ToString()); }));
+
                 BAAK12T.TempURANDelegate?.Invoke();
                 //temp = temp.AddMinutes(inter);
                 temp = temp.AddHours(IntervalTemp);

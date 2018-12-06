@@ -25,6 +25,7 @@ namespace URAN_2017
         private long колПакетовОчер = 0;
         private long колПакетовОчер2 = 0;
         private long колПакетовEr = 0;
+      
         private static uint _PorogAll = 10;
         private static uint time0x10 = 0;
         private static uint time0x12 = 0;
@@ -319,6 +320,51 @@ namespace URAN_2017
             {
                 пакетов = value;
                 this.OnPropertyChanged(nameof(Пакетов));
+            }
+
+        }
+        private int темпПакетовN = 0;
+        /// <summary>
+        /// Темп счета принятых пакетов
+        /// </summary>
+        public int ТемпПакетовN
+        {
+            get
+            {
+                return темпПакетовN;
+            }
+            set
+            {
+                темпПакетовN = value;
+                this.OnPropertyChanged(nameof(ТемпПакетовN));
+            }
+
+        }
+        private int пакетовN = 0;
+        public int ПакетовN
+        {
+            get
+            {
+                return пакетовN;
+            }
+            set
+            {
+                пакетовN = value;
+                this.OnPropertyChanged(nameof(ПакетовN));
+            }
+
+        }
+        private int колПакетовN = 0;
+        public int КолПакетовN
+        {
+            get
+            {
+                return колПакетовN;
+            }
+            set
+            {
+                колПакетовN = value;
+                this.OnPropertyChanged(nameof(КолПакетовN));
             }
 
         }

@@ -243,7 +243,8 @@ namespace URAN_2017
                                         try
                                         {
                                          Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                           
+                                     
+
                                             h++;
                                         }
                                         catch (Exception ex)

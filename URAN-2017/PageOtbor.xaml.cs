@@ -60,7 +60,28 @@ namespace URAN_2017
             }
             fs.Close();
 
-         
+
+            BinaryFormatter bf1 = new BinaryFormatter();
+            using (Stream fs1 = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                try
+                {
+                    bf1.Serialize(fs1, set);
+                    System.Windows.MessageBox.Show("Сохранено");
+                }
+                catch
+                {
+
+                }
+                finally
+                {
+                    fs1.Close();
+                }
+
+            }
+            UserSetting.Serial();
+
+
             if (Directory.Exists(md + "\\UranSetUp") == false)
             {
                 Directory.CreateDirectory(md + "\\UranSetUp");
@@ -106,8 +127,8 @@ namespace URAN_2017
                 FileStream fs1 = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
                 try
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    set = (UserSetting)bf.Deserialize(fs1);
+                    BinaryFormatter bf1 = new BinaryFormatter();
+                    set = (UserSetting)bf1.Deserialize(fs1);
 
                 }
                 catch (SerializationException)
@@ -157,14 +178,14 @@ namespace URAN_2017
 
         private void HorizontalToggleSwitch_Checked(object sender, RoutedEventArgs e)
         {
-            ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
-            UserSetting.FlagOtbor = rb.IsChecked;
+            //ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            UserSetting.FlagOtbor = true;
         }
 
         private void HorizontalToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
         {
-            ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
-            UserSetting.FlagOtbor = rb.IsChecked;
+           // ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            UserSetting.FlagOtbor = false;
         }
     }
 }

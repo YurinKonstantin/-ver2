@@ -458,6 +458,8 @@ namespace URAN_2017
            // {
                 ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов;
                 Пакетов = Convert.ToInt32(КолПакетов);
+            ТемпПакетовN = Convert.ToInt32(КолПакетовN) - ПакетовN;
+            ПакетовN = Convert.ToInt32(КолПакетовN);
             try
             {
               BDReadTemP(NameBAAK12, ТемпПакетов);
@@ -469,7 +471,7 @@ namespace URAN_2017
             try
             {
                // Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(Nkl, ТемпПакетов); }));
-                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddPoint(Nkl, ТемпПакетов); }));
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddPoint(Nkl, ТемпПакетов, ТемпПакетовN); }));
                
             }
             catch
@@ -637,6 +639,8 @@ namespace URAN_2017
                         if (BAAKTAIL)
                         {
                             Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out int[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
+
+                            КолПакетовN += coutN.Sum();
                             OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
                         }
                     }

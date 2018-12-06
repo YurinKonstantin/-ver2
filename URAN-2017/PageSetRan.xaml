@@ -14,6 +14,7 @@
             </Grid.RowDefinitions>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical"  VerticalAlignment="Top" Margin="8,0,0,0">
+                
             <Label FontSize="18" Grid.Column="1" Grid.Row="0" Content="Использовать общий порог" IsEnabled="False" Grid.ColumnSpan="2"/>
              
                 <ToggleSwitch:HorizontalToggleSwitch IsEnabled="False" x:Name="Allporog" Grid.Column="0" Grid.Row="0" Checked="CheckBox_Checked" Unchecked="HorizontalToggleSwitch_Unchecked" HorizontalAlignment="Left" />

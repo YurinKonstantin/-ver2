@@ -273,13 +273,15 @@ namespace URAN_2017
                 
                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Add("hgdfdf"); }));
 
-               await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(0, 15); }));
+               await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(0, 15, 2); }));
 
                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Labels.Add("120"); }));
+                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.LabelsN.Add("10"); }));
 
-               await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(0, 12); }));
+                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(0, 12, 5); }));
 
                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Labels.Add("110"); }));
+                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.LabelsN.Add("110"); }));
             }
             catch(Exception ex)
             {

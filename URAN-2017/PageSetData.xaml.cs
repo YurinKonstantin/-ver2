@@ -205,10 +205,7 @@ namespace URAN_2017
             if (rb != null && Way != null)
             {
                 UserSetting.FlagSaveBin = rb.IsChecked;
-                Way.IsEnabled = false;
-                ButWay.IsEnabled = false;
-                labP.IsEnabled = false;
-                labS.IsEnabled = false;
+              
             }
         }
 

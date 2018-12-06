@@ -18,7 +18,22 @@
                 <Label x:Name="labP" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" Content="Папка для сохранения данных "/>
                 <Label x:Name="labS" Content="Сохранять бинарный файл"/>
                 <ToggleSwitch:HorizontalToggleSwitch x:Name="chekTogleBinSave" HorizontalAlignment="Left" IsChecked="True" Checked="HorizontalToggleSwitch_Checked" Unchecked="ChekTogleBinSave_Unchecked"/>
-                <TextBox x:Name="Way" FontSize="16"  BorderThickness="0" TextChanged="Way_TextChanged"/>
+                <TextBox x:Name="Way" FontSize="16"  BorderThickness="0" TextChanged="Way_TextChanged">
+                    <TextBox.Resources>
+                        <Style TargetType="TextBox" >
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=chekTogleBinSave, Path=IsChecked}"
+                        Value="false">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=chekTogleBinSave, Path=IsMouseOver}"
+                        Value="true">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
                 <Button x:Name="ButWay" Content="Путь" Click="ButWay_Click" HorizontalAlignment="Left"   Width="53" />
                 <Label/>
                 <Label  Content="Расположение Базы Данных"  FontSize="18" />
