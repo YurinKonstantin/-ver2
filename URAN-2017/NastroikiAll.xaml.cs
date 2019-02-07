@@ -29,12 +29,12 @@ namespace URAN_2017
     public partial class NastroikiAll : Window
     {
         private ObservableCollection<Data1> _DataColec;
-      //  public ObservableCollection<Bak> _DataColec1;
+        //  public ObservableCollection<Bak> _DataColec1;
 
 
-       // UserSetting set = new UserSetting();
-      
-        
+        // UserSetting set = new UserSetting();
+
+
         public NastroikiAll()
         {
             InitializeComponent();
@@ -54,7 +54,7 @@ namespace URAN_2017
             listView1.ItemsSource = _DataColec;
 
             //frameName.NavigationService.Navigate(new Uri("PageSetYstan.xaml", UriKind.Relative));
-           // SetYstanovka();
+            // SetYstanovka();
         }
 
         public struct Data1
@@ -62,15 +62,16 @@ namespace URAN_2017
             public string Name { get; set; }
             public string Pyti { get; set; }
         }
-       
+
         private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           switch (listView1.SelectedIndex)
+            switch (listView1.SelectedIndex)
             {
                 case 0:
                     SetYstanovka();
                     break;
-                case 1:SetRan();
+                case 1:
+                    SetRan();
                     break;
                 case 2:
                     SetBAAK();
@@ -97,8 +98,8 @@ namespace URAN_2017
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             this.Owner.Show();
-            
-          
+
+
         }
     }
 }

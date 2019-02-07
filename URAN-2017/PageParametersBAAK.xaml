@@ -20,7 +20,7 @@
                 <Label></Label>
             </ComboBoxItem>
         </ComboBox>
-        <DataGrid Grid.Row="1" AutoGenerateColumns="False" x:Name="BAAKGrid" Margin="0">            
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" x:Name="BAAKGrid" Margin="0">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Код}" Header="Нулевая линия" Width="120"/>
                 <DataGridTextColumn Binding="{Binding Поле1}" Header="Порог" Width="125"/>
@@ -30,6 +30,6 @@
             <Button x:Name="updateButton" Content="Обновить" Click="UpdateButton_Click"  />
             <Button x:Name="deleteButton" Content="Удалить"  />
         </StackPanel>
-       
+
     </Grid>
 </Page>

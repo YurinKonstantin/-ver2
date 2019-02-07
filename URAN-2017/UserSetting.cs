@@ -14,7 +14,7 @@ using System.Runtime.Serialization;
 namespace URAN_2017
 {
     [Serializable]
-   public class UserSetting
+    public class UserSetting
     {
         public static void Serial()
         {
@@ -24,16 +24,16 @@ namespace URAN_2017
                 Directory.CreateDirectory(md + "\\UranSetUp");
             }
             XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Bak>));
-            using (StreamWriter wr = new StreamWriter(md + "\\UranSetUp\\"+"setting1.xml"))
+            using (StreamWriter wr = new StreamWriter(md + "\\UranSetUp\\" + "setting1.xml"))
             {
                 xs.Serialize(wr, Bak._DataColec1);
-              //  xs.Serialize(wr, Bak._DataColec1NoTail);
+                //  xs.Serialize(wr, Bak._DataColec1NoTail);
                 wr.Close();
             }
         }
 
-        private  bool _FlagPorog;
-        public  bool FlagPorog
+        private bool _FlagPorog;
+        public bool FlagPorog
         {
             get
             {
@@ -45,8 +45,8 @@ namespace URAN_2017
             }
         }
 
-        private static bool _FlagOtbor=true;
-        public static  bool FlagOtbor
+        private static bool _FlagOtbor = true;
+        public static bool FlagOtbor
         {
             get
             {
@@ -57,7 +57,7 @@ namespace URAN_2017
                 _FlagOtbor = value;
             }
         }
-        private static bool _FlagSaveBin=true;
+        private static bool _FlagSaveBin = true;
         public static bool FlagSaveBin
         {
             get
@@ -94,7 +94,7 @@ namespace URAN_2017
                 _FlagTestRan = value;
             }
         }
-        private int колТригТест= 100;
+        private int колТригТест = 100;
         public int КолТригТест
         {
             get
@@ -118,7 +118,7 @@ namespace URAN_2017
                 _FlagClok = value;
             }
         }
-        private int интервалТригТест=250;
+        private int интервалТригТест = 250;
         public int ИнтервалТригТест
         {
             get
@@ -202,8 +202,8 @@ namespace URAN_2017
                 timeRanMin = value;
             }
         }
-        private  string _WaySetup=@"D:\";
-        public  string WaySetup
+        private string _WaySetup = @"D:\";
+        public string WaySetup
         {
             get
             {
@@ -214,8 +214,8 @@ namespace URAN_2017
                 _WaySetup = value;
             }
         }
-        private  string _WaySetupData = @"D:\";//Пишем сюда данные бинарные
-        public  string WayDATA
+        private string _WaySetupData = @"D:\";//Пишем сюда данные бинарные
+        public string WayDATA
         {
             get
             {
@@ -253,8 +253,8 @@ namespace URAN_2017
             }
 
         }
-        private  int _Porog = 10;
-        public  int Porog
+        private int _Porog = 10;
+        public int Porog
         {
             get
             {
@@ -290,19 +290,20 @@ namespace URAN_2017
             }
         }
         private int CorectPorog(int porog)
-        {if(porog<2048&porog>0)
+        {
+            if (porog < 2048 & porog > 0)
             {
                 return porog;
             }
-        else
+            else
             {
                 MessageBox.Show("введено не допустимое значение порога. Интервал значений от 1 до 2048. Будет установлен порог 100");
                 return 100;
             }
-            
+
         }
         private int _intervalFile = 5;
-        public  int IntervalFile
+        public int IntervalFile
         {
             get
             {
@@ -325,8 +326,8 @@ namespace URAN_2017
                 return 5;
             }
         }
-        private  bool _FlagTrg=false;
-        public  bool FlagTrg
+        private bool _FlagTrg = false;
+        public bool FlagTrg
         {
             get
             {
@@ -349,8 +350,8 @@ namespace URAN_2017
                 _FlagOtob = value;
             }
         }
-        private  UInt32 _Trg = 10;
-        public  UInt32 Trg
+        private UInt32 _Trg = 10;
+        public UInt32 Trg
         {
             get
             {
@@ -386,8 +387,8 @@ namespace URAN_2017
                 return 12;
             }
         }
-        private  bool _FlagAuto;
-        public  bool FlagAuto
+        private bool _FlagAuto;
+        public bool FlagAuto
         {
             get
             {
@@ -413,8 +414,8 @@ namespace URAN_2017
             }
         }
 
-        private  string _MS="192.168.2.190";
-        public  string MS
+        private string _MS = "192.168.2.190";
+        public string MS
         {
             get
             {
@@ -468,5 +469,5 @@ namespace URAN_2017
 
 
     }
-   
+
 }

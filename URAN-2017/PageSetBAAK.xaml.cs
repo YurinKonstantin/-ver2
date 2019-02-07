@@ -47,7 +47,7 @@ namespace URAN_2017
             }
             BinaryFormatter bf = new BinaryFormatter();
             Stream fs;
-            using ( fs = new FileStream(md + "\\UranSetUp\\"+"setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
+            using (fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 bf.Serialize(fs, set);
                 System.Windows.MessageBox.Show("Сохранено");
@@ -97,7 +97,7 @@ namespace URAN_2017
                     System.Windows.MessageBox.Show("Ошибка серилизации");
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 System.Windows.MessageBox.Show("Ошибка серилизации");
             }
@@ -126,7 +126,7 @@ namespace URAN_2017
                 WaySet.Text = myDialog.FileName;
             }
 
-            
+
         }
     }
 }

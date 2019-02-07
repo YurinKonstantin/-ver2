@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace URAN_2017
 {
-   public class ClassBAAK12NoTail: ClassParentsBAAK, IDisposable
+   public class ClassBAAK12NoTail: BAAK12T, IDisposable
     {
         public void Dispose()
         {
@@ -966,7 +966,14 @@ namespace URAN_2017
 
 
 
-            Trigger(0x200006, TrgAll);
+            if (!trigOtBAAK)
+            {
+                Trigger(0x200006, TrgAll);
+            }
+            else
+            {
+                Trigger(0x200006, 128);
+            }
             Winduws(0x20000a, 10);
             WreadReg3000(0x200208, ДискретностьХвост);//дискретность хвоста
             AllStopDelay(650);
@@ -976,7 +983,7 @@ namespace URAN_2017
             }
             WreadReg3000(0x200020, 0x1);
         }
-
+        public bool trigOtBAAK = false;
         public void FirsTime()//Время внутреннего таймера
         {
 
@@ -1197,7 +1204,15 @@ namespace URAN_2017
                 CтатусБААК12 = "Тестовый набор по длительности";
                 Thread.Sleep(500);
                 AllSetPorogAll(Convert.ToUInt32(porog));
-                Trigger(0x200006, Convert.ToUInt32(trig));
+            
+                if (!trigOtBAAK)
+                {
+                    Trigger(0x200006, TrgAll);
+                }
+                else
+                {
+                    Trigger(0x200006, 128);
+                }
                 //TriggerStart();
 
             }
@@ -1238,12 +1253,28 @@ namespace URAN_2017
             NewFileData();
             if (!trigProg)
             {
-                Trigger(0x200006, TrgAll);
+              
+                if (!trigOtBAAK)
+                {
+                    Trigger(0x200006, TrgAll);
+                }
+                else
+                {
+                    Trigger(0x200006, 128);
+                }
                 AllSetPorogAll(PorogAll);
             }
             else
             {
-                Trigger(0x200006, TrgAll);
+              
+                if (!trigOtBAAK)
+                {
+                    Trigger(0x200006, TrgAll);
+                }
+                else
+                {
+                    Trigger(0x200006, 128);
+                }
                 //ToDo подготовить к запуску отвнешнего триггера
             }
 

@@ -452,6 +452,7 @@ namespace URAN_2017
         /// <summary>
         /// Расчет темпа и запись результата в БД
         /// </summary>
+        /// 
         public void TempPacetov()
         {
             //if (Conect300Statys)
@@ -484,6 +485,7 @@ namespace URAN_2017
           
            // }
         }
+        int TecPacetov = 0;
         /// <summary>
         /// Создает новый файл
         /// </summary>
@@ -641,6 +643,7 @@ namespace URAN_2017
                             Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out int[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
 
                             КолПакетовN += coutN.Sum();
+                            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPointN(Nkl, Convert.ToInt32(КолПакетовN) - ПакетовN); }));
                             OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
                         }
                     }
@@ -664,7 +667,8 @@ namespace URAN_2017
                 InDe(false);
             }
         }
-        private void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out int[] nn1, out int[] Nul, out double[] sig, bool testT)
+       int TecPaketovN=0;
+        private  void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out int[] nn1, out int[] Nul, out double[] sig, bool testT)
         {
             int[,] data = new int[12, 1024];
             int[,] dataTail = new int[12, 20000];
@@ -681,6 +685,35 @@ namespace URAN_2017
                 //  Amp = new int[12];
                 // Nul = new int[12];
                 //   sig = new Double[12];
+                if(grafOtob && (otobKl==NamKl))
+                {
+                    try
+                    {
+
+
+                        Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsRaz.Clear(); }));
+                        Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.SeriesCollectionRaz.Clear(); }));
+                        for (int i = 0; i < 12; i++)
+                        {
+
+
+
+                            for (int j = 0; j < 1024; j++)
+                            {
+                               // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddPointRaz(i, data[i, j], j); }));
+                            }
+
+
+
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
+
+                }
                 MaxAmpAndNul(data, out Amp, out Nul, out sig);
                 // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
                 // nn1 = new int[12];
@@ -873,7 +906,8 @@ namespace URAN_2017
                             //MessageBox.Show(DataBAAKList.Count.ToString());
                             OcherediNaZapic.Enqueue(new DataYu {ListData= DataBAAKList, tipDataTest= Flagtest });
                             КолПакетов++;
-                            DataBAAKList = new List<byte>();
+                                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPoint(Nkl, ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов); }));
+                                DataBAAKList = new List<byte>();
                             CountFlagEnd = 0;
                             CountFlagEndErroy = 0;
                         }

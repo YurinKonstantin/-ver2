@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace URAN_2017
 {
-   
+
     //Клас для настроек баак
     public class Bak
     {
@@ -20,7 +20,8 @@ namespace URAN_2017
         public string BAAK12NoT1
         {
             get
-            {if(_BAAK12NoT==true)
+            {
+                if (_BAAK12NoT == true)
                 {
                     return "БААК12-200";
                 }
@@ -28,15 +29,16 @@ namespace URAN_2017
                 {
                     return "БААК12-200Т";
                 }
-               
+
             }
             set
             {
-               
+
             }
-          
+
         }
-        public bool BAAK12NoT {
+        public bool BAAK12NoT
+        {
             get
             {
                 return _BAAK12NoT;
@@ -59,11 +61,12 @@ namespace URAN_2017
             }
         }
         private bool ПроверкаНаНуль(bool n)
-        {   if(n!=null)
+        {
+            if (n != null)
             {
                 return n;
             }
-        else
+            else
             {
                 return false;
             }
@@ -77,14 +80,14 @@ namespace URAN_2017
         }
         public static void AddKl(string klname1, string KlIp1, String nameBAAK1, bool fBAAK)
         {
-            _DataColec1.Add(new Bak { Klname = klname1, KLIP = KlIp1, NameBAAK= nameBAAK1, BAAK12NoT = fBAAK });
+            _DataColec1.Add(new Bak { Klname = klname1, KLIP = KlIp1, NameBAAK = nameBAAK1, BAAK12NoT = fBAAK });
         }
         public static void DelKl(int iy)
         {
-                if(iy>-1)
+            if (iy > -1)
             {
                 _DataColec1.RemoveAt(iy);
-            }           
+            }
 
         }
     }

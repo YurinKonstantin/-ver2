@@ -35,30 +35,38 @@ using LiveCharts.Events;
 using System.ComponentModel;
 using System.Net;
 using System.Drawing;
+using System.IO.Ports;
+using InteractiveDataDisplay.WPF;
 
 namespace URAN_2017
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         // MyGrafic nf;
+        double[] x;
+        double[] y;
         public MainWindow()
         {
             InitializeComponent();
+        
+
             _DataColec1 = new ObservableCollection<Bak>();
             _DataColecViev = new ObservableCollection<BAAK12T>();
             _DataColecVievList2 = new ObservableCollection<ClassBAAK12NoTail>();
             List1.ItemsSource = _DataColecViev;
             List2.ItemsSource = _DataColecVievList2;
+            ListEror.ItemsSource = ListEr;
             DataContext = customer;
             nf = new MyGrafic { };
             nf.NewCol();
             DataContext = nf;
+            comport.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
 
         }
-
+        ObservableCollection<ClassErrorStartAndIspravlenie> ListEr = new ObservableCollection<ClassErrorStartAndIspravlenie>();
         /// <summary>
         /// зупускает набор
         /// </summary>
@@ -253,11 +261,51 @@ namespace URAN_2017
             }
             return res;
         }
-
+        private SerialPort comport = new SerialPort();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
+
+         await   Task.Run(() => xcxc());
+
+            MessageBox.Show("Питание МС1 и МС2 перегружена, ожидайте загрузок плат и нажмите 'Обновить'");
+
+
+        }
+  
+        private double _toRaz=10;
+        private double _fromRaz=0;
+        public double FromRaz
+        {
+            get { return _fromRaz; }
+            set
+            {
+                _fromRaz = value;
+                OnPropertyChanged("FromRaz");
+            }
+        }
+
+        public double ToRaz
+        {
+            get { return _toRaz; }
+            set
+            {
+                _toRaz = value;
+                OnPropertyChanged("ToRaz");
+            }
+        }
+
+        
+        public async Task xcxc()
+            {
+       
+            
            
-          
+
+             
+              // await Task.Run(()=>  MyGrafic.AddPointRaz(dd));
+           await Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { hhg(); }));
+
+
 
 
 
@@ -266,11 +314,44 @@ namespace URAN_2017
         }
 
 
-       public async void dd1()
+       
+        public void hhg()
+        {
+            
+
+            lines.Children.Clear();
+            for (int i = 0; i < 12; i++)
+            {
+                double[] x = new double[1024];
+                double[] y = new double[1024];
+                x[i] = i;
+                y[i] = i + 2;
+                var lg = new LineGraph();
+                lines.Children.Add(lg);
+                int z = Convert.ToInt32(i * 10);
+                lg.Stroke = new SolidColorBrush(Color.FromArgb((byte)z, 0, (byte)(i * 20), (byte)(i * 20)));
+                lg.Description = String.Format("Detecter", i + 1);
+                lg.StrokeThickness = 2;
+                lg.Plot(x, y);
+            }
+        }
+        
+
+        private void port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            // Read all the data waiting in the buffer
+          //  string data = comport.ReadExisting();
+
+            // Display the text to the user in the terminal
+          //  MessageBox.Show(data);
+        }
+
+       
+        public async void dd1()
         {
             try
             {
-                
+               
                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Add("hgdfdf"); }));
 
                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(0, 15, 2); }));
@@ -290,6 +371,8 @@ namespace URAN_2017
         }
         private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            GridStartInfoError.Visibility = Visibility.Hidden;
+            GridStartInfo.Visibility = Visibility.Visible;
             int i = 0;
             int i1 = 0;
             int i2 = 0;
@@ -327,6 +410,7 @@ namespace URAN_2017
                 try
                 {
                     MyGrafic.SeriesCollection.Clear();
+                    MyGrafic.SeriesCollectionN.Clear();
                 }
                 catch (Exception ex)
                 {
@@ -335,6 +419,7 @@ namespace URAN_2017
                 try
                 {
                     MyGrafic.Labels.Clear();
+                    MyGrafic.LabelsN.Clear();
                 }
                 catch (Exception ex)
                 {
@@ -345,7 +430,9 @@ namespace URAN_2017
 
                 await Запуск();
                 progres.IsIndeterminate = false;
-                MessageBox.Show("обновленно");
+           
+                GridStartInfo.Visibility = Visibility.Hidden;
+                //MessageBox.Show("обновленно");
             }
             catch(Exception ex)
             {
@@ -553,6 +640,9 @@ namespace URAN_2017
         private void ChartOnDataClick(object sender, ChartPoint p)
         {
             var asPixels = Chart.ConvertToPixels(p.AsPoint());
+            MessageBox.Show("[EVENT] You clicked (" + p.X + ", " + p.Y + ") in pixels (" +
+                            asPixels.X + ", " + asPixels.Y + ")");
+            
             Console.WriteLine("[EVENT] You clicked (" + p.X + ", " + p.Y + ") in pixels (" +
                             asPixels.X + ", " + asPixels.Y + ")");
         }
@@ -700,7 +790,7 @@ namespace URAN_2017
         // Запуск сервера и вспомогательного потока акцептирования клиентских подключений
         // т.е. назначения сокетов ответственных за обмен сообщениями 
         // с соответствующим клиентским приложением
-        void StartServer()
+       async void  StartServer()
         {
            
               
@@ -723,23 +813,47 @@ namespace URAN_2017
                     Socket s = socket.Accept();
                     string data = null;
                     byte[] bytes = new byte[1024];
+                    byte[] Data;
                     int bytesCount = s.Receive(bytes);
                     data += Encoding.UTF8.GetString(bytes, 0, bytesCount);
-                    //MessageBox.Show("Данные от клиента"+data);
                     string str = "Проблема";
-                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { str = rezimYst.Content.ToString(); }));
-                    if (_DataColecViev.Count != 0)
+                    string[] ss = data.Split('\t');
+                    if (ss[0] == "Stop")
                     {
-                       
-                        str += " " + _DataColecViev.Count+"\n\t";
-                        foreach(BAAK12T bak in _DataColecViev)
+
+
+                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop_Click(null, null); }));
+                        
+                            
+                    }
+                    else
+                    {
+
+
+                        if (ss[0] == "BDB!")
                         {
-                            str += bak.NamKl + "\t" + bak.CтатусБААК12 +"\t"+bak.КолПакетов+ "\t"+bak.ТемпПакетов+ "\n\t";
+                            Data = await Task<byte>.Run(() => BDselect112(ss[1]));
+
+                            s.Send(Data);
+                        }
+                        else
+                        {
+                            //MessageBox.Show("Данные от клиента"+data);
+
+                            rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { str = rezimYst.Content.ToString(); }));
+                            if (_DataColecViev.Count != 0)
+                            {
+
+                                str += " " + _DataColecViev.Count + "\n\t";
+                                foreach (BAAK12T bak in _DataColecViev)
+                                {
+                                    str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
+                                }
+                            }
+                            s.Send(Encoding.UTF8.GetBytes(str));
                         }
                     }
                    
-
-                    s.Send(Encoding.UTF8.GetBytes(str));
                     s.Shutdown(SocketShutdown.Both);
                     s.Close();
                     socket.Close();
@@ -788,6 +902,73 @@ namespace URAN_2017
         private void MyGif_MediaEnded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            X11.MinValue = double.NaN;
+            X11.MaxValue = double.NaN;
+            Y11.MinValue = double.NaN;
+            Y11.MaxValue = double.NaN;
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            GridStartInfoError.Visibility = Visibility.Hidden;
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            if(button.Tag.ToString()=="0")
+            {
+                comport.PortName = "COM4";
+                comport.BaudRate = Convert.ToInt16(9600);
+                comport.Open();
+
+                comport.Write("1");
+                Thread.Sleep(2000);
+
+                comport.Write("0");
+                comport.Close();
+                 MessageBox.Show("Питание МС1 и МС2 перегружена, ожидайте загрузок плат и нажмите 'Обновить'");
+            }
+            else
+            {
+                MessageBox.Show("Извините, на данный момент эта функция находится в разработке");
+            }
+           
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {if (Chart1 != null)
+            {
+
+
+                var vv = (TabControl)sender;
+                if (vv.SelectedIndex == 1)
+                {
+                    BAAK12T.grafOtob = true;
+                    MessageBox.Show("ddd");
+                }
+                else
+                {
+                    BAAK12T.grafOtob = false;
+                    MessageBox.Show(vv.SelectedIndex.ToString());
+                }
+            }
+        }
+    }
+    public class VisibilityToCheckedConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return ((Visibility)value) == Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return ((bool)value) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

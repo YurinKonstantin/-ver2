@@ -37,9 +37,9 @@ namespace URAN_2017
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             // string connectionString = "    Data Source=\"C:\\Users\\yurin\\Document\\Data1.mdb\";User " + "ID=Admin;Provider=\"Microsoft.JET.OLEDB.4.0\";    ";
-           // string connectionString = "Provider = Microsoft.Jet.OLEDB.4.0; Data Source = C:\\Users\\yurin\\Documents\\Data1.mdb";
+            // string connectionString = "Provider = Microsoft.Jet.OLEDB.4.0; Data Source = C:\\Users\\yurin\\Documents\\Data1.mdb";
             string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WaySetup;
-            
+
             // Создание подключения
             // SqlConnection connection = new SqlConnection(connectionString);
             try
@@ -61,9 +61,9 @@ namespace URAN_2017
                     {
                         for (int i = 2; i < chit.FieldCount; i++)
                         {
-                            
 
-                                MessageBox.Show(Convert.ToString(chit.GetValue(i)));
+
+                            MessageBox.Show(Convert.ToString(chit.GetValue(i)));
                         }
                         break;
                     }
@@ -94,7 +94,7 @@ namespace URAN_2017
             }
             BinaryFormatter bf = new BinaryFormatter();
             Stream fs;
-            using ( fs = new FileStream(md + "\\UranSetUp\\"+"setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
+            using (fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 bf.Serialize(fs, set);
                 System.Windows.MessageBox.Show("Сохранено");
@@ -105,7 +105,8 @@ namespace URAN_2017
 
         }
         private void DeSerial()
-        {try
+        {
+            try
             {
 
 
@@ -133,7 +134,7 @@ namespace URAN_2017
 
                     XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Bak>));
                     StreamReader wr;
-                    using ( wr = new StreamReader(md + "\\UranSetUp\\" + "setting1.xml"))
+                    using (wr = new StreamReader(md + "\\UranSetUp\\" + "setting1.xml"))
                     {
                         Bak._DataColec1 = (ObservableCollection<Bak>)xs.Deserialize(wr);
 
@@ -145,7 +146,7 @@ namespace URAN_2017
 
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("Ошибка серилизации");
             }

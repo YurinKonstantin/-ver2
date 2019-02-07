@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:URAN_2017"
         mc:Ignorable="d"
         Title="Добавление" Height="191.423" Width="300" VerticalAlignment="Center">
-    
-        
-       
-        <StackPanel>
-            <TextBlock>Введите Имя кластера и IP:</TextBlock>
+
+
+
+    <StackPanel>
+        <TextBlock>Введите Имя кластера и IP:</TextBlock>
         <StackPanel Orientation="Horizontal">
             <Label FontSize="12" Content="Кластер №"/>
             <TextBox Name="name" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Left">1</TextBox>
@@ -21,11 +21,11 @@
         <TextBox Name="nameB"  MinWidth="250">У1</TextBox>
 
 
-        
+
         <WrapPanel  HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,0,0" Content="OK"/>
             <Button IsCancel="True" MinWidth="60">Отмена</Button>
         </WrapPanel>
-        </StackPanel>
-   
+    </StackPanel>
+
 </Window>

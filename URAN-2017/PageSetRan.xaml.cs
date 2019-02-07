@@ -39,7 +39,7 @@ namespace URAN_2017
             trgNO.Text = set.TrgNO.ToString();
             FlagMS.IsChecked = set.FlagMS;
             lenght.Text = set.DataLenght.ToString();
-            FlagTestRan.IsChecked = set.FlagTestRan;     
+            FlagTestRan.IsChecked = set.FlagTestRan;
             list.ItemsSource = Bak._DataColec1;
             dickTail.Text = Convert.ToString(set.Discret);
         }
@@ -52,7 +52,7 @@ namespace URAN_2017
                 Directory.CreateDirectory(md + "\\UranSetUp");
             }
             BinaryFormatter bf = new BinaryFormatter();
-            using (Stream fs = new FileStream(md + "\\UranSetUp\\"+"setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
+            using (Stream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 try
                 {
@@ -91,7 +91,7 @@ namespace URAN_2017
                 finally
                 {
                     fs.Close();
-                   
+
                 }
                 try
                 {
@@ -106,7 +106,7 @@ namespace URAN_2017
                     MessageBox.Show("Ошибка серилизации");
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("Ошибка серилизации");
             }
@@ -144,9 +144,9 @@ namespace URAN_2017
         {
             try
             {
-              set.Porog = Convert.ToInt32(porog.Text);
+                set.Porog = Convert.ToInt32(porog.Text);
             }
-                catch (Exception )
+            catch (Exception)
             {
 
             }
@@ -158,7 +158,7 @@ namespace URAN_2017
             {
                 set.DataLenght = Convert.ToInt32(lenght.Text);
             }
-            catch (Exception )
+            catch (Exception)
             {
 
             }

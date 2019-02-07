@@ -50,7 +50,7 @@
 
                 <Label Content="Интервал создания нового файла, час" FontSize="18" />
                 <TextBox x:Name="interval" FontSize="16"  BorderThickness="0" TextChanged="Interval_TextChanged"/>
- 
+
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="2"  Background="WhiteSmoke">

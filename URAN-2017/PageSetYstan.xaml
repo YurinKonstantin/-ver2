@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
     
       Title="PageSetYstan" >
-  
+
     <Grid Margin="0,0,0,0" >
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -17,8 +17,8 @@
             <Label Grid.Column="1" FontSize="18" Content="Автоматически определять кластеры для подключения " Grid.ColumnSpan="2" HorizontalAlignment="Left"/>
             <ToggleSwitch:HorizontalToggleSwitch x:Name="auto" Grid.Row="0" Checked="Auto_Checked" Unchecked="auto_Unchecked" HorizontalAlignment="Left" />
             <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="3" Content="Использовать следующее IP адреса для кластеров"/>
-   
-         
+
+
             <TabControl Margin="0,0,4,0">
                 <TabItem IsSelected="True" IsEnabled="True">
                     <TabItem.Header>
@@ -31,7 +31,7 @@
                                 <Button Content="+" FontSize="20" BorderThickness="0" Background="Transparent"  Width="28" Foreground="Green" VerticalAlignment="Stretch" Click="Button_Click_1"  Margin="4,0, 4,0"  />
                                 <Button Content="-" FontSize="20" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="Red" Width="28"    Click="Button_Click_2" />
                             </StackPanel>
-                           
+
                             <Border CornerRadius="8"  Background="Transparent" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" Margin="4">
                                 <ListView x:Name="list1"  BorderThickness="0"  HorizontalAlignment="Left" Margin="8" >
                                     <ListView.ItemTemplate>
@@ -106,12 +106,12 @@
                                     </ListBox.ContextMenu>
                                 </ListView>
                             </Border>
-                         
+
                         </StackPanel>
                     </TabItem.Content>
                 </TabItem>
             </TabControl>
-           <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="6" Margin="0,8,0,0" Content="Использовать следующее Модули синхронизации"/>
+            <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="6" Margin="0,8,0,0" Content="Использовать следующее Модули синхронизации"/>
             <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms" Grid.Row="0" IsEnabled="False" HorizontalAlignment="Left" Margin="8"/>
             <TextBox x:Name="NameMS" FontSize="16" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Left" TextChanged="NameMS_TextChanged" Text="192.168.2.190" />
             <ToggleSwitch:HorizontalToggleSwitch x:Name="Ms1" Grid.Row="0" IsEnabled="False" HorizontalAlignment="Left" Margin="8,16,8,8"/>
@@ -124,6 +124,6 @@
                 </Button.Effect>
             </Button>
         </Grid>
-       
+
     </Grid>
 </Page>

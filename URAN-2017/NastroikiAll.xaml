@@ -9,12 +9,12 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240"/>
-            
+
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
-           
+
         </Grid.RowDefinitions>
         <ListView x:Name="listView1"  Grid.Column="0" Grid.Row="0" VerticalContentAlignment="Stretch" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}" BorderThickness="0" SelectedIndex="0" SelectionChanged="ListView1_SelectionChanged">
             <ListView.ItemTemplate>

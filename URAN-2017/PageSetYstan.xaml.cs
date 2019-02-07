@@ -29,32 +29,33 @@ namespace URAN_2017
         UserSetting set = new UserSetting();
         public PageSetYstan()
         {
-           
+
             InitializeComponent();
             DeSerial();
             var BakGroups1 = from user in Bak._DataColec1
-                             where user.BAAK12NoT == false orderby user.KLIP
+                             where user.BAAK12NoT == false
+                             orderby user.KLIP
                              select user;
             list1.ItemsSource = BakGroups1.ToList();
-            var BakGroups2 =  from user in Bak._DataColec1
-                                where user.BAAK12NoT == true
-                                                   select user;
+            var BakGroups2 = from user in Bak._DataColec1
+                             where user.BAAK12NoT == true
+                             select user;
 
-            listNoTail.ItemsSource= BakGroups2.ToList();
+            listNoTail.ItemsSource = BakGroups2.ToList();
 
             NameMS.Text = set.MS;
-            if(set.MS1==null)
+            if (set.MS1 == null)
             {
                 set.MS1 = "192.168.2.191";
             }
             NameMS1.Text = set.MS1;
-           auto.IsChecked = set.FlagAuto;
+            auto.IsChecked = set.FlagAuto;
         }
 
         private void Auto_Checked(object sender, RoutedEventArgs e)
         {
             set.FlagAuto = Convert.ToBoolean(auto.IsChecked);
-          
+
         }
         private void Serial()
         {
@@ -64,18 +65,19 @@ namespace URAN_2017
                 Directory.CreateDirectory(md + "\\UranSetUp");
             }
             BinaryFormatter bf = new BinaryFormatter();
-            using (Stream fs = new FileStream(md + "\\UranSetUp\\"+"setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
+            using (Stream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 bf.Serialize(fs, set);
                 MessageBox.Show("Сохранено");
                 fs.Close();
-               
+
             }
             UserSetting.Serial();
 
         }
         private void DeSerial()
-        {try
+        {
+            try
             {
 
 
@@ -104,7 +106,7 @@ namespace URAN_2017
                     using (StreamReader wr = new StreamReader(md + "\\UranSetUp\\" + "setting1.xml"))
                     {
                         Bak._DataColec1 = (ObservableCollection<Bak>)xs.Deserialize(wr);
-                     
+
                         wr.Close();
 
                     }
@@ -114,7 +116,7 @@ namespace URAN_2017
 
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("Ошибка серилизации");
             }
@@ -132,12 +134,12 @@ namespace URAN_2017
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            
+
             AddKl winAddKl = new AddKl();
 
             if (winAddKl.ShowDialog() == true)
             {
-                
+
                 Bak.AddKl(winAddKl.Name2, winAddKl.IP, winAddKl.NameB, winAddKl.BAAK12NoTail);
                 var BakGroups1 = from user in Bak._DataColec1
                                  where user.BAAK12NoT == false
@@ -148,17 +150,17 @@ namespace URAN_2017
             }
             else
             {
-                
+
             }
-            
-            
+
+
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             object f = list1.SelectedItem;
             Bak bak = (Bak)f;
-       
+
             int xx = Bak._DataColec1.IndexOf(bak);
             Bak.DelKl(xx);
             var BakGroups1 = from user in Bak._DataColec1
@@ -177,7 +179,7 @@ namespace URAN_2017
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-          //  int eh = list.SelectedIndex;
+            //  int eh = list.SelectedIndex;
 
             //Bak.DelKl(eh);
         }

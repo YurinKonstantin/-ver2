@@ -9,9 +9,9 @@ using System.Windows.Controls;
 
 namespace URAN_2017
 {
-  public partial class NastroikiAll
+    public partial class NastroikiAll
     {
-        
+
         public void SetBAAK()
         {
             frameName.NavigationService.Navigate(new Uri("PageSetBAAK.xaml", UriKind.Relative));

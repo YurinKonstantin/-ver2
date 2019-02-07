@@ -7,16 +7,16 @@
       mc:Ignorable="d"
       Title="PageSetRan">
 
-        <Grid >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical"  VerticalAlignment="Top" Margin="8,0,0,0">
-                
-            <Label FontSize="18" Grid.Column="1" Grid.Row="0" Content="Использовать общий порог" IsEnabled="False" Grid.ColumnSpan="2"/>
-             
+
+                <Label FontSize="18" Grid.Column="1" Grid.Row="0" Content="Использовать общий порог" IsEnabled="False" Grid.ColumnSpan="2"/>
+
                 <ToggleSwitch:HorizontalToggleSwitch IsEnabled="False" x:Name="Allporog" Grid.Column="0" Grid.Row="0" Checked="CheckBox_Checked" Unchecked="HorizontalToggleSwitch_Unchecked" HorizontalAlignment="Left" />
                 <Label Content="Порог для плат БААК12" FontSize="16" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"/>
                 <TabControl HorizontalAlignment="Left">
@@ -39,8 +39,8 @@
                     </TabItem>
                 </TabControl>
                 <Label FontSize="18" Content="Использовать общий триггер" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" IsEnabled="False"/>
-                
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="AllTrg" IsEnabled="False" Grid.Column="0" Grid.Row="3" Checked="AllTrg_Checked" Unchecked="HorizontalToggleSwitch_Unchecked_1" HorizontalAlignment="Left"  />
+
+                <ToggleSwitch:HorizontalToggleSwitch x:Name="AllTrg" IsEnabled="False" Grid.Column="0" Grid.Row="3" Checked="AllTrg_Checked" Unchecked="HorizontalToggleSwitch_Unchecked_1" HorizontalAlignment="Left"  />
 
                 <Label Content="Триггер для плат БААК12" FontSize="16" Grid.Column="1" Grid.Row="5"/>
                 <TabControl HorizontalAlignment="Left">
@@ -62,58 +62,58 @@
                         </TabItem.Content>
                     </TabItem>
                 </TabControl>
-             
-           
-           
-            <StackPanel Orientation="Horizontal">
-            <Label Content="длина данных (для платы БААК12-200)" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left"/>
-            <TextBox x:Name="lenght" Grid.Column="2" BorderThickness="0" Grid.Row="6" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="Lenght_TextChanged" Margin="0,5,82,5"/>
-            </StackPanel>
-            <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="13" Content="Использовать следующее кластеры"/>
-            <ListView x:Name="list" Grid.Row="14" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="12"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="8" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="8" />
-                            </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="1" FontSize="18" Grid.Column="0" Text="{Binding Klname}"></TextBlock>
-                            <TextBox Grid.Row="1" FontSize="18" Grid.Column="2" Text="{Binding KLIP, Mode=TwoWay}"></TextBox>
-                            <ToggleSwitch:HorizontalToggleSwitch IsChecked="{Binding FkagNameBAAK, Mode=TwoWay}" Grid.Row="1" Grid.Column="4" />
 
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Label Content="Отображать доступные но не используемые кластеры" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" IsEnabled="False"/>
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagIspol" Checked="FlagIspol_Checked" Unchecked="FlagIspol_Unchecked" HorizontalAlignment="Left" IsEnabled="False" />
-            <Label  FontSize="18" Content="Использовать синхронизацию" />
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="длина данных (для платы БААК12-200)" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="lenght" Grid.Column="2" BorderThickness="0" Grid.Row="6" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" TextChanged="Lenght_TextChanged" Margin="0,5,82,5"/>
+                </StackPanel>
+                <Label Grid.Column="0" Grid.ColumnSpan="3" FontSize="18" Grid.Row="13" Content="Использовать следующее кластеры"/>
+                <ListView x:Name="list" Grid.Row="14" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="8" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="1" FontSize="18" Grid.Column="0" Text="{Binding Klname}"></TextBlock>
+                                <TextBox Grid.Row="1" FontSize="18" Grid.Column="2" Text="{Binding KLIP, Mode=TwoWay}"></TextBox>
+                                <ToggleSwitch:HorizontalToggleSwitch IsChecked="{Binding FkagNameBAAK, Mode=TwoWay}" Grid.Row="1" Grid.Column="4" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Label Content="Отображать доступные но не используемые кластеры" FontSize="16" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" IsEnabled="False"/>
+                <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagIspol" Checked="FlagIspol_Checked" Unchecked="FlagIspol_Unchecked" HorizontalAlignment="Left" IsEnabled="False" />
+                <Label  FontSize="18" Content="Использовать синхронизацию" />
                 <Label  FontSize="12" Content="Установка будет запушена с синхронизацие используя модули указанные в разделе " Margin="0,-8,0,0"/>
                 <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagMS"  Checked="FlagMS_Checked" Unchecked="FlagMS_UnChecked" HorizontalAlignment="Left" />
-            <Label FontSize="18" Content="Проводить ТЕСТОВЫЙ набор" Margin="0,16,0,0"  />
-            <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagTestRan"  Checked="FlagTestRan_Checked" Unchecked="FlagTestRan_UnChecked" HorizontalAlignment="Left" />
-            <Label Content="Частота выборке хвоста, мГц (для платы БААК12-200Т)" FontSize="16"  HorizontalAlignment="Left" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
-            <TextBox x:Name="dickTail"  BorderThickness="0" FontSize="16" VerticalAlignment="Center"   TextChanged="dickTail_TextChanged"/>
-           
-        </StackPanel>
+                <Label FontSize="18" Content="Проводить ТЕСТОВЫЙ набор" Margin="0,16,0,0"  />
+                <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagTestRan"  Checked="FlagTestRan_Checked" Unchecked="FlagTestRan_UnChecked" HorizontalAlignment="Left" />
+                <Label Content="Частота выборке хвоста, мГц (для платы БААК12-200Т)" FontSize="16"  HorizontalAlignment="Left" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+                <TextBox x:Name="dickTail"  BorderThickness="0" FontSize="16" VerticalAlignment="Center"   TextChanged="dickTail_TextChanged"/>
+
+            </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="1"  Background="WhiteSmoke">
-                <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
-                    <Button.Effect>
-                        <DropShadowEffect />
-                    </Button.Effect>
-                </Button>
-            </Grid>
+            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+                <Button.Effect>
+                    <DropShadowEffect />
+                </Button.Effect>
+            </Button>
         </Grid>
+    </Grid>
 
 </Page>

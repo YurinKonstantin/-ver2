@@ -119,6 +119,15 @@ namespace URAN_2017
                await Conect();//Конектимся к доступным кластерам
             }
             GridStartInfo.Visibility = Visibility.Hidden;
+            if(ListEr.Count!=0)
+            {
+                GridStartInfoError.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                GridStartInfoError.Visibility = Visibility.Hidden;
+            }
+            
 
         }
         /// <summary>
@@ -166,7 +175,7 @@ namespace URAN_2017
         /// </summary>
         public async Task FirstDiagnosticaSistem()//Определяем к каким кластерам можно подключиться и модулю синхронизации
         {
-           
+            ListEr.Clear();
             if (await LocalPing(set.MS))
             {
                 InitializeMS(set.MS);
@@ -176,8 +185,8 @@ namespace URAN_2017
             }
             else
             {
-               
-              await stMS.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {  stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен";}));
+                ListEr.Add(new ClassErrorStartAndIspravlenie() {Name="MC1", Error="Не обнаружен МС1", ErrorIsprav="Перегрузите питание МС1 и повторно произведите старт устанвоки или нажмите 'продолжить' и затем 'Обновить'", ArduinoIP="0" });
+               await stMS.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {  stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен";}));
                
               
                 ClassParentsBAAK.Синхронизация = false;
@@ -195,12 +204,14 @@ namespace URAN_2017
             }
             else
             {
+                ListEr.Add(new ClassErrorStartAndIspravlenie() { Name = "MC2", Error = "Не обнаружен МС2", ErrorIsprav = "Перегрузите питание МС2 и повторно произведите старт устанвоки или нажмите 'продолжить' и затем 'Обновить'", ArduinoIP="0" });
+
                 //Thread.Sleep(1000);
-             //   stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен";
-              //  Thread.Sleep(500);
-              //  ClassParentsBAAK.Синхронизация = false;
-               // toggle.IsChecked = false;
-              //  toggle.IsEnabled = false;
+                //   stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен";
+                //  Thread.Sleep(500);
+                //  ClassParentsBAAK.Синхронизация = false;
+                // toggle.IsChecked = false;
+                //  toggle.IsEnabled = false;
 
             }
             int h = 0;
@@ -222,7 +233,7 @@ namespace URAN_2017
 
                                     if (bak.BAAK12NoT)
                                     {
-                                        Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK=true };
                                         Кластер1_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер1_2);
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible;}));
@@ -256,6 +267,25 @@ namespace URAN_2017
 
                                     //InitializeKlaster1(Кластер1);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if(bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie() { Name = "Кластер "+ bak.Klname.ToString(), ArduinoIP="1", Error = "Не обнаружена плата "+ss+ " кластера" + bak.Klname.ToString(), ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку "+ bak.Klname.ToString() +
+                                        "\n"+"2. В программе Relay Control нажмите кнопку 'Set'"+"\n"+
+                                        "3. Установите все галочки Relay и нажмите 'Set'"+
+                                        "\n"+ "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+                                    
+                                }
                             }
                             break;
 
@@ -266,7 +296,7 @@ namespace URAN_2017
                                 {
                                     if (bak.BAAK12NoT)
                                     {
-                                        Кластер2_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер2_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер2_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер2_2);
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
@@ -299,6 +329,29 @@ namespace URAN_2017
 
                                     //InitializeKlaster2(bak.KLIP, bak.Klname, bak.nameBAAK);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                        "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                        "3. Установите все галочки Relay и нажмите 'Set'" +
+                                        "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
+                                }
                             }
                             break;
                         case 3:
@@ -309,7 +362,7 @@ namespace URAN_2017
                                     if (bak.BAAK12NoT)
                                     {
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                        Кластер3_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер3_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер3_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер3_2);
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
@@ -339,6 +392,29 @@ namespace URAN_2017
 
                                     //InitializeKlaster3(bak.KLIP, bak.Klname, bak.nameBAAK);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                         "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                         "3. Установите все галочки Relay и нажмите 'Set'" +
+                                         "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
+                                }
                             }
                             break;
                         case 4:
@@ -349,7 +425,7 @@ namespace URAN_2017
                                     if (bak.BAAK12NoT)
                                     {
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                        Кластер4_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер4_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер4_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер4_2);
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
@@ -380,6 +456,29 @@ namespace URAN_2017
 
                                     //InitializeKlaster4(bak.KLIP, bak.Klname, bak.nameBAAK);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                          "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                          "3. Установите все галочки Relay и нажмите 'Set'" +
+                                          "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
+                                }
                             }
                             break;
 
@@ -391,7 +490,7 @@ namespace URAN_2017
                                     if (bak.BAAK12NoT)
                                     {
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                        Кластер5_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp,  Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер5_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp,  Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер5_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер5_2);
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
@@ -420,6 +519,29 @@ namespace URAN_2017
 
                                     //InitializeKlaster5(bak.KLIP, bak.Klname, bak.nameBAAK);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                              "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                              "3. Установите все галочки Relay и нажмите 'Set'" +
+                                              "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
+                                }
                             }
                             break;
                         case 6:
@@ -430,7 +552,7 @@ namespace URAN_2017
                                     if (bak.BAAK12NoT)
                                     {
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                        Кластер6_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер6_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер6_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер6_2);
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
@@ -459,6 +581,29 @@ namespace URAN_2017
 
                                     //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                          "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                          "3. Установите все галочки Relay и нажмите 'Set'" +
+                                          "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
+                                }
                             }
                             break;
                         case 7:
@@ -469,7 +614,7 @@ namespace URAN_2017
                                     if (bak.BAAK12NoT)
                                     {
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                        Кластер7_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер7_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер7_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер7_2);
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
@@ -498,6 +643,29 @@ namespace URAN_2017
 
                                     //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                      "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                      "3. Установите все галочки Relay и нажмите 'Set'" +
+                                      "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
+                                }
                             }
                             break;
                         case 8:
@@ -508,7 +676,7 @@ namespace URAN_2017
                                     if (bak.BAAK12NoT)
                                     {
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                        Кластер8_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер8_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер8_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер8_2);
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
@@ -537,6 +705,29 @@ namespace URAN_2017
 
                                     //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
                                 }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                          "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                          "3. Установите все галочки Relay и нажмите 'Set'" +
+                                          "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
+                                }
                             }
                             break;
                         case 9:
@@ -547,7 +738,7 @@ namespace URAN_2017
                                     if (bak.BAAK12NoT)
                                     {
                                         await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                        Кластер9_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp,  Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                        Кластер9_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp,  Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
                                         Кластер9_2.Inciliz = true;
                                         _DataColecVievList2.Add(Кластер9_2);
                                         await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
@@ -576,6 +767,29 @@ namespace URAN_2017
                                     }
 
                                     //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
+                                }
+                                else
+                                {
+                                    string ss = null;
+                                    if (bak.BAAK12NoT)
+                                    {
+                                        ss = "БААК12-200";
+                                    }
+                                    else
+                                    {
+                                        ss = "БААК12-200N";
+                                    }
+                                    ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                    {
+                                        Name = "Кластер " + bak.Klname.ToString(),
+                                        ArduinoIP = "1", Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                        ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                           "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                           "3. Установите все галочки Relay и нажмите 'Set'" +
+                                           "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                    });
+
+
                                 }
                             }
                             break;

@@ -52,7 +52,7 @@ namespace URAN_2017
 
             }
             fs.Close();
-           // UserSetting.Serial();
+            // UserSetting.Serial();
             ClassTestRan.Serial();//сохраняем настройки методического набора и коллекцию
 
         }
@@ -78,7 +78,7 @@ namespace URAN_2017
                 {
                     fs.Close();
                 }
-              
+
                 try
                 {
 
@@ -102,10 +102,10 @@ namespace URAN_2017
 
         }
         private void Button_Click(object sender, RoutedEventArgs e)
-        { 
+        {
             Serial();
-            
-           
+
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

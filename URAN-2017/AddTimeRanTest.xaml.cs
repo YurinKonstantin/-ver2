@@ -23,11 +23,11 @@ namespace URAN_2017
         public AddTimeRanTest()
         {
             InitializeComponent();
-             kolSob.IsEnabled = false;
-             interval.IsEnabled = false;
-             dlit.IsEnabled = true;
-             porog.IsEnabled = true;
-             trig.IsEnabled = true;
+            kolSob.IsEnabled = false;
+            interval.IsEnabled = false;
+            dlit.IsEnabled = true;
+            porog.IsEnabled = true;
+            trig.IsEnabled = true;
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
@@ -35,7 +35,7 @@ namespace URAN_2017
             test1.Hors = hors.Text;
             test1.Mins = min.Text;
             test1.IncAlam();
-            if(Convert.ToBoolean(rad1.IsChecked))
+            if (Convert.ToBoolean(rad1.IsChecked))
             {
                 test1.TipTest = "По длительности";
                 test1.Dlit = Convert.ToInt32(dlit.Text);
@@ -55,8 +55,8 @@ namespace URAN_2017
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
-          
-           kolSob.IsEnabled = false;
+
+            kolSob.IsEnabled = false;
             interval.IsEnabled = false;
             dlit.IsEnabled = true;
             porog.IsEnabled = true;

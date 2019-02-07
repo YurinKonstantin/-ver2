@@ -41,7 +41,7 @@ namespace URAN_2017
         {
             Serial();
         }
-       
+
 
         private void Serial()
         {
@@ -100,7 +100,7 @@ namespace URAN_2017
         {
             try
             {
-                
+
                 string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
 
                 FileStream fs = new FileStream(md + "\\UranSetUp\\" + "ClassOtborNeutron.dat", FileMode.Open);
@@ -122,7 +122,7 @@ namespace URAN_2017
                 }
 
                 Bak.InstCol();
-               
+
 
                 FileStream fs1 = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
                 try
@@ -184,7 +184,7 @@ namespace URAN_2017
 
         private void HorizontalToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
         {
-           // ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
+            // ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
             UserSetting.FlagOtbor = false;
         }
     }

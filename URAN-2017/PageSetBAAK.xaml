@@ -9,44 +9,44 @@
       Title="PageSetBAAK" ShowsNavigationUI="False">
 
     <Grid>
-       
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-      
+
         <ScrollViewer Grid.Row="1">
 
-         <StackPanel>
-         <Label Content="Путь к файлу с параметрами плат" FontSize="18" />
-        <TextBox x:Name="WaySet" FontSize="16" Grid.Column="0" Grid.Row="1" BorderThickness="0" Grid.ColumnSpan="1" VerticalAlignment="Center" TextChanged="WaySet_TextChanged"/>
-        <Button x:Name="ButWaySet" Content="Путь"  HorizontalAlignment="Left"  Width="62" Click="ButWaySet_Click" />
+            <StackPanel>
+                <Label Content="Путь к файлу с параметрами плат" FontSize="18" />
+                <TextBox x:Name="WaySet" FontSize="16" Grid.Column="0" Grid.Row="1" BorderThickness="0" Grid.ColumnSpan="1" VerticalAlignment="Center" TextChanged="WaySet_TextChanged"/>
+                <Button x:Name="ButWaySet" Content="Путь"  HorizontalAlignment="Left"  Width="62" Click="ButWaySet_Click" />
                 <Label Content="Имя платы в каждом кластере"/>
                 <ListView x:Name="list" Grid.Row="2" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" >
-           
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="100"/>
 
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Label Content="Кластер №" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBlock>
-                        <Label Content="Плата" Margin="8,0,0,0" Grid.Column="2"/>
-                        <TextBox FontSize="16" Grid.Column="3" BorderThickness="0" Text="{Binding NameBAAK, Mode=TwoWay}"></TextBox>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="100"/>
 
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Label Content="Кластер №" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBlock>
+                                <Label Content="Плата" Margin="8,0,0,0" Grid.Column="2"/>
+                                <TextBox FontSize="16" Grid.Column="3" BorderThickness="0" Text="{Binding NameBAAK, Mode=TwoWay}"></TextBox>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="2"  Background="WhiteSmoke">

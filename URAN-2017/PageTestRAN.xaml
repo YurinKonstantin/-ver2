@@ -15,8 +15,8 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-        <Label FontSize="18" Content="Проводить методический набор"/>
-        <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagTestRan"  Checked="FlagTestRan_Checked" IsChecked="True" Unchecked="FlagTestRan_Unchecked" HorizontalAlignment="Left"/>
+            <Label FontSize="18" Content="Проводить методический набор"/>
+            <ToggleSwitch:HorizontalToggleSwitch x:Name="FlagTestRan"  Checked="FlagTestRan_Checked" IsChecked="True" Unchecked="FlagTestRan_Unchecked" HorizontalAlignment="Left"/>
             <StackPanel Orientation="Horizontal">
                 <Button Content="+" FontSize="20" BorderThickness="0" Background="Transparent"  Width="28" Foreground="Green" VerticalAlignment="Stretch" Click="Button_Click_1"  Margin="4,0, 4,0"  />
                 <Button Content="-" FontSize="20" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Background="Transparent" Foreground="Red" Width="28"    Click="MenuItem_Click" />
@@ -60,7 +60,7 @@
                     </ListBox.ContextMenu>
                 </ListView>
             </Border>
-      
+
         </StackPanel>
         <Grid Grid.Row="2"  Background="WhiteSmoke">
             <Button Content="Сохранить" Background="White"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">

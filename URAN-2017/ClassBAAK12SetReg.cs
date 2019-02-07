@@ -64,8 +64,14 @@ namespace URAN_2017
             
 
 
-
-            Trigger(0x200006, TrgAll);
+            if(!trigOtBAAK)
+            {
+                Trigger(0x200006, TrgAll);
+            }
+          else
+            {
+                Trigger(0x200006, 128);
+            }
             Winduws(0x20000a, 10);           
             WreadReg3000(0x200208, ДискретностьХвост);//дискретность хвоста
             AllStopDelay(650);            
@@ -75,6 +81,7 @@ namespace URAN_2017
             }
             WreadReg3000(0x200020, 0x1);
         }
+       public bool trigOtBAAK = false;
        
         public void FirsTime()//Время внутреннего таймера
         {

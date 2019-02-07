@@ -30,16 +30,16 @@ namespace URAN_2017
             InitializeComponent();
             try
             {
-             DeSerial();
+                DeSerial();
             }
-          catch
+            catch
             {
                 Serial();
                 DeSerial();
                 MessageBox.Show("Произошла ошибка серилизации, задайте параметры в меню настройки");
             }
             FlafMGVS.IsChecked = set.FlagClok;
-            delay.Text= set.DelayClok.ToString();
+            delay.Text = set.DelayClok.ToString();
             linc.Text = set.LincClok.ToString();
             IpMGVS.Text = set.IpMGVS;
             PortMGVS.Text = set.PortMGVS;
@@ -65,18 +65,18 @@ namespace URAN_2017
         }
         private void DeSerial()
         {
-           
-                Bak.InstCol();
-                string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
-                FileStream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
-               
-                    BinaryFormatter bf = new BinaryFormatter();
-                    set = (UserSetting)bf.Deserialize(fs);
 
-                
-                
-                    fs.Close();
-                
+            Bak.InstCol();
+            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
+            FileStream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
+
+            BinaryFormatter bf = new BinaryFormatter();
+            set = (UserSetting)bf.Deserialize(fs);
+
+
+
+            fs.Close();
+
 
 
         }
