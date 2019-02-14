@@ -844,8 +844,12 @@ namespace URAN_2017
                             if (_DataColecViev.Count != 0)
                             {
 
-                                str += " " + _DataColecViev.Count + "\n\t";
+                                str += " " + (_DataColecViev.Count+ _DataColecVievList2.Count) + "\n\t";
                                 foreach (BAAK12T bak in _DataColecViev)
+                                {
+                                    str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
+                                }
+                                foreach (ClassBAAK12NoTail bak in _DataColecVievList2)
                                 {
                                     str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
                                 }
@@ -885,14 +889,18 @@ namespace URAN_2017
                 string str = "Проблема";
                 if (_DataColecViev.Count!=0)
                 {
-                    str = "Запущены"+_DataColecViev.Count;
+                    str = "Запущены БААК12-200Т"+_DataColecViev.Count;
                 }
                 else
                 {
                     str = "Работающих кластеров нет";
                 }
-               
-                  s.Send(Encoding.UTF8.GetBytes(str));
+                if (_DataColecVievList2.Count != 0)
+                {
+                    str += " и БААК12-200" + _DataColecVievList2.Count;
+                }
+           
+                s.Send(Encoding.UTF8.GetBytes(str));
                 s.Shutdown(SocketShutdown.Both);
                 s.Close();
                 f = false;
@@ -957,6 +965,16 @@ namespace URAN_2017
                     MessageBox.Show(vv.SelectedIndex.ToString());
                 }
             }
+        }
+
+        private void HorizontalToggleSwitch_Checked(object sender, RoutedEventArgs e)
+        {
+            UserSetting.FlagMainRezim = true;
+        }
+
+        private void HorizontalToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
+        {
+            UserSetting.FlagMainRezim = false;
         }
     }
     public class VisibilityToCheckedConverter : IValueConverter

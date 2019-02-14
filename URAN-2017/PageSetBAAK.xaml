@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:URAN_2017"
+      xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
       mc:Ignorable="d" 
       
       Title="PageSetBAAK" ShowsNavigationUI="False">
@@ -32,17 +33,21 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="auto"/>
 
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Label Content="Кластер №" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}" HorizontalAlignment="Left" VerticalAlignment="Top"></TextBlock>
-                                <Label Content="Плата" Margin="8,0,0,0" Grid.Column="2"/>
-                                <TextBox FontSize="16" Grid.Column="3" BorderThickness="0" Text="{Binding NameBAAK, Mode=TwoWay}"></TextBox>
-
+                                <Label Content="Кластер №" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                                <TextBlock FontSize="16" Grid.Column="1" Text="{Binding Klname}" HorizontalAlignment="Left"  VerticalAlignment="Center"></TextBlock>
+                                <Label Content="Плата" Margin="8,0,0,0" Grid.Column="2" VerticalAlignment="Center"/>
+                                <TextBox FontSize="16" Grid.Column="3" BorderThickness="0" Text="{Binding NameBAAK, Mode=TwoWay}" VerticalAlignment="Center"></TextBox>
+                                <StackPanel Grid.Column="4" VerticalAlignment="Top">
+                                    <Label Content="Внешний триггер"/>
+                                    <ToggleSwitch:HorizontalToggleSwitch IsChecked="{Binding TrigOtBAAK, Mode=TwoWay}"/>
+                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

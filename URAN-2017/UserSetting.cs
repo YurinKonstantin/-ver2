@@ -467,7 +467,18 @@ namespace URAN_2017
         }
 
 
-
+        private static bool _FlagMainRezim = true;
+        public static bool FlagMainRezim
+        {
+            get
+            {
+                return _FlagMainRezim;
+            }
+            set
+            {
+                _FlagMainRezim = value;
+            }
+        }
     }
 
 }

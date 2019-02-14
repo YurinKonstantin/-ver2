@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Events;
 
@@ -31,7 +32,7 @@ namespace URAN_2017
                 ExecuteDelegate = e => Console.WriteLine("[COMMAND] Axis range changed")
             };
         }
-
+   
         public MyCommand<ChartPoint> DataHoverCommand { get; set; }
         public MyCommand<ChartPoint> DataClickCommand { get; set; }
         public MyCommand<LiveCharts.Wpf.CartesianChart> UpdaterTickCommand { get; set; }

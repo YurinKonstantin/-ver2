@@ -90,5 +90,19 @@ namespace URAN_2017
             }
 
         }
+
+       bool trigOtBAAK = false;
+        public bool TrigOtBAAK
+        {
+            get
+            {
+                return trigOtBAAK;
+            }
+            set
+            {
+                trigOtBAAK = value;
+            }
+        }
+
     }
 }

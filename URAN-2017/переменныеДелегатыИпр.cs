@@ -81,6 +81,8 @@ namespace URAN_2017
         ClassBAAK12NoTail Кластер7_2;
         ClassBAAK12NoTail Кластер8_2;
         ClassBAAK12NoTail Кластер9_2;
+
+        ClassBAAK12_100 Кластер1_3;
         ClassMC MS;
         ClassMC MS1;
         CancellationTokenSource cancellationTokenSource;

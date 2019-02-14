@@ -8,10 +8,11 @@
         xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
     x:Class="URAN_2017.MainWindow"
-    Closing="Window_Closing"
+    Closing="Window_Closing" 
         mc:Ignorable="d"
     Activated="Window_Activated"
         Title="УРАН (ver. Beta 1.0.3.10)-2017"  Height="771.74" Width="1059.018" MinWidth="966.776" MinHeight="679.359"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
+    
     <Window.Resources>
         <local:VisibilityToCheckedConverter x:Key="VisibilityToCheckedConverter"/>
         <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
@@ -157,7 +158,8 @@
                     <Button   Content="Button"   Click="Button_Click_2" RenderTransformOrigin="0.5,0.5" Background="Transparent" BorderThickness="0" />
                 </Border>
             </StackPanel>
-
+            <Label Content="Основной режим" ToolBar.OverflowMode="Always"/>
+            <ToggleSwitch:HorizontalToggleSwitch ToolBar.OverflowMode="Always" x:Name="ChecRez" Checked="HorizontalToggleSwitch_Checked" Unchecked="HorizontalToggleSwitch_Unchecked"/>
             <Button ToolBar.OverflowMode="Always" x:Name="OProg" Content="О прогрмамме" Margin="1" Click="OProg_Click" >
 
                 <Button.Background>
@@ -170,6 +172,7 @@
         <Border Grid.Row="3" BorderBrush="Black" BorderThickness="1" CornerRadius="8" Margin="4,0,4,0" x:Name="BorderT" Visibility="Collapsed">
             <Grid Grid.Row="3" UseLayoutRounding="True">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
@@ -343,6 +346,90 @@
 
                 </ListView>
 
+                <TextBlock Name="klP3" Grid.Column="0" Grid.Row="0" Margin="16,0,0,0" FontSize="14" Text="Плата БААК12-100" Visibility="Collapsed"/>
+                <ListView x:Name="List3" UseLayoutRounding="True" Grid.Row="1" Grid.Column="0" MouseRightButtonDown="List1_MouseRightButtonDown" MouseLeftButtonDown="List1_MouseLeftButtonDown" Visibility="Collapsed"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0" SelectionChanged="List1_SelectionChanged">
+
+                    <ListView.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+                    </ListView.BorderBrush>
+                    <ListView.Background>
+                        <SolidColorBrush Color="#FFFCFCFC"/>
+                    </ListView.Background>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid UseLayoutRounding="True"  Margin="4" ShowGridLines="False">
+                                <Grid.Effect>
+                                    <DropShadowEffect BlurRadius="4" ShadowDepth="0"/>
+                                </Grid.Effect>
+                                <Grid.Background>
+                                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+                                </Grid.Background>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="260"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Vertical">
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Кластер №" Padding="1" Margin="4,0,2,0"/>
+                                        <Label FontSize="14" Padding="1" Margin="0,0,2,0"  Content="{Binding NamKl}" VerticalAlignment="Center"/>
+                                        <Label FontSize="14" Padding="1" Margin="4,0,2,0" Content="{Binding Host}" VerticalAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label FontSize="15" Padding="1" Margin="4,0,0,0" Content="Статус:" VerticalAlignment="Stretch"/>
+                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" VerticalAlignment="Stretch"/>
+                                    </StackPanel>
+                                    <Expander Header="События/нейтроны/среднее значение">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Пакетов" VerticalAlignment="Stretch"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетов}" VerticalAlignment="Stretch" />
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер2}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовEr}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Нейтронов" VerticalAlignment="Stretch"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетовN}" VerticalAlignment="Stretch" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Нейтроны/события" VerticalAlignment="Stretch"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетовN}" VerticalAlignment="Stretch" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Expander>
+
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label FontSize="15" Padding="1" Margin="4,0,0,0"   Content="Темп счета:" VerticalAlignment="Stretch"/>
+                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding ТемпПакетов}" VerticalAlignment="Stretch"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label FontSize="15" Padding="1" Margin="4,0,0,0"   Content="Темп счета нейтронов:" VerticalAlignment="Stretch"/>
+                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding ТемпПакетовN}" VerticalAlignment="Stretch"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+
+                    </ListView.ItemTemplate>
+               
+
+                </ListView>
+
+
             </Grid>
         </Border>
         <Grid Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="3" Margin="4,0,4,0" UseLayoutRounding="True">
@@ -351,7 +438,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TabControl   Grid.Row="0" Margin="4,0,4,0" TabStripPlacement="Bottom"   Style="{DynamicResource TabControlStyle1}" UseLayoutRounding="True" SelectionChanged="TabControl_SelectionChanged">
+            <TabControl x:Name="Tab1"   Grid.Row="0" Margin="4,0,4,0" TabStripPlacement="Bottom"   Style="{DynamicResource TabControlStyle1}" UseLayoutRounding="True" SelectionChanged="TabControl_SelectionChanged">
                 <TabControl.Effect>
                     <DropShadowEffect BlurRadius="2" ShadowDepth="0"/>
                 </TabControl.Effect>

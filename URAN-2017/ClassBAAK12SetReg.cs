@@ -13,6 +13,7 @@ namespace URAN_2017
         {
             WreadReg3000(0x200002, t);
         }
+        //sdsds
         public void SettingNoCloc()
         {
 
@@ -70,7 +71,7 @@ namespace URAN_2017
             }
           else
             {
-                Trigger(0x200006, 128);
+                Trigger(0x200006, 256);
             }
             Winduws(0x20000a, 10);           
             WreadReg3000(0x200208, ДискретностьХвост);//дискретность хвоста
