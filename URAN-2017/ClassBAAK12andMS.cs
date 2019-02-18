@@ -92,28 +92,35 @@ namespace URAN_2017
         {
             bool endd = false;
             int x = 0;
-            while (!endd)
+           
+
+                while (!endd)
             {
-                //MessageBox.Show("ghghdddd");
-                byte[] buf = new byte[2048];
-                int res = Read13007(out buf);//читаем с платы
-                CтатусБААК12 = res.ToString();
-                if (res > 0)
-                {
+               
+
+                    //MessageBox.Show("ghghdddd");
+                    byte[] buf = new byte[2048];
+                    int res = Read13007(out buf);//читаем с платы
                     CтатусБААК12 = res.ToString();
-                    x = 0;
-                }
-                else
-                {
-                    x++;
-                    CтатусБААК12 = x.ToString();
-                }
-                if (x < 2)
-                {
-                    endd = true;
-                }
+                    if (res > 0)
+                    {
+                        CтатусБААК12 = res.ToString();
+                        x = 0;
+                    }
+                    else
+                    {
+                        x++;
+                        CтатусБААК12 = x.ToString();
+                    }
+                    if (x < 2)
+                    {
+                        endd = true;
+                    }
+           
 
             }
+            
+           
 
         }
         /// <summary>
@@ -224,10 +231,10 @@ namespace URAN_2017
                 ВычитываемДанныеНенужные();
                 CтатусБААК12 = "Работает";
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 InDe(false);
-                MessageBox.Show("Ошибка при старте");    
+                MessageBox.Show("Ошибка при старте"+"\n"+ex.ToString()+"\n"+ex.Message);    
             }
           
 
@@ -685,28 +692,19 @@ namespace URAN_2017
                 //  Amp = new int[12];
                 // Nul = new int[12];
                 //   sig = new Double[12];
-                if(grafOtob && (otobKl==NamKl))
+              if(grafOtob && (otobKl==NamKl))
                 {
                     try
                     {
 
 
-                        Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsRaz.Clear(); }));
-                        Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.SeriesCollectionRaz.Clear(); }));
-                        for (int i = 0; i < 12; i++)
-                        {
-
-
-
-                            for (int j = 0; j < 1024; j++)
-                            {
-                               // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddPointRaz(i, data[i, j], j); }));
-                            }
-
-
-
-                        }
-                    }
+                    // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsRaz.Clear(); }));
+                    // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.SeriesCollectionRaz.Clear(); }));
+                    MessageBox.Show("Запись в график");
+                    //   Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Send, new Action(() => { MyGrafic.AddPointRaz(data); }));
+                    Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data); });
+                    MessageBox.Show("Записали");
+                }
                     catch(Exception ex)
                     {
                         MessageBox.Show(ex.Message);

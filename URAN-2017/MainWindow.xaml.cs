@@ -48,25 +48,34 @@ namespace URAN_2017
         // MyGrafic nf;
         double[] x;
         double[] y;
+        public ObservableCollection<int> LabelsRaz { get; set; }
         public MainWindow()
         {
             InitializeComponent();
         
 
             _DataColec1 = new ObservableCollection<Bak>();
+            _DataColecBAAK12100 = new ObservableCollection<Bak>();
             _DataColecViev = new ObservableCollection<BAAK12T>();
             _DataColecVievList2 = new ObservableCollection<ClassBAAK12NoTail>();
+            _DataColecVievList3 = new ObservableCollection<ClassBAAK12_100>();
             List1.ItemsSource = _DataColecViev;
             List2.ItemsSource = _DataColecVievList2;
+            List3.ItemsSource = _DataColecVievList3;
             ListEror.ItemsSource = ListEr;
             DataContext = customer;
             nf = new MyGrafic { };
             nf.NewCol();
             DataContext = nf;
             comport.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
-
+            foreach(MainWindow window in App.Current.Windows)
+            {
+                MyGrafic.MainWindow = window;
+            }
+         
         }
-        ObservableCollection<ClassErrorStartAndIspravlenie> ListEr = new ObservableCollection<ClassErrorStartAndIspravlenie>();
+      
+            ObservableCollection<ClassErrorStartAndIspravlenie> ListEr = new ObservableCollection<ClassErrorStartAndIspravlenie>();
         /// <summary>
         /// зупускает набор
         /// </summary>
@@ -265,7 +274,7 @@ namespace URAN_2017
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
 
-         await   Task.Run(() => xcxc());
+     await  xcxc();
 
             MessageBox.Show("Питание МС1 и МС2 перегружена, ожидайте загрузок плат и нажмите 'Обновить'");
 
@@ -294,47 +303,30 @@ namespace URAN_2017
             }
         }
 
-        
+
         public async Task xcxc()
-            {
-       
-            
-           
-
-             
-              // await Task.Run(()=>  MyGrafic.AddPointRaz(dd));
-           await Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { hhg(); }));
-
-
-
-
-
-
-
-        }
-
-
-       
-        public void hhg()
         {
-            
 
-            lines.Children.Clear();
-            for (int i = 0; i < 12; i++)
-            {
-                double[] x = new double[1024];
-                double[] y = new double[1024];
-                x[i] = i;
-                y[i] = i + 2;
-                var lg = new LineGraph();
-                lines.Children.Add(lg);
-                int z = Convert.ToInt32(i * 10);
-                lg.Stroke = new SolidColorBrush(Color.FromArgb((byte)z, 0, (byte)(i * 20), (byte)(i * 20)));
-                lg.Description = String.Format("Detecter", i + 1);
-                lg.StrokeThickness = 2;
-                lg.Plot(x, y);
-            }
+            int[,] dd = new int[12, 1024];
+            dd[0, 2] = 100;
+            dd[0, 2] = 90;
+            dd[0, 2] = 105;
+            dd[0, 2] = 80;
+            MyGrafic.AddPointRaz(dd);
+
+
+
+
+
+
+
+
+
         }
+
+
+       
+  
         
 
         private void port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
@@ -587,11 +579,12 @@ namespace URAN_2017
 
         private void List1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
 
-           
-                eh = List1.SelectedIndex;
-           // MessageBox.Show(eh.ToString() + "ghg " + List1.SelectedIndex.ToString());
+
+
+            BAAK12T bAAK12T = (BAAK12T)sender;
+            BAAK12T.otobKl = bAAK12T.NamKl;
+           MessageBox.Show(bAAK12T.NamKl.ToString() + "ghg " + List1.SelectedIndex.ToString());
 
         }
 

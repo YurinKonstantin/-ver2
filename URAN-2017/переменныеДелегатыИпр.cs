@@ -16,10 +16,11 @@ namespace URAN_2017
 
         public ObservableCollection<BAAK12T> _DataColecViev;
         public ObservableCollection<ClassBAAK12NoTail> _DataColecVievList2;
-        
-        
-             
-            protected virtual void OnPropertyChanged(string propertyName)
+        public ObservableCollection<ClassBAAK12_100> _DataColecVievList3;
+
+
+
+        protected virtual void OnPropertyChanged(string propertyName)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }

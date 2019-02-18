@@ -388,11 +388,10 @@ namespace URAN_2017
                     try
                     {
 
-                  
                     return nsData.Read(buf, 0, 2048);
                     
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                   
                     return -2;

@@ -93,6 +93,13 @@ namespace URAN_2017
                 //  xs.Serialize(wr, Bak._DataColec1NoTail);
                 wr.Close();
             }
+            XmlSerializer xs100 = new XmlSerializer(typeof(ObservableCollection<Bak>));
+            using (StreamWriter wr100 = new StreamWriter(md + "\\UranSetUp\\" + "settingBAAK12-100.xml"))
+            {
+                xs.Serialize(wr100, Bak._DataColecBAAK100);
+                //  xs.Serialize(wr, Bak._DataColec1NoTail);
+                wr100.Close();
+            }
 
 
         }

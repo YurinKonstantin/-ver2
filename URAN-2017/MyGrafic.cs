@@ -19,6 +19,7 @@ namespace URAN_2017
        public double _fromRaz=0;
         public static double _to = 72;
         public static double  _from = 0;
+       public static MainWindow MainWindow;
         static public SeriesCollection SeriesCollection { get; set; }
         static public SeriesCollection SeriesCollectionN { get; set; }
         static public SeriesCollection SeriesCollectionRaz { get; set; }
@@ -140,46 +141,38 @@ namespace URAN_2017
             }
 
         }
-        static public void AddPointRaz(int[,] det)
+        static public async void AddPointRaz(int[,] det)
         {
-            LabelsRaz.Clear();
-            SeriesCollectionRaz.Clear();
-
-
-            int[] dd = new int[1024];
-          
-            for (int i = 0; i < 12; i++)
-                {
-
-                var cv = new ChartValues<int>();
-                var temporalCv = new int[1024];
-                for (int j = 0; j < 1024; j += 1)
-                    {
-
-                    // SeriesCollectionRaz[i].Values.Add(det[i, j]);
-
-                    temporalCv[j] = det[i, j];
-                    if (i==0)
-                        {
-                           
-                                LabelsRaz.Add(j);
-                            
-                                                      
-                        }
-                       
-                    }
-                cv.AddRange(temporalCv);
-                SeriesCollectionRaz.Add(new LineSeries
-                {
-                    Fill = Brushes.Transparent,
-                    Title = "Детектор №" + i.ToString(),
-                    Values = cv
-
-
-                });
-
-
+            // Start_time = DateTime.Now;
+            //ClassTextFile.CreatFileData(PathText.Text + Start_time.Year.ToString() + "_" + Start_time.Month.ToString() + "_" + Start_time.Day.ToString() + "_" + Start_time.Hour.ToString() + "_" + Start_time.Minute.ToString());
+            await MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Clear(); }));
+            
+            var x = new int[1024];
+            // var y = x.Select(v => Math.Abs(v) < 1e-10 ? 1 : Math.Sin(v)/v).ToArray();
+            var y = new double[x.Length];
+            for (int i = 0; i < x.Length; i++)
+            {
+                x[i] = i;
             }
+            for(int i = 0; i < 12; i++)
+            {
+                var lg = new InteractiveDataDisplay.WPF.LineGraph();
+                await MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Add(lg); }));
+               
+
+                lg.Stroke = new SolidColorBrush(Color.FromArgb(255, 36, 0, 255));
+                lg.Description = String.Format("Детектор №"+i.ToString());
+                lg.StrokeThickness = 2;
+                for(int j=0; j<1024; j++)
+                {
+                    y[j] = det[i, j];
+                }
+                lg.Plot(x, y);
+            }
+           
+
+         
+            //barChart.PlotBars(y);
 
         }
         static public void AddTecPoint(int NKl, int temp)
@@ -217,5 +210,6 @@ namespace URAN_2017
                 step = value;
             }
         }
+        
     }
 }

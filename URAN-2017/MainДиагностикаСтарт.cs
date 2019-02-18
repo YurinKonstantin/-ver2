@@ -179,14 +179,14 @@ namespace URAN_2017
             {
                await Tab1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { Tab1.Visibility = Visibility.Visible; }));
                 await klP3.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP3.Visibility = Visibility.Collapsed; }));
-                await List3.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List3.Visibility = Visibility.Collapsed));
+                await List3.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => List3.Visibility = Visibility.Collapsed));
                 if(noT)
                 {
                    
                     await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                     await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
                 }
-                else
+                if (!noT)
                 {
                     await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                     await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
@@ -875,9 +875,9 @@ namespace URAN_2017
             else
             {
                 ViewSet(false, true);
-                if (_DataColec1.Count != 0)
+                if (_DataColecBAAK12100.Count != 0)
                 {
-                    foreach (Bak bak in _DataColec1)
+                    foreach (Bak bak in _DataColecBAAK12100)
                     {
                         k++;
                       
@@ -891,7 +891,7 @@ namespace URAN_2017
                                 
                                             Кластер1_3 = new ClassBAAK12_100 { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
                                             Кластер1_3.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер1_2);
+                                            _DataColecVievList3.Add(Кластер1_3);
                                         
                                 ViewSet(false, true);
                                     }

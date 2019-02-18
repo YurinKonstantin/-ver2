@@ -17,6 +17,7 @@ namespace URAN_2017
         UserSetting set = new UserSetting();
         ClassOtborNeutron otbN = new ClassOtborNeutron();
         public ObservableCollection<Bak> _DataColec1;
+        public ObservableCollection<Bak> _DataColecBAAK12100;
         public ObservableCollection<ClassTestRan> _DataColecClassTestRan;
 
         public async Task DeSerial()
@@ -38,7 +39,22 @@ namespace URAN_2017
                     _DataColec1 = (ObservableCollection<Bak>)xs.Deserialize(wr);
 
                 }
-                fs.Close();
+                try
+                {
+
+
+                    XmlSerializer xs2 = new XmlSerializer(typeof(ObservableCollection<Bak>));
+                    using (StreamReader wr = new StreamReader(md + "\\UranSetUp\\" + "settingBAAK12-100.xml"))
+                    {
+                        _DataColecBAAK12100 = (ObservableCollection<Bak>)xs2.Deserialize(wr);
+
+                    }
+                    fs.Close();
+                }
+                catch(Exception ex)
+                {
+
+                }
                 XmlSerializer xs1 = new XmlSerializer(typeof(ObservableCollection<ClassTestRan>));
                 using (StreamReader wr1 = new StreamReader(md + "\\UranSetUp\\" + "ClassTestRanSetting1.xml"))
                 {

@@ -12,7 +12,7 @@
         mc:Ignorable="d"
     Activated="Window_Activated"
         Title="УРАН (ver. Beta 1.0.3.10)-2017"  Height="771.74" Width="1059.018" MinWidth="966.776" MinHeight="679.359"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
-    
+
     <Window.Resources>
         <local:VisibilityToCheckedConverter x:Key="VisibilityToCheckedConverter"/>
         <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
@@ -103,7 +103,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="572*"/>
             <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
 
@@ -115,7 +116,7 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        <ToolBar Grid.Row="0"  VerticalContentAlignment="Stretch" Margin="0"  HorizontalContentAlignment="Right" VerticalAlignment="Top" Grid.ColumnSpan="5" UseLayoutRounding="True">
+        <ToolBar Grid.Row="0"  VerticalContentAlignment="Stretch" Margin="0"  HorizontalContentAlignment="Right" VerticalAlignment="Top" Grid.ColumnSpan="3" UseLayoutRounding="True">
             <ToolBar.Background>
                 <SolidColorBrush Color="#FFFCFCFC"/>
             </ToolBar.Background>
@@ -155,7 +156,7 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="2" ShadowDepth="0"   x:Name="Bor"/>
                     </Border.Effect>
-                    <Button   Content="Button"   Click="Button_Click_2" RenderTransformOrigin="0.5,0.5" Background="Transparent" BorderThickness="0" />
+                    <Button   Content="Button"   Click="Button_Click_2" RenderTransformOrigin="0.5,0.5" Background="Transparent" BorderThickness="0" Height="29" VerticalAlignment="Top" />
                 </Border>
             </StackPanel>
             <Label Content="Основной режим" ToolBar.OverflowMode="Always"/>
@@ -169,7 +170,7 @@
         </ToolBar>
 
 
-        <Border Grid.Row="3" BorderBrush="Black" BorderThickness="1" CornerRadius="8" Margin="4,0,4,0" x:Name="BorderT" Visibility="Collapsed">
+        <Border Grid.Row="3" BorderBrush="Black" BorderThickness="1" CornerRadius="8" Margin="4,0,1047,0" x:Name="BorderT" Visibility="Collapsed" Grid.ColumnSpan="3" Grid.RowSpan="2">
             <Grid Grid.Row="3" UseLayoutRounding="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -184,7 +185,7 @@
                 <TextBlock Name="klP1" Grid.Column="0" Grid.Row="0" Margin="16,0,0,0" FontSize="14" Text="Плата БААК12-200Т" Visibility="Collapsed"/>
                 <ListView x:Name="List1" UseLayoutRounding="True" Grid.Row="1" Grid.Column="0" MouseRightButtonDown="List1_MouseRightButtonDown" MouseLeftButtonDown="List1_MouseLeftButtonDown" Visibility="Collapsed"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0" SelectionChanged="List1_SelectionChanged">
-                  
+
                     <ListView.BorderBrush>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </ListView.BorderBrush>
@@ -193,7 +194,7 @@
                     </ListView.Background>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                          
+
                             <Grid UseLayoutRounding="True"  Margin="4" ShowGridLines="False">
                                 <Grid.Effect>
                                     <DropShadowEffect BlurRadius="4" ShadowDepth="0"/>
@@ -208,7 +209,7 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Vertical">
-                             
+
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Кластер №" Padding="1" Margin="4,0,2,0"/>
                                         <Label FontSize="14" Padding="1" Margin="0,0,2,0"  Content="{Binding NamKl}" VerticalAlignment="Center"/>
@@ -221,31 +222,31 @@
                                     <Expander Header="События/нейтроны/среднее значение">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal">
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Пакетов" VerticalAlignment="Stretch"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетов}" VerticalAlignment="Stretch" />
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер2}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовEr}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Нейтронов" VerticalAlignment="Stretch"/>
-                                            <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетовN}" VerticalAlignment="Stretch" />
-                                        </StackPanel>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Пакетов" VerticalAlignment="Stretch"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетов}" VerticalAlignment="Stretch" />
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовОчер2}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding КолПакетовEr}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Нейтронов" VerticalAlignment="Stretch"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетовN}" VerticalAlignment="Stretch" />
+                                            </StackPanel>
                                             <StackPanel Orientation="Horizontal">
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Нейтроны/события" VerticalAlignment="Stretch"/>
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетовN}" VerticalAlignment="Stretch" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Expander>
-                                   
-                                    
+
+
                                     <StackPanel Orientation="Horizontal">
                                         <Label FontSize="15" Padding="1" Margin="4,0,0,0"   Content="Темп счета:" VerticalAlignment="Stretch"/>
                                         <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding ТемпПакетов}" VerticalAlignment="Stretch"/>
@@ -333,7 +334,7 @@
                                         <Label FontSize="15" Padding="1" Margin="4,0,0,0"   Content="Темп счета:" VerticalAlignment="Stretch"/>
                                         <Label FontSize="14" Padding="1" Margin="4,0,0,0"    Content="{Binding ТемпПакетов}" VerticalAlignment="Stretch"/>
                                     </StackPanel>
-                                   
+
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -425,14 +426,14 @@
                         </DataTemplate>
 
                     </ListView.ItemTemplate>
-               
+
 
                 </ListView>
 
 
             </Grid>
         </Border>
-        <Grid Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="3" Margin="4,0,4,0" UseLayoutRounding="True">
+        <Grid Grid.Column="2" Grid.Row="3" Margin="4,0,4,0" UseLayoutRounding="True" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="auto"/>
@@ -498,7 +499,7 @@
                         </Grid>
                     </TabItem.Content>
                 </TabItem>
-             
+
                 <TabItem Tag="Raz">
                     <TabItem.Header>
                         <Label Content="Развертка"/>
@@ -511,16 +512,12 @@
 
                             </Grid.RowDefinitions>
                             <Grid x:Name="LayoutRoot" Background="White">
-                                <d3:Chart Name="plotter" >
+                                <d3:Chart Grid.Row="1" BottomTitle="Время, отсчеты*5нс" LeftTitle="N, количество амплитуд" Grid.Column="1">
                                     <d3:Chart.Title>
-                                        <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,5">Line graph legend sample</TextBlock>
+                                        <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,5">Развертка сигнала</TextBlock>
                                     </d3:Chart.Title>
-                                    <d3:Chart.LegendContent>
-                                        <d3:LegendItemsPanel>
-                                           
-                                        </d3:LegendItemsPanel>
-                                    </d3:Chart.LegendContent>
-                                    <Grid Name="lines"/>
+                                    <d3:LineGraph x:Name="linegraph" Description="Амплитуда, Код АЦП" Stroke="Blue" StrokeThickness="3"/>
+
                                 </d3:Chart>
                             </Grid>
                             <StackPanel Orientation="Horizontal"  Margin="24,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -585,7 +582,7 @@
                                     <lvc:Axis Name="Y11" Title="Темп счета Нейтронов"></lvc:Axis>
                                 </lvc:CartesianChart.AxisY>
                             </lvc:CartesianChart>
-                         
+
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                                 <Button  Width="40" Height="40" VerticalAlignment="Top"
                     Click="Button_Click_5" Margin="0, 0, 0, 0" IsEnabled="True" Panel.ZIndex="4">
@@ -606,7 +603,7 @@
                                     </Button.Template>
                                 </Button>
                             </StackPanel>
-                            
+
                             <Button  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="28, 8,8,8" Content="Меню">
 
                             </Button>
@@ -632,9 +629,9 @@
             </TabControl>
             <GridSplitter Grid.Row="1" Height="5"  VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
         </Grid>
-           
-      
-        <Border Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2"  Margin="4" Background="Transparent" BorderThickness="1" BorderBrush="Black" CornerRadius="8">
+
+
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"  Margin="4" Background="Transparent" BorderThickness="1" BorderBrush="Black" CornerRadius="8">
             <Grid UseLayoutRounding="True">
 
                 <Grid.ColumnDefinitions>
@@ -675,14 +672,14 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" Margin="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
-        <ProgressBar UseLayoutRounding="True" Grid.Row="1" Grid.Column="4" x:Name="progres"  Height="20" Margin="0,8,4,8"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right" Width="122" >
+        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="8,13,0,13" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <ProgressBar UseLayoutRounding="True" Grid.Row="1" Grid.Column="2" x:Name="progres"  Height="20" Margin="0,8,4,8"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right" Width="122" >
             <ProgressBar.Effect>
                 <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.8" RenderingBias="Quality"/>
             </ProgressBar.Effect>
         </ProgressBar>
 
-        <Grid Grid.ColumnSpan="5" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfo" VerticalAlignment="Stretch"  >
+        <Grid Grid.ColumnSpan="3" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfo" VerticalAlignment="Stretch"  >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="60"/>
@@ -703,7 +700,7 @@
                 </ProgressBar.Effect>
             </ProgressBar>
         </Grid>
-        <Grid Grid.ColumnSpan="5" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfoError" VerticalAlignment="Stretch"  >
+        <Grid Grid.ColumnSpan="3" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfoError" VerticalAlignment="Stretch"  >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="60"/>
@@ -712,7 +709,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-             
+
             </Grid.RowDefinitions>
 
             <Label Content="При старте возникли неисправности" FontFamily="Arial" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Background="Red" Foreground="White" FontSize="22" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
@@ -725,11 +722,11 @@
                             <TextBlock Margin="6,0,0,0" Text="{Binding Name}"/>
                             <TextBlock Margin="6,0,0,0" Text="{Binding Error}"/>
                         </StackPanel>
-                        
+
                     </DataTemplate>
 
                 </ListView.ItemTemplate>
-              
+
             </ListView>
             <StackPanel HorizontalAlignment="Center" Margin="8" Grid.Row="4" DataContext="{Binding SelectedItem, ElementName=ListEror}" MaxWidth="600">
                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="Выберите элемент из списка что бы просмотреть способ устранения:"/>

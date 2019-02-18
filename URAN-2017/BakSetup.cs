@@ -11,8 +11,10 @@ namespace URAN_2017
     //Клас для настроек баак
     public class Bak
     {
+        
         public static ObservableCollection<Bak> _DataColec1;
         public static ObservableCollection<Bak> _DataColec1NoTail;
+        public static ObservableCollection<Bak> _DataColecBAAK100;
         bool _BAAK12NoT = false;
         public string Klname { get; set; }
         public string KLIP { get; set; }
@@ -77,6 +79,7 @@ namespace URAN_2017
         {
             _DataColec1 = new ObservableCollection<Bak>();
             _DataColec1NoTail = new ObservableCollection<Bak>();
+            _DataColecBAAK100 = new ObservableCollection<Bak>();
         }
         public static void AddKl(string klname1, string KlIp1, String nameBAAK1, bool fBAAK)
         {
