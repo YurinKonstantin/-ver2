@@ -81,42 +81,97 @@ namespace URAN_2017
         /// <param name="token"></param>
         private void ReadDataTask(int IntervalNewFile1, int kolTestRan, int intTestRan, int timeRanHors, int timeRanMin, CancellationToken token)
         {
+            DateTime alarmNewFile = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, 0, 0); ;
             try
             {
-                foreach (ClassTestRan f in _DataColecClassTestRan)
+                try
                 {
 
-                    f.Alam = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, f.Alam.Hour, f.Alam.Minute, 0, 0);
-                    if (DateTime.Compare(DateTime.UtcNow, f.Alam) > 0)
+                    if(_DataColecClassTestRan.Count!=0)
+                    foreach (ClassTestRan f in _DataColecClassTestRan)
                     {
-                        f.Alam = f.Alam.AddDays(1);
+
+                        f.Alam = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, f.Alam.Hour, f.Alam.Minute, 0, 0);
+                        if (DateTime.Compare(DateTime.UtcNow, f.Alam) > 0)
+                        {
+                            f.Alam = f.Alam.AddDays(1);
+                        }
                     }
                 }
-                alarmNewRun = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1, 0, 0, 0, 0);
-                if (DateTime.Compare(DateTime.UtcNow, alarmNewRun) > 0)
+                catch(Exception ex)
                 {
-                    alarmNewRun = alarmNewRun.AddMonths(1);
+                    MessageBox.Show("g3" + ex.ToString());
                 }
-                temp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, 0, 0);
-                temp = temp.AddHours(IntervalTemp);
-
-                while (true)
+                try
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        return;
-                    }
-                    TestRanAndNewFile(kolTestRan, intTestRan, 1);
-                    try
-                    {
-                        TempPacetov(temp, IntervalTemp);
-                    }
-                    catch(Exception ex)
-                    {
-                        MessageBox.Show("gffeeeeegfg" + ex.ToString());
-                    }
-                    BAAK12T.ReadDataURANDelegate?.Invoke();//Читаем данные с платы и пишем в файл
 
+
+                    alarmNewRun = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1, 0, 0, 0, 0);
+                    if (DateTime.Compare(DateTime.UtcNow, alarmNewRun) > 0)
+                    {
+                        alarmNewRun = alarmNewRun.AddMonths(1);
+                    }
+                    temp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, 0, 0);
+                    if(setP.FlagMainRezim)
+                    {
+                     temp = temp.AddHours(IntervalTemp);
+                    }
+                    else
+                    {
+                        temp = temp.AddMinutes(IntervalTemp);
+                    }
+
+
+                    alarmNewFile = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, 0, 0);
+                    if (DateTime.Compare(DateTime.UtcNow, alarmNewFile) > 0)
+                    {
+                        alarmNewFile = alarmNewFile.AddMinutes(IntervalNewFile1);
+                    }
+
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("g2" + ex.ToString());
+                }
+                try
+                {
+
+
+                    while (true)
+                    {
+                        if (token.IsCancellationRequested)
+                        {
+                            return;
+                        }
+                        if (setP.FlagMainRezim)
+                        {
+
+
+                            TestRanAndNewFile(kolTestRan, intTestRan, 1);
+                        }
+                        else
+                        {
+                            if (DateTime.Compare(DateTime.UtcNow, alarmNewFile) > 0)
+                            {
+                                BAAK12T.NewFileURANDelegate?.Invoke();
+                                alarmNewFile = alarmNewFile.AddMinutes(IntervalNewFile1);
+                            }
+                        }
+                        try
+                        {
+                            TempPacetov(temp, IntervalTemp);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("gffeeeeegfg" + ex.ToString());
+                        }
+                        BAAK12T.ReadDataURANDelegate?.Invoke();//Читаем данные с платы и пишем в файл
+
+                    }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("g1" + ex.ToString());
                 }
             }
             catch(Exception ex)
@@ -148,8 +203,15 @@ namespace URAN_2017
 
                 BAAK12T.TempURANDelegate?.Invoke();
                 //temp = temp.AddMinutes(inter);
-                temp = temp.AddHours(IntervalTemp);
-                
+                if (setP.FlagMainRezim)
+                {
+                    temp = temp.AddHours(IntervalTemp);
+                }
+                else
+                {
+                    temp = temp.AddMinutes(IntervalTemp);
+                }
+
             }
 
         }

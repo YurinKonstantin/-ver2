@@ -13,12 +13,14 @@ namespace URAN_2017
     {
        DateTime alarm;
         public static ObservableCollection<ClassTestRan> _DataColec2;
+     
         public static void InstCol()
         {
             _DataColec2 = new ObservableCollection<ClassTestRan>();
+           
             // _DataColec2.Add(new ClassTestRan { Hors = "07", Mins ="00", TipTest = "По порогу" });
             // _DataColec2.Add(new ClassTestRan { Hors = "10", Mins = "00", TipTest = "По числу событий" });
-            
+
         }
         public static void Serial()
         {
@@ -33,10 +35,24 @@ namespace URAN_2017
                 xs.Serialize(wr, ClassTestRan._DataColec2);
             }
         }
+        public static void Serial100()
+        {
+            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
+            if (Directory.Exists(md + "\\UranSetUp") == false)
+            {
+                Directory.CreateDirectory(md + "\\UranSetUp");
+            }
+            XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<ClassTestRan>));
+            using (StreamWriter wr = new StreamWriter(md + "\\UranSetUp\\" + "ClassTestRanSetting100.xml"))
+            {
+                xs.Serialize(wr, ClassTestRan._DataColec2);
+            }
+        }
         public static void AddTestRan(DateTime alarm1, String timeHors, String timeMin, string tip, int dlitel, int por, int trig, int kkol, int intt, Boolean progTrig)
         {
             _DataColec2.Add(new ClassTestRan { Hors = timeHors, Mins = timeMin, TipTest = tip, alarm=alarm1, Dlit=dlitel, Porog=por, Trig=trig, Kolsob=kkol, Interval=intt, ProgramTrigTest=progTrig});
         }
+    
         public static void DelTestRan(int iy)
         {
 
@@ -48,6 +64,7 @@ namespace URAN_2017
 
 
         }
+   
         public DateTime Alam
         {
             get

@@ -174,8 +174,9 @@ namespace URAN_2017
             
 
         }
+       public bool FlagSaveBin=true;
         private void СохраняемДанныеНужные()
-        { if (UserSetting.FlagSaveBin)
+        { if (FlagSaveBin)
             {
                 while (true)
                 {
@@ -405,7 +406,7 @@ namespace URAN_2017
             }
       
         }
-        private string Time()
+        public string Time()
        {
             String s, shour, sMinute, sDay, sMonth, sSec;
             DateTime tmp = DateTime.UtcNow;
@@ -612,7 +613,7 @@ namespace URAN_2017
                 InDe(false);
             }
         }
-        DataYu dataYu;
+      public  DataYu dataYu;
         public Boolean Flagtest = false;
         public Boolean BAAKTAIL = true;
         /// <summary>
@@ -633,7 +634,7 @@ namespace URAN_2017
                         d[x] = b;
                         x++;
                     }
-                    if (UserSetting.FlagSaveBin)
+                    if (FlagSaveBin)
                     {
                         if (data_w != null)
                         {
@@ -648,7 +649,6 @@ namespace URAN_2017
                         if (BAAKTAIL)
                         {
                             Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out int[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
-
                             КолПакетовN += coutN.Sum();
                             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPointN(Nkl, Convert.ToInt32(КолПакетовN) - ПакетовN); }));
                             OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
@@ -692,7 +692,7 @@ namespace URAN_2017
                 //  Amp = new int[12];
                 // Nul = new int[12];
                 //   sig = new Double[12];
-              if(grafOtob && (otobKl==NamKl))
+              if(grafOtob==true && otobKl==NamKl)
                 {
                     try
                     {
@@ -700,11 +700,11 @@ namespace URAN_2017
 
                     // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsRaz.Clear(); }));
                     // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.SeriesCollectionRaz.Clear(); }));
-                    MessageBox.Show("Запись в график");
+                   // MessageBox.Show("Запись в график");
                     //   Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Send, new Action(() => { MyGrafic.AddPointRaz(data); }));
                     Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data); });
-                    MessageBox.Show("Записали");
-                }
+                 //   MessageBox.Show("Записали");
+                    }
                     catch(Exception ex)
                     {
                         MessageBox.Show(ex.Message);
@@ -712,14 +712,15 @@ namespace URAN_2017
 
 
                 }
+               
                 MaxAmpAndNul(data, out Amp, out Nul, out sig);
                 // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
                 // nn1 = new int[12];
                 Neutron( dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
            
        }
@@ -947,7 +948,7 @@ namespace URAN_2017
             WreadReg3000(0x200034, 1);
         }
       
-        private void InDe(bool f)
+       public void InDe(bool f)
         {
             if(f)
             {

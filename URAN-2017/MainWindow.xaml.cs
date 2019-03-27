@@ -209,6 +209,7 @@ namespace URAN_2017
         }
         private void Start_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show(set.DelayClok.ToString());
             StartRun();
         }
         private async void Stop_Click(object sender, RoutedEventArgs e)
@@ -583,7 +584,7 @@ namespace URAN_2017
 
 
             BAAK12T bAAK12T = (BAAK12T)sender;
-            BAAK12T.otobKl = bAAK12T.NamKl;
+            BAAK12T.otobKl = bAAK12T.NamKl+bAAK12T.BAAKTAIL.ToString();
            MessageBox.Show(bAAK12T.NamKl.ToString() + "ghg " + List1.SelectedIndex.ToString());
 
         }
@@ -950,24 +951,46 @@ namespace URAN_2017
                 if (vv.SelectedIndex == 1)
                 {
                     BAAK12T.grafOtob = true;
-                    MessageBox.Show("ddd");
+                   
                 }
                 else
                 {
                     BAAK12T.grafOtob = false;
-                    MessageBox.Show(vv.SelectedIndex.ToString());
+                  
                 }
             }
         }
 
         private void HorizontalToggleSwitch_Checked(object sender, RoutedEventArgs e)
         {
-            UserSetting.FlagMainRezim = true;
+            setP.FlagMainRezim = true;
         }
 
         private void HorizontalToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
         {
-            UserSetting.FlagMainRezim = false;
+            setP.FlagMainRezim = false;
+        }
+        private void Bu_MouseLeftButtonDownFMR(object sender, MouseButtonEventArgs e)
+        {
+            if (BuMC.Toggled1 == true)
+            {
+
+                ClassParentsBAAK.Синхронизация = true;
+                LabFlagMC.Content = "Вкл";
+                LabFlagMC.Foreground = System.Windows.Media.Brushes.Green;
+
+
+
+            }
+            else
+            {
+                ClassParentsBAAK.Синхронизация = false;
+                LabFlagMC.Content = "Выкл";
+                LabFlagMC.Foreground = System.Windows.Media.Brushes.Red;
+
+            }
+
+
         }
     }
     public class VisibilityToCheckedConverter : IValueConverter
@@ -982,4 +1005,5 @@ namespace URAN_2017
             return ((bool)value) ? Visibility.Visible : Visibility.Collapsed;
         }
     }
+
 }

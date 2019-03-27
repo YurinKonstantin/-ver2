@@ -380,7 +380,7 @@ namespace URAN_2017
             }
 
         }
-        private string Time()
+        public string Time()
         {
             String s, shour, sMinute, sDay, sMonth, sSec;
             DateTime tmp = DateTime.UtcNow;
@@ -1658,9 +1658,9 @@ namespace URAN_2017
         /// </summary>
         public static string NameRan { get => nameRan; set => nameRan = value; }
 
-        private void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
+      public void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
 
@@ -1707,7 +1707,7 @@ namespace URAN_2017
         }
         private void BDReadNeutron(string nameFile, int D, int Amp, int TimeFirst, int TimeEnd, string time, int TimeAmp, int TimeFirst3, int TimeEnd3, bool test)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString;
                 if (test)
@@ -1764,7 +1764,7 @@ namespace URAN_2017
 
         private void BDReadСобытие(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int[] Nnut, int[] Nl, Double[] sig, bool test)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString;
                 if (test)
@@ -1842,7 +1842,7 @@ namespace URAN_2017
         }
         private void BDReadCloseFile(string nameFile, string time)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
 
@@ -1890,7 +1890,7 @@ namespace URAN_2017
         }
         public void BDReadTemP(string nameBAAK, int temp)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
 

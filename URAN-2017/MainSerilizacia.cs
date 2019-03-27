@@ -20,18 +20,17 @@ namespace URAN_2017
         public ObservableCollection<Bak> _DataColecBAAK12100;
         public ObservableCollection<ClassTestRan> _DataColecClassTestRan;
 
-        public async Task DeSerial()
+        public async Task DeSerial200()
         {
-            // using (FileStream fs = new FileStream("setting.dat", FileMode.Open)) 
             string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
+      
+            // using (FileStream fs = new FileStream("setting.dat", FileMode.Open)) 
+     
             
             FileStream fs ;
             try
             {
-               // string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
-               fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
-                BinaryFormatter bf = new BinaryFormatter();
-                set = (UserSetting)bf.Deserialize(fs);
+                ClassSerilization.DeSerialUserSetting200(out set);
 
                 XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Bak>));
                 using (StreamReader wr = new StreamReader(md + "\\UranSetUp\\" + "setting1.xml"))
@@ -49,7 +48,7 @@ namespace URAN_2017
                         _DataColecBAAK12100 = (ObservableCollection<Bak>)xs2.Deserialize(wr);
 
                     }
-                    fs.Close();
+                    
                 }
                 catch(Exception ex)
                 {
@@ -61,6 +60,7 @@ namespace URAN_2017
                     _DataColecClassTestRan = (ObservableCollection<ClassTestRan>)xs1.Deserialize(wr1);
 
                 }
+
 
             }
 
@@ -112,7 +112,65 @@ namespace URAN_2017
 
 
         }
+        public async Task DeSerial100()
+        {
+            ClassSerilization.DeSerialUserSetting100(out set);
+            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
 
+            // using (FileStream fs = new FileStream("setting.dat", FileMode.Open)) 
+
+
+            FileStream fs;
+            try
+            {
+                ClassSerilization.DeSerialUserSetting100(out set);
+                try
+                {
+
+
+                    XmlSerializer xs2 = new XmlSerializer(typeof(ObservableCollection<Bak>));
+                    using (StreamReader wr = new StreamReader(md + "\\UranSetUp\\" + "settingBAAK12-100.xml"))
+                    {
+                        _DataColecBAAK12100 = (ObservableCollection<Bak>)xs2.Deserialize(wr);
+
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                XmlSerializer xs1 = new XmlSerializer(typeof(ObservableCollection<ClassTestRan>));
+                using (StreamReader wr1 = new StreamReader(md + "\\UranSetUp\\" + "ClassTestRanSetting100.xml"))
+                {
+                    _DataColecClassTestRan = (ObservableCollection<ClassTestRan>)xs1.Deserialize(wr1);
+
+                }
+
+            }
+
+            catch (SerializationException)
+            {
+                MessageBox.Show("ошибка");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("ошибка");
+            }
+
+            finally
+            {
+                // fs.Close();
+
+
+            }
+
+         
+
+
+
+        }
 
     }
 }

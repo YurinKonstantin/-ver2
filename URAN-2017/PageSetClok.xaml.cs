@@ -46,36 +46,13 @@ namespace URAN_2017
         }
         private void Serial()
         {
-            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
-            if (Directory.Exists(md + "\\UranSetUp") == false)
-            {
-                Directory.CreateDirectory(md + "\\UranSetUp");
-            }
-            BinaryFormatter bf = new BinaryFormatter();
-            using (Stream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-
-                bf.Serialize(fs, set);
-                System.Windows.MessageBox.Show("Сохранено");
-                fs.Close();
-
-            }
-            //UserSetting.Serial();
+            ClassSerilization.SerialUserSetting200(set);
 
         }
         private void DeSerial()
         {
 
-            Bak.InstCol();
-            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
-            FileStream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
-
-            BinaryFormatter bf = new BinaryFormatter();
-            set = (UserSetting)bf.Deserialize(fs);
-
-
-
-            fs.Close();
+            ClassSerilization.DeSerialUserSetting200(out set);
 
 
 

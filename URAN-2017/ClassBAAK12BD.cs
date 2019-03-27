@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -11,8 +14,9 @@ namespace URAN_2017
 {
     public partial class BAAK12T : ClassParentsBAAK
     {
-        private void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
-        { if (UserSetting.FlagSaveBD)
+        public bool FlagSaveBD = true;
+       public void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
+        { if (FlagSaveBD)
             {
 
 
@@ -61,7 +65,7 @@ namespace URAN_2017
         }
         private void BDReadNeutron(string nameFile, int D, int Amp, int TimeFirst, int TimeEnd, string time, int TimeAmp, int TimeFirst3, int TimeEnd3, bool test)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString;
                 if (test)
@@ -118,7 +122,7 @@ namespace URAN_2017
       
         private void BDReadСобытие(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int [] Nnut, int[] Nl, Double[] sig, bool test)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString;
                 if (test)
@@ -196,7 +200,7 @@ namespace URAN_2017
         }
         private void BDReadСобытие1(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int[] Nnut, int[] Nl, Double[] sig, bool test)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString;
                 if (test)
@@ -274,7 +278,7 @@ namespace URAN_2017
         }
         private void BDReadCloseFile(string nameFile, string time)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
 
@@ -322,7 +326,7 @@ namespace URAN_2017
         }
         public void BDReadTemP(string nameBAAK, int temp)
         {
-            if (UserSetting.FlagSaveBD)
+            if (FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
 

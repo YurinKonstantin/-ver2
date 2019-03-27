@@ -38,25 +38,13 @@ namespace URAN_2017
             WayBd.Text = set.WayDATABd;
             TestWayBd.Text = set.TestWayDATABd;
             interval.Text = Convert.ToString(set.IntervalFile);
-            chekTogleBinSave.IsChecked = UserSetting.FlagSaveBin;
-            chekTogleBinSave1.IsChecked = UserSetting.FlagSaveBD;
+            chekTogleBinSave.IsChecked = set.FlagSaveBin;
+            chekTogleBinSave1.IsChecked = set.FlagSaveBD;
 
         }
         private void Serial()
         {
-            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
-            if (Directory.Exists(md + "\\UranSetUp") == false)
-            {
-                Directory.CreateDirectory(md + "\\UranSetUp");
-            }
-            BinaryFormatter bf = new BinaryFormatter();
-            using (Stream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                bf.Serialize(fs, set);
-                System.Windows.MessageBox.Show("Сохранено");
-                fs.Close();
-
-            }
+            ClassSerilization.SerialUserSetting200(set);
             UserSetting.Serial();
 
         }
@@ -69,21 +57,7 @@ namespace URAN_2017
                 Bak.InstCol();
                 string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
 
-                FileStream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Open);
-                try
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    set = (UserSetting)bf.Deserialize(fs);
-
-                }
-                catch (SerializationException)
-                {
-                    System.Windows.MessageBox.Show("ошибка");
-                }
-                finally
-                {
-                    fs.Close();
-                }
+                ClassSerilization.DeSerialUserSetting200(out set);
                 try
                 {
 
@@ -187,7 +161,7 @@ namespace URAN_2017
         {
 
             ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
-            UserSetting.FlagSaveBin = rb.IsChecked;
+            set.FlagSaveBin = rb.IsChecked;
             if (rb != null && Way != null)
             {
                 Way.IsEnabled = true;
@@ -204,7 +178,7 @@ namespace URAN_2017
             ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
             if (rb != null && Way != null)
             {
-                UserSetting.FlagSaveBin = rb.IsChecked;
+               set.FlagSaveBin = rb.IsChecked;
 
             }
         }
@@ -212,7 +186,7 @@ namespace URAN_2017
         private void ChekTogleBinSave1_Checked(object sender, RoutedEventArgs e)
         {
             ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
-            UserSetting.FlagSaveBD = rb.IsChecked;
+            set.FlagSaveBD = rb.IsChecked;
             if (rb != null && WayBd != null)
             {
                 WayBd.IsEnabled = true;
@@ -225,7 +199,7 @@ namespace URAN_2017
             ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
             if (rb != null && Way != null)
             {
-                UserSetting.FlagSaveBD = rb.IsChecked;
+                set.FlagSaveBD = rb.IsChecked;
                 WayBd.IsEnabled = false;
 
             }

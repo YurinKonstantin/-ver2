@@ -82,41 +82,45 @@ namespace URAN_2017
         /// <param name="token1"></param>
         private void TestRanAndNewFile(int kTestRan, int intTestRan, int inter)
         {
-            foreach (ClassTestRan test in _DataColecClassTestRan)
-            {
-                if (DateTime.Compare(DateTime.UtcNow, test.Alam) > 0)
+                if (_DataColecClassTestRan.Count != 0)
                 {
-                    try
+                    foreach (ClassTestRan test in _DataColecClassTestRan)
                     {
-                        if(!test.ProgramTrigTest)//Тест по времени
+                        if (DateTime.Compare(DateTime.UtcNow, test.Alam) > 0)
                         {
-                          BAAK12T.TestRanSetUpDelegate?.Invoke(test.Porog, test.Trig, test.ProgramTrigTest);
-                          Task myTestRan = Task.Run(() => TestRanTask(test.Dlit));
+                            try
+                            {
+                                if (!test.ProgramTrigTest)//Тест по времени
+                                {
+                                    BAAK12T.TestRanSetUpDelegate?.Invoke(test.Porog, test.Trig, test.ProgramTrigTest);
+                                    Task myTestRan = Task.Run(() => TestRanTask(test.Dlit));
+                                }
+                                else
+                                {
+                                    BAAK12T.TestRanSetUpDelegate?.Invoke(test.Porog, test.Trig, test.ProgramTrigTest);
+                                    Task myTestRan = Task.Run(() => TestRanTask1(test.Kolsob, test.Interval));
+
+                                }
+
+                                // }
+
+                            }
+                            catch (NullReferenceException)
+                            {
+
+                            }
+                            finally
+                            {
+
+                                test.Alam = test.Alam.AddDays(1);
+
+                            }
+
                         }
-                        else
-                        {
-                            BAAK12T.TestRanSetUpDelegate?.Invoke(test.Porog, test.Trig, test.ProgramTrigTest);
-                            Task myTestRan = Task.Run(() => TestRanTask1(test.Kolsob, test.Interval));
-                           
-                        }
-                            
-                       // }
-
                     }
-                    catch (NullReferenceException)
-                    {
-
-                    }
-                    finally
-                    {
-
-                        test.Alam = test.Alam.AddDays(1);
-
-                    }
-
                 }
-            }
-
+            
+          
         }
 
     }

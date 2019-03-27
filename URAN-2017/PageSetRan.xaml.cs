@@ -229,5 +229,20 @@ namespace URAN_2017
         {
             set.FlagOtob = false;
         }
+        private void Bu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (BuAllporog.Toggled1 == true)
+            {
+                set.FlagPorog = true;
+
+
+            }
+            else
+            {
+                set.FlagPorog  = false;
+            }
+
+
+        }
     }
 }

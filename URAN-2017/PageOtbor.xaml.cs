@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -34,15 +35,28 @@ namespace URAN_2017
             DeSerial();
             DlitNeu.Text = otb.Dlit.ToString();
             PorogNeutrona.Text = otb.Porog.ToString();
-            checOtbor.IsChecked = UserSetting.FlagOtbor;
-        }
+            //checOtbor.IsChecked = UserSetting.FlagOtbor;
+            Bu.Toggled1 = !UserSetting.FlagOtbor;
+           
 
+
+
+        }
+        private  void Window_Activated(object sender, EventArgs e)
+        {
+
+          
+            
+
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            
             Serial();
+            
         }
 
-
+  
         private void Serial()
         {
             string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
@@ -55,7 +69,7 @@ namespace URAN_2017
             using (fs = new FileStream(md + "\\UranSetUp\\" + "ClassOtborNeutron.dat", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 bf.Serialize(fs, otb);
-                System.Windows.MessageBox.Show("Сохранено");
+             
 
             }
             fs.Close();
@@ -186,13 +200,32 @@ namespace URAN_2017
         private void HorizontalToggleSwitch_Checked(object sender, RoutedEventArgs e)
         {
             //ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
-            UserSetting.FlagOtbor = true;
+            //UserSetting.FlagOtbor = true;
+          
         }
 
         private void HorizontalToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
         {
             // ToggleSwitch.HorizontalToggleSwitch rb = sender as HorizontalToggleSwitch;
-            UserSetting.FlagOtbor = false;
+           // UserSetting.FlagOtbor = false;
+           
         }
+        private void Bu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+           
+            if (Bu.Toggled1 == true)
+            {
+                UserSetting.FlagOtbor = true;
+
+
+            }
+            else
+            {
+                UserSetting.FlagOtbor = false;
+            }
+
+
+        }
+        
     }
 }

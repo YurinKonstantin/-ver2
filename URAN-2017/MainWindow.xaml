@@ -7,11 +7,12 @@
         xmlns:local="clr-namespace:URAN_2017"
         xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
+    xmlns:local1="clr-namespace:ToggleSwitch"
     x:Class="URAN_2017.MainWindow"
     Closing="Window_Closing" 
         mc:Ignorable="d"
     Activated="Window_Activated"
-        Title="УРАН (ver. Beta 1.0.3.10)-2017"  Height="771.74" Width="1059.018" MinWidth="966.776" MinHeight="679.359"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
+        Title="УРАН (ver. Release 1.0.3.100)-2019"  Height="771.74" Width="1059.018" MinWidth="966.776" MinHeight="679.359"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
 
     <Window.Resources>
         <local:VisibilityToCheckedConverter x:Key="VisibilityToCheckedConverter"/>
@@ -125,7 +126,7 @@
             </ToolBar.Effect>
             <StackPanel Orientation="Horizontal">
                 <StackPanel.Effect>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="0"/>
+                    <DropShadowEffect BlurRadius="2" ShadowDepth="0"/>
                 </StackPanel.Effect>
                 <Button  x:Name="Start" Content="Старт" HorizontalContentAlignment="Center" Margin="1,1,0,0" Click="Start_Click" FontSize="18" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31" Height="31" VerticalAlignment="Top">
                     <Button.Background>
@@ -152,9 +153,9 @@
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Border BorderThickness="1"  BorderBrush="Black"  Margin="16,1,0,0" CornerRadius="8" Background="White">
+                <Border BorderBrush="Black"  Margin="16,1,0,0"  Background="White">
                     <Border.Effect>
-                        <DropShadowEffect BlurRadius="2" ShadowDepth="0"   x:Name="Bor"/>
+                        <DropShadowEffect BlurRadius="1" ShadowDepth="0"   x:Name="Bor"/>
                     </Border.Effect>
                     <Button   Content="Button"   Click="Button_Click_2" RenderTransformOrigin="0.5,0.5" Background="Transparent" BorderThickness="0" Height="29" VerticalAlignment="Top" />
                 </Border>
@@ -170,8 +171,8 @@
         </ToolBar>
 
 
-        <Border Grid.Row="3" BorderBrush="Black" BorderThickness="1" CornerRadius="8" Margin="4,0,1047,0" x:Name="BorderT" Visibility="Collapsed" Grid.ColumnSpan="3" Grid.RowSpan="2">
-            <Grid Grid.Row="3" UseLayoutRounding="True">
+        <Border Grid.Row="3" BorderBrush="Black" BorderThickness="1" CornerRadius="8"  x:Name="BorderT" Visibility="Collapsed" Grid.ColumnSpan="1" Grid.RowSpan="2">
+            <Grid  UseLayoutRounding="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
@@ -182,7 +183,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Name="klP1" Grid.Column="0" Grid.Row="0" Margin="16,0,0,0" FontSize="14" Text="Плата БААК12-200Т" Visibility="Collapsed"/>
+                <TextBlock Name="klP1" Grid.Column="0" Grid.Row="0" Margin="16,0,0,0" FontSize="14" Text="Плата БААК12-200Т" Visibility="Hidden"/>
                 <ListView x:Name="List1" UseLayoutRounding="True" Grid.Row="1" Grid.Column="0" MouseRightButtonDown="List1_MouseRightButtonDown" MouseLeftButtonDown="List1_MouseLeftButtonDown" Visibility="Collapsed"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0" SelectionChanged="List1_SelectionChanged">
 
@@ -647,12 +648,12 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="4" UseLayoutRounding="True">
                     <Label FontSize="16" x:Name="stMS" Content="Не обнаружен" HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Top"  />
-                    <Label Content="Режим работы с МС:" VerticalAlignment="Top" Margin="8,0,0,0"/>
-                    <ToggleSwitch:HorizontalToggleSwitch x:Name="toggle" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Center" Checked="Toggle_Checked" Unchecked="Toggle_Unchecked">
-                        <ToggleSwitch:HorizontalToggleSwitch.Effect>
-                            <DropShadowEffect BlurRadius="10" ShadowDepth="0"/>
-                        </ToggleSwitch:HorizontalToggleSwitch.Effect>
-                    </ToggleSwitch:HorizontalToggleSwitch>
+                    <Label Content="Режим работы с МС:" VerticalAlignment="Top" Margin="8,0,0,0" />
+                 
+                    <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" Margin="0,0,0,0" Grid.Row="2">
+                        <local1:ToggleButton x:Name="BuMC" HorizontalAlignment="Right"  Height="30"  Width="70" MouseLeftButtonDown="Bu_MouseLeftButtonDownFMR"/>
+                        <Label x:Name="LabFlagMC" Content="Выкл" Margin="-12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <Label x:Name="ServisMonitor" Margin="16,0,0,0" Content="служба мониторинга запущена" Visibility="Hidden"/>
                 </StackPanel>
 
@@ -672,11 +673,13 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="8,13,0,13" VerticalAlignment="Center" HorizontalAlignment="Left" />
-        <ProgressBar UseLayoutRounding="True" Grid.Row="1" Grid.Column="2" x:Name="progres"  Height="20" Margin="0,8,4,8"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right" Width="122" >
+        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="8" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        
+        <ProgressBar UseLayoutRounding="True" Grid.Row="1" Grid.Column="2" x:Name="progres"  Height="20" Margin="4"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right" Width="122" >
             <ProgressBar.Effect>
                 <DropShadowEffect BlurRadius="4" ShadowDepth="0" Opacity="0.8" RenderingBias="Quality"/>
             </ProgressBar.Effect>
+       
         </ProgressBar>
 
         <Grid Grid.ColumnSpan="3" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfo" VerticalAlignment="Stretch"  >

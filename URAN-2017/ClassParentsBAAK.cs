@@ -380,7 +380,7 @@ namespace URAN_2017
         
         public int Read13007(out byte[] buf)//Для чтения данных
         {
-            buf = new byte[2048];
+            buf = new byte[4096];
             
             if (nsData.CanRead && nsData.DataAvailable && nsData != null)
             {
@@ -388,7 +388,7 @@ namespace URAN_2017
                     try
                     {
 
-                    return nsData.Read(buf, 0, 2048);
+                    return nsData.Read(buf, 0, 4096);
                     
                     }
                     catch (Exception ex)

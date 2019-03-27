@@ -213,7 +213,7 @@ namespace URAN_2017
         }
         private void BDReadСобытие(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int[] Nnut, int[] Nl, Double[] sig, bool test)
         {
-            if (UserSetting.FlagSaveBD)
+            if (set.FlagSaveBD)
             {
                 string connectionString;
                 if (test)
@@ -341,7 +341,7 @@ namespace URAN_2017
         /// <param name="time"></param>
         private void BDReadRAN(string nameRan, bool sinx, bool allPorog, uint porog, UInt32 trg, string time)
         {
-            if (UserSetting.FlagSaveBD)
+            if (set.FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
 
@@ -388,7 +388,7 @@ namespace URAN_2017
         /// <param name="time"></param>
         private void BdAddRANTimeПуск(string nameRan, string time)
         {
-            if (UserSetting.FlagSaveBD)
+            if (set.FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
 
@@ -437,7 +437,7 @@ namespace URAN_2017
         /// <param name="time"></param>
         private void BdAddRANTimeСтоп(string nameRan, string time)
         {
-            if (UserSetting.FlagSaveBD)
+            if (set.FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
 

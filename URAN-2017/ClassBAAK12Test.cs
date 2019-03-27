@@ -134,12 +134,26 @@ namespace URAN_2017
             NewFileData();
             if (!trigProg)
             {
-                Trigger(0x200006, TrgAll);
+                if (!trigOtBAAK)
+                {
+                    Trigger(0x200006, TrgAll);
+                }
+                else
+                {
+                    Trigger(0x200006, 256);
+                }
                 AllSetPorogAll(PorogAll);
             }
            else
             {
-                Trigger(0x200006, TrgAll);
+                if (!trigOtBAAK)
+                {
+                    Trigger(0x200006, TrgAll);
+                }
+                else
+                {
+                    Trigger(0x200006, 256);
+                }
                 //ToDo подготовить к запуску отвнешнего триггера
             }
             

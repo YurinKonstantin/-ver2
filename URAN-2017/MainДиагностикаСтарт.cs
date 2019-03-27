@@ -52,40 +52,81 @@ namespace URAN_2017
         /// </summary>
         public async Task НачальныеНастройки()//Из файла настроек загрузаем настройки(нужно ли сразу производить конект, тест, ip адреса для кластеров и модуля синхронизации)
         {
-
+            setP = new ClassSetUpProgram();
+            ClassSerilization.DeSerial(out setP);
             GridStartInfo.Visibility = Visibility.Visible;
-          await  DeSerial();
+            if(setP.FlagMainRezim)
+            {
+                await DeSerial200();
+                BAAK12T.NameFileWay = set.WayDATA;
+                BAAK12T.NameFileSetUp = set.WaySetup;
+                BAAK12T.TrgAll = set.Trg;
+                BAAK12T.PorogAll = Convert.ToUInt32(set.Porog);
+                BAAK12T.DataLenght = Convert.ToUInt32(set.DataLenght);
+                BAAK12T.wayDataBD = set.WayDATABd;
+                BAAK12T.wayDataTestBD = set.TestWayDATABd;
+                BAAK12T.PorogNutron = otbN.Porog;
+                BAAK12T.DlNutron = otbN.Dlit;
+             
+                if (set.Discret != 0)
+                {
+                    BAAK12T.ДискретностьХвост = 100 / set.Discret;
+                }
+
+                ClassBAAK12NoTail.NameFileWay = set.WayDATA;
+                ClassBAAK12NoTail.NameFileSetUp = set.WaySetup;
+                ClassBAAK12NoTail.TrgAll = set.TrgNO;
+                ClassBAAK12NoTail.PorogAll = Convert.ToUInt32(set.PorogNO);
+                ClassBAAK12NoTail.DataLenght = Convert.ToUInt32(set.DataLenght);
+                ClassBAAK12NoTail.wayDataBD = set.WayDATABd;
+                ClassBAAK12NoTail.wayDataTestBD = set.TestWayDATABd;
+            }
+            else
+            {
+                await DeSerial100();
+
+                ClassBAAK12_100.NameFileWay = set.WayDATA;
+              
+                ClassBAAK12_100.NameFileSetUp = set.WaySetup;
+                ClassBAAK12_100.TrgAll = set.Trg;
+                ClassBAAK12_100.PorogAll = Convert.ToUInt32(set.Porog);
+                ClassBAAK12_100.DataLenght = Convert.ToUInt32(set.DataLenght);
+                ClassBAAK12_100.wayDataBD = set.WayDATABd;
+                ClassBAAK12_100.wayDataTestBD = set.TestWayDATABd;
+
+            }
+           
             diag = true;//При загрузке применять диагностику
             conectsr = true;//при загрузке конектится к платам
             IntervalNewFile = set.IntervalFile;
-            BAAK12T.NameFileWay = set.WayDATA;
-            BAAK12T.NameFileSetUp = set.WaySetup;
-            BAAK12T.TrgAll = set.Trg;
-            BAAK12T.PorogAll = Convert.ToUInt32(set.Porog);
-            BAAK12T.DataLenght = Convert.ToUInt32(set.DataLenght);
-            BAAK12T.wayDataBD = set.WayDATABd;
-            BAAK12T.wayDataTestBD = set.TestWayDATABd;
-            BAAK12T.PorogNutron = otbN.Porog;
-            BAAK12T.DlNutron = otbN.Dlit;
-
-            ClassBAAK12NoTail.NameFileWay = set.WayDATA;
-            ClassBAAK12NoTail.NameFileSetUp = set.WaySetup;
-            ClassBAAK12NoTail.TrgAll = set.TrgNO;
-            ClassBAAK12NoTail.PorogAll = Convert.ToUInt32(set.PorogNO);
-            ClassBAAK12NoTail.DataLenght = Convert.ToUInt32(set.DataLenght);
-            ClassBAAK12NoTail.wayDataBD = set.WayDATABd;
-            ClassBAAK12NoTail.wayDataTestBD = set.TestWayDATABd;
+       
             
             ClassParentsBAAK.Синхронизация = set.FlagMS;
-            if(set.Discret!=0)
-            {
-                BAAK12T.ДискретностьХвост = 100 / set.Discret;
-            }
+         
             
-            toggle.IsChecked = set.FlagMS;
-            ChecRez.IsChecked = UserSetting.FlagMainRezim;
+           // toggle.IsChecked = set.FlagMS;
+            BuMC.Toggled1 = !set.FlagMS;
+            if (BuMC.Toggled1 == true)
+            {
+
+              
+                LabFlagMC.Content = "Вкл";
+                LabFlagMC.Foreground = System.Windows.Media.Brushes.Green;
+
+
+
+            }
+            else
+            {
+               
+                LabFlagMC.Content = "Выкл";
+                LabFlagMC.Foreground = System.Windows.Media.Brushes.Red;
+
+            }
+        
+            ChecRez.IsChecked = setP.FlagMainRezim;
         }
-       
+        ClassSetUpProgram setP;
         /// <summary>
         /// Производит процедуру подготовки установки к пуску.
         /// Определяем к каким кластерам можно подключиться и модулю синхронизации.
@@ -228,12 +269,13 @@ namespace URAN_2017
         public async Task FirstDiagnosticaSistem()//Определяем к каким кластерам можно подключиться и модулю синхронизации
         {
             ListEr.Clear();
-            if (UserSetting.FlagMainRezim)
+            if (setP.FlagMainRezim)
             {
                 if (await LocalPing(set.MS))
                 {
                     InitializeMS(set.MS);
-                    toggle.IsEnabled = true;
+                    //toggle.IsEnabled = true;
+                    BuMC.IsEnabled = true;
                     MS1View.Visibility = Visibility.Visible;
                     MS.text = "Ip " + set.MS.ToString();
                 }
@@ -244,14 +286,34 @@ namespace URAN_2017
 
 
                     ClassParentsBAAK.Синхронизация = false;
-                    toggle.IsChecked = false;
-                    toggle.IsEnabled = false;
+                    //toggle.IsChecked = false;
+                   // toggle.IsEnabled = false;
+                    BuMC.IsEnabled = false;
+                    BuMC.Toggled1 = true;
+                    if (BuMC.Toggled1 == true)
+                    {
+
+
+                        LabFlagMC.Content = "Вкл";
+                        LabFlagMC.Foreground = System.Windows.Media.Brushes.Green;
+
+
+
+                    }
+                    else
+                    {
+
+                        LabFlagMC.Content = "Выкл";
+                        LabFlagMC.Foreground = System.Windows.Media.Brushes.Red;
+
+                    }
 
                 }
                 if (await LocalPing(set.MS1))
                 {
                     InitializeMS1(set.MS1);
-                    toggle.IsEnabled = true;
+                   // toggle.IsEnabled = true;
+                    BuMC.IsEnabled = false;
                     MS2View.Visibility = Visibility.Visible;
                     MS1.text = "Ip " + set.MS1.ToString();
 
@@ -271,11 +333,69 @@ namespace URAN_2017
             }
             else
             {
+                if (await LocalPing(set.MS))
+                {
+                    InitializeMS(set.MS);
+                    //toggle.IsEnabled = true;
+                    BuMC.IsEnabled = true;
+                    MS1View.Visibility = Visibility.Visible;
+                    MS.text = "Ip " + set.MS.ToString();
+                }
+                else
+                {
+                    ListEr.Add(new ClassErrorStartAndIspravlenie() { Name = "MC1", Error = "Не обнаружен МС1", ErrorIsprav = "Перегрузите питание МС1 и повторно произведите старт устанвоки или нажмите 'продолжить' и затем 'Обновить'", ArduinoIP = "0" });
+                    await stMS.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен"; }));
 
+
+                    ClassParentsBAAK.Синхронизация = false;
+                    //toggle.IsChecked = false;
+                    // toggle.IsEnabled = false;
+                    BuMC.IsEnabled = false;
+                    BuMC.Toggled1 = true;
+                    if (BuMC.Toggled1 == true)
+                    {
+
+
+                        LabFlagMC.Content = "Вкл";
+                        LabFlagMC.Foreground = System.Windows.Media.Brushes.Green;
+
+
+
+                    }
+                    else
+                    {
+
+                        LabFlagMC.Content = "Выкл";
+                        LabFlagMC.Foreground = System.Windows.Media.Brushes.Red;
+
+                    }
+
+                }
+                if (await LocalPing(set.MS1))
+                {
+                    InitializeMS1(set.MS1);
+                    // toggle.IsEnabled = true;
+                    BuMC.IsEnabled = false;
+                    MS2View.Visibility = Visibility.Visible;
+                    MS1.text = "Ip " + set.MS1.ToString();
+
+                }
+                else
+                {
+                    ListEr.Add(new ClassErrorStartAndIspravlenie() { Name = "MC2", Error = "Не обнаружен МС2", ErrorIsprav = "Перегрузите питание МС2 и повторно произведите старт устанвоки или нажмите 'продолжить' и затем 'Обновить'", ArduinoIP = "0" });
+
+                    //Thread.Sleep(1000);
+                    //   stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен";
+                    //  Thread.Sleep(500);
+                    //  ClassParentsBAAK.Синхронизация = false;
+                    // toggle.IsChecked = false;
+                    //  toggle.IsEnabled = false;
+
+                }
             }
             int h = 0;
             int k = 0;
-            if (UserSetting.FlagMainRezim)
+            if (setP.FlagMainRezim)
             {
                
 
@@ -299,7 +419,10 @@ namespace URAN_2017
                                             Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
                                             Кластер1_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер1_2);
-                                            ViewSet(true, true);
+                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
+                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
+                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
+                                            //ViewSet(true, true);
                                         }
                                         else
                                         {
@@ -309,7 +432,7 @@ namespace URAN_2017
                                             Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
                                             Кластер1.Inciliz = true;
                                             _DataColecViev.Add(Кластер1);
-                                            ViewSet(true, false);
+                                            //ViewSet(true, false);
 
 
                                             try
@@ -362,23 +485,23 @@ namespace URAN_2017
                                     {
                                         if (bak.BAAK12NoT)
                                         {
-                                            Кластер2_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер2_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер2_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер2_2);
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                          //  ViewSet(true, true);
                                         }
                                         else
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер2 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер2 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер2.Inciliz = true;
                                             _DataColecViev.Add(Кластер2);
-                                            ViewSet(true, false);
+                                           /// ViewSet(true, false);
 
 
                                             try
@@ -429,23 +552,23 @@ namespace URAN_2017
                                         if (bak.BAAK12NoT)
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер3_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер3_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер3_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер3_2);
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                           // ViewSet(true, true);
                                         }
                                         else
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер3 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер3 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер3.Inciliz = true;
                                             _DataColecViev.Add(Кластер3);
 
-                                            ViewSet(true,false);
+                                          //  ViewSet(true,false);
                                             try
                                             {
                                                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
@@ -493,12 +616,12 @@ namespace URAN_2017
                                         if (bak.BAAK12NoT)
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер4_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер4_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер4_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер4_2);
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                          //  ViewSet(true, true);
 
                                         }
                                         else
@@ -506,10 +629,10 @@ namespace URAN_2017
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер4 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер4 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер4.Inciliz = true;
                                             _DataColecViev.Add(Кластер4);
-                                            ViewSet(true, false);
+                                         //   ViewSet(true, false);
                                             try
                                             {
                                                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
@@ -559,22 +682,22 @@ namespace URAN_2017
                                         if (bak.BAAK12NoT)
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер5_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер5_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер5_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер5_2);
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                           // ViewSet(true, true);
                                         }
                                         else
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер5 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер5 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер5.Inciliz = true;
                                             _DataColecViev.Add(Кластер5);
-                                            ViewSet(true, false);
+                                            //ViewSet(true, false);
                                             try
                                             {
                                                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
@@ -622,22 +745,22 @@ namespace URAN_2017
                                         if (bak.BAAK12NoT)
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер6_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер6_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер6_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер6_2);
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                          //  ViewSet(true, true);
                                         }
                                         else
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер6 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер6 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер6.Inciliz = true;
                                             _DataColecViev.Add(Кластер6);
-                                            ViewSet(true, false);
+                                           // ViewSet(true, false);
                                             try
                                             {
                                                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
@@ -685,22 +808,22 @@ namespace URAN_2017
                                         if (bak.BAAK12NoT)
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер7_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true };
+                                            Кластер7_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер7_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер7_2);
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                           // ViewSet(true, true);
                                         }
                                         else
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер7 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT };
+                                            Кластер7 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер7.Inciliz = true;
                                             _DataColecViev.Add(Кластер7);
-                                            ViewSet(true, false);
+                                          //  ViewSet(true, false);
                                             try
                                             {
                                                 Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Add(bak.Klname); }));
@@ -748,22 +871,22 @@ namespace URAN_2017
                                         if (bak.BAAK12NoT)
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер8_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер8_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер8_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер8_2);
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                          //  ViewSet(true, true);
                                         }
                                         else
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер8 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер8 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер8.Inciliz = true;
                                             _DataColecViev.Add(Кластер8);
-                                            ViewSet(true, false);
+                                           // ViewSet(true, false);
                                             try
                                             {
                                                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
@@ -811,12 +934,12 @@ namespace URAN_2017
                                         if (bak.BAAK12NoT)
                                         {
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер9_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер9_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер9_2.Inciliz = true;
                                             _DataColecVievList2.Add(Кластер9_2);
                                             await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
                                             await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            ViewSet(true, true);
+                                          //  ViewSet(true, true);
 
                                         }
                                         else
@@ -824,10 +947,10 @@ namespace URAN_2017
                                             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                             await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                             await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер9 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер9 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
                                             Кластер9.Inciliz = true;
                                             _DataColecViev.Add(Кластер9);
-                                            ViewSet(true, false);
+                                          //  ViewSet(true, false);
                                             try
                                             {
                                                 Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Add(bak.Klname); }));
@@ -889,34 +1012,37 @@ namespace URAN_2017
                                     {
 
                                 
-                                            Кластер1_3 = new ClassBAAK12_100 { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                            Кластер1_3 = new ClassBAAK12_100 { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT,
+                                                trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin=set.FlagSaveBin, FlagSaveBD=set.FlagSaveBD };
                                             Кластер1_3.Inciliz = true;
+                  
                                             _DataColecVievList3.Add(Кластер1_3);
                                         
                                 ViewSet(false, true);
                                     }
+                                    else
+                                    {
+                                         string ss = null;
+
+
+                                       ss = "БААК12-100";
+
+                                           ListEr.Add(new ClassErrorStartAndIspravlenie()
+                                           {
+                                              Name = "Кластер " + bak.Klname.ToString(),
+                                               ArduinoIP = "1",
+                                               Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                               ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                            "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                                "3. Установите все галочки Relay и нажмите 'Set'" +
+                                                "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                          });
+
+
+                                     }
 
                                 }
-                        else
-                        {
-                            string ss = null;
-                          
-                            
-                                ss = "БААК12-100";
-                            
-                            ListEr.Add(new ClassErrorStartAndIspravlenie()
-                            {
-                                Name = "Кластер " + bak.Klname.ToString(),
-                                ArduinoIP = "1",
-                                Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                   "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                   "3. Установите все галочки Relay и нажмите 'Set'" +
-                                   "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                            });
-
-
-                        }
+                    
 
                     }
                 }

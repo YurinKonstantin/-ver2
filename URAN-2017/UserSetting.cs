@@ -30,6 +30,59 @@ namespace URAN_2017
                 //  xs.Serialize(wr, Bak._DataColec1NoTail);
                 wr.Close();
             }
+          
+
+        }
+        public static void SerialAll()
+        {
+            UserSetting set = new UserSetting();
+            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
+            if (Directory.Exists(md + "\\UranSetUp") == false)
+            {
+                Directory.CreateDirectory(md + "\\UranSetUp");
+            }
+            BinaryFormatter bf = new BinaryFormatter();
+            using (Stream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                bf.Serialize(fs, set);
+              
+                fs.Close();
+
+            }
+            
+
+        }
+        public static void SerialBAA12_200()
+        {
+            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
+            if (Directory.Exists(md + "\\UranSetUp") == false)
+            {
+                Directory.CreateDirectory(md + "\\UranSetUp");
+            }
+            XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Bak>));
+            using (StreamWriter wr = new StreamWriter(md + "\\UranSetUp\\" + "setting1.xml"))
+            {
+                xs.Serialize(wr, Bak._DataColec1);
+                //  xs.Serialize(wr, Bak._DataColec1NoTail);
+                wr.Close();
+            }
+
+        }
+        public static void SerialBAA12_100()
+        {
+            string md = Environment.GetFolderPath(Environment.SpecialFolder.Personal);//путь к Документам
+            if (Directory.Exists(md + "\\UranSetUp") == false)
+            {
+                Directory.CreateDirectory(md + "\\UranSetUp");
+            }
+            XmlSerializer xs1 = new XmlSerializer(typeof(ObservableCollection<Bak>));
+            using (StreamWriter wr1 = new StreamWriter(md + "\\UranSetUp\\" + "settingBAAK12-100.xml"))
+            {
+                xs1.Serialize(wr1, Bak._DataColecBAAK100);
+                //  xs.Serialize(wr, Bak._DataColec1NoTail);
+                wr1.Close();
+            }
+
         }
 
         private bool _FlagPorog;
@@ -57,8 +110,8 @@ namespace URAN_2017
                 _FlagOtbor = value;
             }
         }
-        private static bool _FlagSaveBin = true;
-        public static bool FlagSaveBin
+        private  bool _FlagSaveBin = true;
+        public  bool FlagSaveBin
         {
             get
             {
@@ -70,8 +123,8 @@ namespace URAN_2017
             }
         }
 
-        private static bool _FlagSaveBD = true;
-        public static bool FlagSaveBD
+        private  bool _FlagSaveBD = true;
+        public  bool FlagSaveBD
         {
             get
             {
@@ -467,18 +520,6 @@ namespace URAN_2017
         }
 
 
-        private static bool _FlagMainRezim = true;
-        public static bool FlagMainRezim
-        {
-            get
-            {
-                return _FlagMainRezim;
-            }
-            set
-            {
-                _FlagMainRezim = value;
-            }
-        }
     }
 
 }

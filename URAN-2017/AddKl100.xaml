@@ -1,0 +1,29 @@
+﻿<Window x:Class="URAN_2017.AddKl100"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:URAN_2017"
+        mc:Ignorable="d"
+       Title="Добавление БААК12-100" Height="210.251" Width="324.477" VerticalAlignment="Center">
+    <Grid>
+        <StackPanel>
+            <TextBlock>Введите номер кластера и IP для платы БААК12-100:</TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <Label FontSize="12" Content="Кластер №"/>
+                <TextBox Name="name" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Left">1</TextBox>
+            </StackPanel>
+            <TextBlock Text="IP"/>
+            <TextBox Name="ip" MinWidth="250">192.168.2.181</TextBox>
+            <TextBlock Text="Имя платы"/>
+            <TextBox Name="nameB"  MinWidth="250">У1</TextBox>
+
+
+
+            <WrapPanel  HorizontalAlignment="Right" Margin="0,15,0,0">
+                <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,0,0" Content="OK"/>
+                <Button IsCancel="True" MinWidth="60">Отмена</Button>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</Window>

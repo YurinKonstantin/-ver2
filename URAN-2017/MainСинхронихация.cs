@@ -24,7 +24,7 @@ namespace URAN_2017
            // MessageBox.Show(ClassParentsBAAK.Синхронизация.ToString());
             if (ClassParentsBAAK.Синхронизация)
             {
-               // MessageBox.Show(set.FlagClok.ToString());
+                MessageBox.Show(set.FlagClok.ToString());
                 if (set.FlagClok)
                 {
 
@@ -34,7 +34,7 @@ namespace URAN_2017
                         string v = "{" + quote + "name" + quote + ":" + quote + "sync_device" + quote + "," + quote + "link_mask" + quote + ":" + set.LincClok + "," + quote + "delay" + quote + ":" + t + "}";
                         ОтправкаЧтение(v, set.IpMGVS, set.PortMGVS);
                         taimer = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, MS.hours, MS.minutes, MS.seconds, 0);
-                      //  MessageBox.Show("полученно"+ MS.hours+" "+ MS.minutes+" "+ MS.seconds);
+                        MessageBox.Show("полученно"+ MS.hours+" "+ MS.minutes+" "+ MS.seconds);
                         taimer = taimer.AddSeconds(t + 2);
                         ox12 = ((taimer.Second & 0x1f) << 11) | (0 << 1);
                         ox14 = ((taimer.Day & 0x0f) << 12) | (MS.hours << 7) | (MS.minutes << 1) | (taimer.Second >> 5);
@@ -71,6 +71,7 @@ namespace URAN_2017
                 }
                 else
                 {
+                    MessageBox.Show("Старт без синхронизации");
                     taimer = taimer.AddSeconds(t);
                     ox12 = (((taimer.Second) & 0x1f) << 11) | (taimer.Millisecond << 1);
                     ox14 = ((taimer.Day & 0x0f) << 12) | (taimer.Hour << 7) | (taimer.Minute << 1) | ((taimer.Second) >> 5);
@@ -153,9 +154,11 @@ namespace URAN_2017
             if (ClassParentsBAAK.Синхронизация)
             {
                 rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Запуск с синхронизацией"; }));
+                Thread.Sleep(2000);
                 if (!set.FlagClok)
                 {
                   rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Подготовка МС"; }));
+                    Thread.Sleep(2000);
                     //TimeTaimer(ожидание);
                     BAAK12T.ЗаписьВремяРегистрDelegate?.Invoke();
                     ClassBAAK12NoTail.ЗаписьВремяРегистрDelegate?.Invoke();
@@ -187,7 +190,10 @@ namespace URAN_2017
                 }
                 else//запуск с МГВМ
                 {
+                    MessageBox.Show("Ссинхронизацией");
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Подготовка МГВС"; }));
+                    Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                     BAAK12T.ЗаписьВремяРегистрDelegate?.Invoke();
                     BAAK12T.СтартЧасовDelegate?.Invoke();
                     int min = 0;
@@ -199,6 +205,7 @@ namespace URAN_2017
                     }
                     int flagStart = 1;
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Ожидается ответ от МГВС"; }));
+                    Thread.Sleep(1000);
                     while (flagStart == 1)
                     {
 
@@ -208,13 +215,15 @@ namespace URAN_2017
                         flagStart = MS.status;
                     }
                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Далее"; }));
-
+                    Thread.Sleep(1000);
+                    MessageBox.Show("Ссинхронизацией"+"\n"+ TimeTaimer1.ToString());
                 }
 
             }
             else
             {
                 rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Запуск без синхронизации"; }));
+                Thread.Sleep(2000);
                 //TimeTaimer(5);
                 BAAK12T.ЗаписьВремяРегистрDelegate?.Invoke();
                 ClassBAAK12NoTail.ЗаписьВремяРегистрDelegate?.Invoke();

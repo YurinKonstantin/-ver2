@@ -21,6 +21,7 @@ using System.Xml.Serialization;
 using System.Windows.Navigation;
 
 using Microsoft.Win32;
+
 namespace URAN_2017
 {
     /// <summary>
@@ -32,35 +33,78 @@ namespace URAN_2017
         //  public ObservableCollection<Bak> _DataColec1;
 
 
-        // UserSetting set = new UserSetting();
+       ClassSetUpProgram set;
 
-
+      
         public NastroikiAll()
         {
             InitializeComponent();
 
-
+            ClassSerilization.DeSerial(out set);
+          
             _DataColec = new ObservableCollection<Data1>
             {
-                new Data1 { Name = "Установка", Pyti = "" },
-                new Data1 { Name = "Набор/Ran", Pyti = "" },
-                new Data1 { Name = "Плата BAAK", Pyti = "" },
-                new Data1 { Name = "Данные", Pyti = "" },
-                new Data1 { Name = "Синхронизация", Pyti = "" },
-                new Data1 { Name = "Параметры плат", Pyti = "" },
-                new Data1 { Name = "Методический набор", Pyti = "" },
-                new Data1 { Name = "Метод отбора", Pyti = "" }
+                new Data1 { Name = "Установка", Pyti = "", Img="ImgSourse/stars18dp.png" },
+                new Data1 { Name = "Набор/Ran", Pyti = "", Img="ImgSourse/bike8dp.png" },
+                new Data1 { Name = "Плата BAAK", Pyti = "",  Img="ImgSourse/board18dp.png"  },
+                new Data1 { Name = "Данные", Pyti = "", Img="ImgSourse/assess18dp.png"  },
+                new Data1 { Name = "Синхронизация", Pyti = "", Img="ImgSourse/alarm18dp.png" },
+                new Data1 { Name = "Параметры плат", Pyti = "",  Img="ImgSourse/list18dp.png"  },
+                new Data1 { Name = "Методический набор", Pyti = "",  Img="ImgSourse/widg18dp.png"  },
+                new Data1 { Name = "Метод отбора", Pyti = "",  Img="ImgSourse/tur18dp.png" }
             };
             listView1.ItemsSource = _DataColec;
+            BuFMR.Toggled1 = !set.FlagMainRezim;
+            if (BuFMR.Toggled1 == true)
+            {
 
+             //   ClassSetUpProgram.FlagMainRezim = true;
+                LabFlagMainR.Content = "Вкл";
+                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Green;
+
+
+
+            }
+            else
+            {
+              //  ClassSetUpProgram.FlagMainRezim = false;
+                LabFlagMainR.Content = "Выкл";
+                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Red;
+
+            }
+          
             //frameName.NavigationService.Navigate(new Uri("PageSetYstan.xaml", UriKind.Relative));
             // SetYstanovka();
         }
+      
+        private void Bu_MouseLeftButtonDownFMR(object sender, MouseButtonEventArgs e)
+        {
+            if (BuFMR.Toggled1 == true)
+            {
 
+                set.FlagMainRezim = true;
+                LabFlagMainR.Content = "Вкл";
+                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Green;
+
+
+
+            }
+            else
+            {
+                set.FlagMainRezim = false;
+                LabFlagMainR.Content = "Выкл";
+                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Red;
+
+            }
+            ClassSerilization.SerialProg(set);
+            ListView1_SelectionChanged(null, null);
+
+        }
         public struct Data1
         {
             public string Name { get; set; }
             public string Pyti { get; set; }
+            public string Img { get; set; }
         }
 
         private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -68,28 +112,94 @@ namespace URAN_2017
             switch (listView1.SelectedIndex)
             {
                 case 0:
-                    SetYstanovka();
+                    if(set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetYstan.xaml", UriKind.Relative));
+                    }
+                  else
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetYstan100.xaml", UriKind.Relative));
+                    }
+                   
+
+
                     break;
                 case 1:
-                    SetRan();
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetRan.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetRan100.xaml", UriKind.Relative));
+                    }
+                   
                     break;
                 case 2:
-                    SetBAAK();
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetBAAK.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetBAAK100.xaml", UriKind.Relative));
+                    }
+                
                     break;
                 case 3:
-                    SetData();
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetData.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetData100.xaml", UriKind.Relative));
+                    }
+             
                     break;
                 case 5:
-                    SetParam();
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageParametersBAAK.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageParametersBAAK.xaml", UriKind.Relative));
+                    }
+                 
                     break;
                 case 4:
-                    SetClok();
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetClok.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageSetClok100.xaml", UriKind.Relative));
+                    }
+                   
                     break;
                 case 6:
-                    SetTestRAN();
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageTestRAN.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageTestRAN100.xaml", UriKind.Relative));
+                    }
+             
                     break;
                 case 7:
-                    SetOtbor();
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("PageOtbor.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+
+                    }
+                 
                     break;
 
             }
