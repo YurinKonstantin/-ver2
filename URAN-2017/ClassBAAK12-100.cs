@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace URAN_2017
 {
@@ -23,6 +24,7 @@ namespace URAN_2017
         {
             if (clientBAAK12T.Connected && ns != null)
             {
+                brushes = Brushes.Black;
                 //TODO настройка регистров с синхронизацией
                 CтатусБААК12 = "Запись настроик с клок";
                 SettingCloc();
@@ -40,9 +42,11 @@ namespace URAN_2017
                 ВычитываемДанныеНенужные();
                 Thread.Sleep(50);
                 CтатусБААК12 = "Работает";
+                brushes = Brushes.Green;
             }
             else
             {
+                brushes = Brushes.Red;
                 CтатусБААК12 = "НЕТ подключения";
                 InDe(false);
             }
@@ -751,6 +755,7 @@ namespace URAN_2017
                 }
                 else
                 {
+                    brushes = Brushes.Red;
                     CтатусБААК12 = "Ошибка 1 чтения с платы. Отключена";
                     InDe(false);
                 }
@@ -758,6 +763,7 @@ namespace URAN_2017
             }
             catch (Exception ex)
             {
+                brushes = Brushes.Red;
                 CтатусБААК12 = "Ошибка 2 чтения с платы. Отключена" + ex.ToString();
                 InDe(false);
                 MessageBox.Show("Не Работает");
@@ -830,6 +836,7 @@ namespace URAN_2017
             {
                 DeInitializeKlaster1();
                 CтатусБААК12 = "Ошибка инициализации. Отключена";
+                brushes = Brushes.Red;
 
             }
         }
@@ -1110,7 +1117,7 @@ namespace URAN_2017
         /// <param name="trigProg">если =true, то по количеству</param>
         public void TestRanПодготовка(int porog, int trig, Boolean trigProg)
         {
-
+            brushes = Brushes.Black;
             CтатусБААК12 = "Подготовка к тестовому набору";
             Thread.Sleep(500);
 
@@ -1169,6 +1176,7 @@ namespace URAN_2017
             }
             catch (Exception ex)
             {
+                brushes = Brushes.Red;
                 MessageBox.Show("Ошибка открытия файла" + ex.ToString());
             }
             // }
@@ -1224,6 +1232,7 @@ namespace URAN_2017
                 //Thread.Sleep(500);
                 CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
             }
+            brushes = Brushes.Green;
             Thread.Sleep(500);
             CтатусБААК12 = "Работает";
             //TriggerStop();

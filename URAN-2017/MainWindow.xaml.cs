@@ -209,7 +209,7 @@ namespace URAN_2017
         }
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(set.DelayClok.ToString());
+            //MessageBox.Show(set.DelayClok.ToString());
             StartRun();
         }
         private async void Stop_Click(object sender, RoutedEventArgs e)
@@ -275,11 +275,7 @@ namespace URAN_2017
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
 
-     await  xcxc();
-
-            MessageBox.Show("Питание МС1 и МС2 перегружена, ожидайте загрузок плат и нажмите 'Обновить'");
-
-
+            await rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
         }
   
         private double _toRaz=10;

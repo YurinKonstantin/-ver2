@@ -13,6 +13,7 @@ using System.Data.OleDb;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Threading;
+using System.Windows.Media;
 
 namespace URAN_2017
 {
@@ -23,11 +24,29 @@ namespace URAN_2017
         {
             throw new NotImplementedException();
         }
+        
+        private System.Windows.Media.Brush _myBrush;
+public System.Windows.Media.Brush brushes
+        {
+            get { return _myBrush; }
+            set
+            {
+                if (value != _myBrush)
+                {
+                    _myBrush = value;
+                    this.OnPropertyChanged(nameof(brushes));
+                }
+            }
+        }
+
+
+   
         //Общее 
         public void НастройкаКлок()
         {
              if(clientBAAK12T.Connected && ns!=null)
-             {
+            {
+                brushes = System.Windows.Media.Brushes.Black;
                 //TODO настройка регистров с синхронизацией
                 CтатусБААК12 = "Запись настроик с клок"; 
                 
@@ -46,10 +65,12 @@ namespace URAN_2017
                 ВычитываемДанныеНенужные();
             Thread.Sleep(50);
             CтатусБААК12 = "Работает";
+                brushes = Brushes.Green;
             }
         else
             {
                 CтатусБААК12 = "НЕТ подключения";
+                brushes = Brushes.Red;
                 InDe(false);
             }
             
@@ -220,6 +241,7 @@ namespace URAN_2017
         {
             try
             {
+                brushes = Brushes.Black;
                 CтатусБААК12 = "Запись настроик без клок";
                 SettingNoCloc();
                 CтатусБААК12 = "Запись общих настроик";
@@ -231,6 +253,7 @@ namespace URAN_2017
                 CтатусБААК12 = "Вычитываем ненужные файлы";
                 ВычитываемДанныеНенужные();
                 CтатусБААК12 = "Работает";
+                brushes = Brushes.Green;
             }
             catch (Exception ex)
             {
@@ -292,6 +315,7 @@ namespace URAN_2017
                // else
                 //{
                     CтатусБААК12 = "НЕТ подключения";
+                brushes = Brushes.Red;
                 //}
             }
         }
@@ -313,7 +337,7 @@ namespace URAN_2017
             try
             {
 
-
+                brushes = Brushes.Black;
                 Thread.Sleep(50);
                 CтатусБААК12 = "Триггер СТОП";
                 TriggerStop();
@@ -332,6 +356,7 @@ namespace URAN_2017
                 CloseFile();
                 Thread.Sleep(50);
                 CтатусБААК12 = "Отключена";
+                brushes = Brushes.Red;
             }
             catch(Exception)
             {
@@ -351,6 +376,7 @@ namespace URAN_2017
             else
             {
                 CтатусБААК12 = "НЕТ подключения";
+                brushes = Brushes.Red;
                 InDe(false);
             }
         }
@@ -364,6 +390,7 @@ namespace URAN_2017
             }
             else
             {
+                brushes = Brushes.Red;
                 CтатусБААК12 = "НЕТ подключения";
                 InDe(false);
             }
@@ -384,6 +411,7 @@ namespace URAN_2017
             else
             {
                 CтатусБААК12 = "НЕТ подключения";
+                brushes = Brushes.Red;
                 InDe(false);
             }
             
@@ -402,6 +430,7 @@ namespace URAN_2017
             else
             {
                 CтатусБААК12 = "НЕТ подключения";
+                brushes = Brushes.Red;
                 InDe(false);
             }
       
@@ -515,6 +544,7 @@ namespace URAN_2017
                 catch (Exception ex)
                 {
                 InDe(false);
+                brushes = Brushes.Red;
                 CтатусБААК12 = "Ошибка при создании файла";
             }
            // }
@@ -537,6 +567,7 @@ namespace URAN_2017
                 catch (Exception)
                 {
                     InDe(false);
+                    brushes = Brushes.Red;
                     CтатусБААК12 = "Ошибка при закрытии потока файла";
                 }
            // }
@@ -549,6 +580,7 @@ namespace URAN_2017
                 }
                 catch (Exception )
                 {
+                        brushes = Brushes.Red;
                         CтатусБААК12 = "Ошибка при закрытии файла";
                     }
             }
@@ -608,7 +640,8 @@ namespace URAN_2017
             }
             catch (Exception e)
             {
-                
+                brushes = Brushes.Red;
+
                 CтатусБААК12 = "Ошибка. Отключена " + e;
                 InDe(false);
             }
@@ -669,7 +702,7 @@ namespace URAN_2017
             }
             catch(Exception e)
             {
-                
+                brushes = Brushes.Red;
                 CтатусБААК12 = "Ошибка. Отключена "+e;
                 InDe(false);
             }
@@ -916,6 +949,7 @@ namespace URAN_2017
             }
                 else
                 {
+                    brushes = Brushes.Red;
                     CтатусБААК12 = "Ошибка 1 чтения с платы. Отключена";
                     InDe(false);
                 }
@@ -923,6 +957,7 @@ namespace URAN_2017
             }
             catch (Exception)
             {
+                brushes = Brushes.Red;
                 CтатусБААК12 = "Ошибка 2 чтения с платы. Отключена";
                 InDe(false);
             }
@@ -994,6 +1029,7 @@ namespace URAN_2017
             {
                 DeInitializeKlaster1();
                 CтатусБААК12 = "Ошибка инициализации. Отключена";
+                brushes = Brushes.Red;
 
             }
         }

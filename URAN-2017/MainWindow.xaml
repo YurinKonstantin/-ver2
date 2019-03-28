@@ -214,15 +214,14 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Кластер №" Padding="1" Margin="4,0,2,0"/>
                                         <Label FontSize="14" Padding="1" Margin="0,0,2,0"  Content="{Binding NamKl}" VerticalAlignment="Center"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,2,0" Content="{Binding Host}" VerticalAlignment="Stretch" />
+                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" Foreground="{Binding brushes}"  VerticalAlignment="Stretch"/>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label FontSize="15" Padding="1" Margin="4,0,0,0" Content="Статус:" VerticalAlignment="Stretch"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" VerticalAlignment="Stretch"/>
-                                    </StackPanel>
+                                 
                                     <Expander Header="События/нейтроны/среднее значение">
                                         <StackPanel>
                                             <StackPanel Orientation="Horizontal">
+
+                                                <Label FontSize="14" Padding="1" Margin="4,0,2,0" Content="{Binding Host}" VerticalAlignment="Stretch" />
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Пакетов" VerticalAlignment="Stretch"/>
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетов}" VerticalAlignment="Stretch" />
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
