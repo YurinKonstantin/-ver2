@@ -437,54 +437,14 @@ public System.Windows.Media.Brush brushes
         }
         public string Time()
        {
-            String s, shour, sMinute, sDay, sMonth, sSec;
+            
             DateTime tmp = DateTime.UtcNow;
 
-            if (Convert.ToUInt32(tmp.Hour.ToString()) < 10)
-            {
-                shour = Convert.ToString("0" + tmp.Hour.ToString());
-            }
-            else
-            {
-                shour = Convert.ToString(tmp.Hour.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Minute.ToString()) < 10)
-            {
-                sMinute = Convert.ToString("0" + tmp.Minute.ToString());
-            }
-            else
-            {
-                sMinute = Convert.ToString(tmp.Minute.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Day.ToString()) < 10)
-            {
-                sDay = Convert.ToString("0" + tmp.Day.ToString());
-            }
-            else
-            {
-                sDay = Convert.ToString(tmp.Day.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Month.ToString()) < 10)
-            {
-                sMonth = Convert.ToString("0" + tmp.Month.ToString());
-            }
-            else
-            {
-                sMonth = Convert.ToString(tmp.Month.ToString());
-            }
 
-            if (Convert.ToUInt32(tmp.Second.ToString()) < 10)
-            {
-                sSec = Convert.ToString("0" + tmp.Second.ToString());
-            }
-            else
-            {
-                sSec = Convert.ToString(tmp.Second.ToString());
-            }
 
-           s = sDay + "." + sMonth + "." + tmp.Year.ToString() + " " + shour + "." + sMinute+"."+sSec;
-           // s = sDay + "." + sMonth + "." + "" + shour + ":" + sMinute;
-            return s;
+
+            
+            return tmp.Day.ToString("00") + "." + tmp.Month.ToString("00") + "." + tmp.Year.ToString() + " " + tmp.Hour.ToString("00") + "." + tmp.Minute.ToString("00") + "." + tmp.Second.ToString("00"); ;
         }
         /// <summary>
         /// Расчет темпа и запись результата в БД
@@ -681,7 +641,7 @@ public System.Windows.Media.Brush brushes
                         Double[] sigm = new double[12];
                         if (BAAKTAIL)
                         {
-                            Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out int[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
+                            Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out double[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
                             КолПакетовN += coutN.Sum();
                             Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPointN(Nkl, Convert.ToInt32(КолПакетовN) - ПакетовN); }));
                             OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
@@ -708,12 +668,12 @@ public System.Windows.Media.Brush brushes
             }
         }
        int TecPaketovN=0;
-        private  void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out int[] nn1, out int[] Nul, out double[] sig, bool testT)
+        private  void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out int[] nn1, out double[] Nul, out double[] sig, bool testT)
         {
             int[,] data = new int[12, 1024];
             int[,] dataTail = new int[12, 20000];
             sig = new Double[12];
-            Nul= new int[12];
+            Nul= new double[12];
             time = "0";
             nn1 = new int[12];
             Amp =new int[12];
@@ -725,7 +685,9 @@ public System.Windows.Media.Brush brushes
                 //  Amp = new int[12];
                 // Nul = new int[12];
                 //   sig = new Double[12];
-              if(grafOtob==true && otobKl==NamKl)
+                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { 
+
+                if (grafOtob==true && otobKl==NamKl)
                 {
                     try
                     {
@@ -740,20 +702,21 @@ public System.Windows.Media.Brush brushes
                     }
                     catch(Exception ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        MessageBox.Show(ex.Message + "\n" + "Ошибка 32");
                     }
 
 
                 }
-               
-                MaxAmpAndNul(data, out Amp, out Nul, out sig);
+                }));
+                ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, out sig, out Amp, ref Nul, out bool bad, false, 1, 6);
+               // MaxAmpAndNul(data, out Amp, out Nul, out sig);
                 // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
                 // nn1 = new int[12];
-                Neutron( dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT);
+                Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT);
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message+"\n"+"Ошибка 33"+"\n"+buf00.Count.ToString()+"\n"+dataTail.Length.ToString());
             }
            
        }
@@ -841,7 +804,7 @@ public System.Windows.Media.Brush brushes
         /// </summary>
         /// <param name="data1"></param>
         /// <param name="Amp1"></param>
-        private void MaxAmpAndNul(int [,] data1, out int[] Amp1, out int[] maxNul, out Double[] sigma)
+       /* private void MaxAmpAndNul(int [,] data1, out int[] Amp1, out int[] maxNul, out Double[] sigma)
         {
             Amp1 = new int[12];
             sigma = new Double[12];
@@ -886,6 +849,7 @@ public System.Windows.Media.Brush brushes
             }
             return res;
         }
+        */
         private int CountFlagEnd = 0;
         private int CountFlagEndErroy = 0;
      

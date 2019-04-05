@@ -29,7 +29,7 @@
     <ProductName>URAN</ProductName>
     <PublisherName>YuKO</PublisherName>
     <MinimumRequiredVersion>1.0.2.10</MinimumRequiredVersion>
-    <ApplicationRevision>106</ApplicationRevision>
+    <ApplicationRevision>107</ApplicationRevision>
     <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>

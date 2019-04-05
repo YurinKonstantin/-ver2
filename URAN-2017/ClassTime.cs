@@ -12,14 +12,14 @@ namespace URAN_2017
         private void RanName()
         {
             DateTime taimer = DateTime.UtcNow;
-            BAAK12T.NameRan = Convert.ToString(taimer.Day) + "." + Convert.ToString(taimer.Month) + "." + Convert.ToString(taimer.Year) + " " + Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(taimer.Millisecond);
+            BAAK12T.NameRan = taimer.Day.ToString("00") + "." + taimer.Month.ToString("00") + "." + Convert.ToString(taimer.Year) + " " + taimer.Hour.ToString("00") + ":" + taimer.Minute.ToString("00") + ":" +taimer.Second.ToString("00") + ":" + taimer.Millisecond.ToString("000");
 
         }
         public string TimeTaimer1 = "0 0:0:0:0";
         private string TimeПуск()
         {
             DateTime taimer = DateTime.UtcNow;
-            return Convert.ToString(taimer.Day) + "." + Convert.ToString(taimer.Month) + "." + Convert.ToString(taimer.Year) + " " + Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(taimer.Millisecond);
+            return taimer.Day.ToString("00") + "." + taimer.Month.ToString("00") + "." + Convert.ToString(taimer.Year) + " " + taimer.Hour.ToString("00") + ":" + taimer.Minute.ToString("00") + ":" + taimer.Second.ToString("00") + ":" +taimer.Millisecond.ToString("000");
         }
         private void TimeTask()
         {
@@ -28,52 +28,12 @@ namespace URAN_2017
 
 
                 Thread.Sleep(1000);
-                String shour, sMinute, sDay, sMonth, sSec;
+               
                 DateTime tmp = DateTime.UtcNow;
 
-                if (Convert.ToUInt32(tmp.Hour.ToString()) < 10)
-                {
-                    shour = Convert.ToString("0" + tmp.Hour.ToString());
-                }
-                else
-                {
-                    shour = Convert.ToString(tmp.Hour.ToString());
-                }
-                if (Convert.ToUInt32(tmp.Minute.ToString()) < 10)
-                {
-                    sMinute = Convert.ToString("0" + tmp.Minute.ToString());
-                }
-                else
-                {
-                    sMinute = Convert.ToString(tmp.Minute.ToString());
-                }
-                if (Convert.ToUInt32(tmp.Day.ToString()) < 10)
-                {
-                    sDay = Convert.ToString("0" + tmp.Day.ToString());
-                }
-                else
-                {
-                    sDay = Convert.ToString(tmp.Day.ToString());
-                }
-                if (Convert.ToUInt32(tmp.Month.ToString()) < 10)
-                {
-                    sMonth = Convert.ToString("0" + tmp.Month.ToString());
-                }
-                else
-                {
-                    sMonth = Convert.ToString(tmp.Month.ToString());
-                }
+              
 
-                if (Convert.ToUInt32(tmp.Second.ToString()) < 10)
-                {
-                    sSec = Convert.ToString("0" + tmp.Second.ToString());
-                }
-                else
-                {
-                    sSec = Convert.ToString(tmp.Second.ToString());
-                }
-
-                customer.CustomerTime = "  " + shour + ":" + sMinute + ":" + sSec + "  " + sDay + "." + sMonth + "." + tmp.Year.ToString();
+                customer.CustomerTime = "  " + tmp.Hour.ToString("00") + ":" + tmp.Minute.ToString("00") + ":" + tmp.Second.ToString("00") + "  " + tmp.Day.ToString("00") + "." + tmp.Month.ToString("00") + "." + tmp.Year.ToString();
 
                 //return s;
             }

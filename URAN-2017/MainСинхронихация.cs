@@ -35,12 +35,12 @@ namespace URAN_2017
                         ОтправкаЧтение(v, set.IpMGVS, set.PortMGVS);
                         taimer = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, MS.hours, MS.minutes, MS.seconds, 0);
                        // MessageBox.Show("Размер ожидания ");
-                        File.AppendAllText("D:\\DiagnosticMGVS_file.txt", "Размер ожидания "+t.ToString()+"\n"+"Значение от таймера МГВС "+ taimer.Hour.ToString() + ":" +
-                            taimer.Minute.ToString() + ":" + taimer.Second.ToString() + ":" + "0"+"\n"); //допишет текст в конец файла
+                        File.AppendAllText("D:\\DiagnosticMGVS_file.txt", "Размер ожидания "+t.ToString()+"\n"+"Значение от таймера МГВС "+ taimer.Hour.ToString("00") + ":" +
+                            taimer.Minute.ToString("00") + ":" + taimer.Second.ToString("00") + ":" + "0"+"\n"); //допишет текст в конец файла
                         //MessageBox.Show("полученно"+ MS.hours+" "+ MS.minutes+" "+ MS.seconds);
                         taimer = taimer.AddSeconds(t + 2);
-                        File.AppendAllText("D:\\DiagnosticMGVS_file.txt", "Значение с смещением" + taimer.Hour.ToString() + ":" +
-                            taimer.Minute.ToString() + ":" + taimer.Second.ToString() + ":" + "0" + "\n"); //допишет текст в конец файла
+                        File.AppendAllText("D:\\DiagnosticMGVS_file.txt", "Значение с смещением" + taimer.Hour.ToString("00") + ":" +
+                            taimer.Minute.ToString("00") + ":" + taimer.Second.ToString("00") + ":" + "0" + "\n"); //допишет текст в конец файла
                         ox12 = ((taimer.Second & 0x1f) << 11) | (0 << 1);
                         ox14 = ((taimer.Day & 0x0f) << 12) | (taimer.Hour << 7) | (taimer.Minute << 1) | (taimer.Second >> 5);
                         ox16 = ((taimer.Day >> 4) & 0x03);
@@ -54,7 +54,7 @@ namespace URAN_2017
                            ox14.ToString() + " " + ox16.ToString() + ":" + "0" + "\n"); //допишет текст в конец файла
                         File.AppendAllText("D:\\DiagnosticMGVS_file.txt", "Значение в регистрх" + BAAK12T.Time0x12.ToString() + " " +
                          BAAK12T.Time0x14.ToString() + " " + BAAK12T.Time0x16.ToString() + ":" + "0" + "\n"); //допишет текст в конец файла
-                        TimeTaimer1 = taimer.Day.ToString()+" "+ taimer.Hour.ToString()+":"+ taimer.Minute.ToString()+":"+ taimer.Second.ToString()+":"+"0";
+                        TimeTaimer1 = taimer.Day.ToString("00")+" "+ taimer.Hour.ToString("00")+":"+ taimer.Minute.ToString("00")+":"+ taimer.Second.ToString("00")+":"+"0";
 
                         // BAAK12T.NameRan = Convert.ToString(taimer.Day) + "." + Convert.ToString(taimer.Month) + "." + Convert.ToString(taimer.Year) + " " + Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(0);
                     }
@@ -73,7 +73,7 @@ namespace URAN_2017
                         BAAK12T.Time0x12 = Convert.ToUInt32(ox12);
                         BAAK12T.Time0x14 = Convert.ToUInt32(ox14);
                         BAAK12T.Time0x16 = Convert.ToUInt32(ox16);
-                        TimeTaimer1= Convert.ToString(taimer.Day) + " " +  Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(taimer.Millisecond);
+                        TimeTaimer1= taimer.Day.ToString("00") + " " + taimer.Hour.ToString("00") + ":" +taimer.Minute.ToString("00") + ":" + taimer.Second.ToString("00") + ":" + taimer.Millisecond.ToString("000");
                         // BAAK12T.NameRan = Convert.ToString(taimer.Day) + "." + Convert.ToString(taimer.Month) + "." + Convert.ToString(taimer.Year) + " " + Convert.ToString(taimer.Hour) + ":" + Convert.ToString(taimer.Minute) + ":" + Convert.ToString(taimer.Second) + ":" + Convert.ToString(taimer.Millisecond);
                     }
 

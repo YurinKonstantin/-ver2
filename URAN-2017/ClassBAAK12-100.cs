@@ -612,7 +612,7 @@ namespace URAN_2017
 
                     Double[] sigm = new double[12];
                     
-                      Obrabotka(dataYu.ListData, out double[] Ampl, out string time1, out double[] NL, out sigm, (int)DataLenght, out int dN, out bool neu);//парсинг данных
+                      Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out double[] NL, out sigm, (int)DataLenght, out int dN, out bool neu);//парсинг данных
                     if(neu)
                     {
                         OcherediNaZapicBD.Enqueue(new ClassZapicBD100() { nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = (int)Ampl[dN-1], nameklasterBD = NamKl, NlBD = (int)NL[dN-1], sigBDnew = sigm[dN-1] });
@@ -639,7 +639,7 @@ namespace URAN_2017
                 InDe(false);
             }
         }
-        private void Obrabotka(List<Byte> buf00, out double[] Amp, out string time, out double[] Nul, out double[] sig, int dl, out int dn, out bool neutron)
+        private void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out double[] Nul, out double[] sig, int dl, out int dn, out bool neutron)
         {
             int[,] data = new int[12, 1024*dl];
    
@@ -650,7 +650,7 @@ namespace URAN_2017
             neutron = false;
             bool bad = false;
 
-            Amp = new double[12];
+            Amp = new int[12];
 
       
 

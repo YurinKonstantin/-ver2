@@ -120,7 +120,7 @@ namespace URAN_2017
         }
 
       
-        private void BDReadСобытие(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int [] Nnut, int[] Nl, Double[] sig, bool test)
+        private void BDReadСобытие(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int [] Nnut, double[] Nl, Double[] sig, bool test)
         {
             if (FlagSaveBD)
             {
@@ -198,7 +198,7 @@ namespace URAN_2017
                 }
             }
         }
-        private void BDReadСобытие1(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int[] Nnut, int[] Nl, Double[] sig, bool test)
+        private void BDReadСобытие1(string nameFile, string nameBAAK, string time, string nameRan, int[] Amp, string nameklaster, int[] Nnut, double[] Nl, Double[] sig, bool test)
         {
             if (FlagSaveBD)
             {

@@ -274,8 +274,8 @@ namespace URAN_2017
         private SerialPort comport = new SerialPort();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-
-            await rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+            int x = 5;
+            MessageBox.Show(x.ToString("00"));
         }
   
         private double _toRaz=10;

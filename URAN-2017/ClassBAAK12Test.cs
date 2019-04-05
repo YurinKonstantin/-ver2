@@ -27,9 +27,12 @@ namespace URAN_2017
             TriggerStopОго();
             CтатусБААК12 = "Вычитываем данные";
             Thread.Sleep(500);
-            ВычитываемДанныеНужные();
+           // ВычитываемДанныеНужные();
+            ВычитываемДанныеНенужные();
+
             //TriggerStop();
             CтатусБААК12 = "вычитываем очередь";
+           
             Thread.Sleep(500);
             int koloch = 0;
             while (OcherediNaZapic.Count != 0 | koloch < 50)

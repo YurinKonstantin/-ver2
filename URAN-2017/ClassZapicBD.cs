@@ -27,10 +27,10 @@ namespace URAN_2017
             NnutBD = new int[12];
             Array.Copy(Nnut1, NnutBD, 12);
         }
-        public int[] NlBD = new int[12];
+        public double[] NlBD = new double[12];
         public void NlNew(int[] Nl1)
         {
-            NlBD = new int[12];
+            NlBD = new double[12];
             Array.Copy(Nl1, NlBD, 12);
         }
         public Double[] sigBDnew= new Double[12];
