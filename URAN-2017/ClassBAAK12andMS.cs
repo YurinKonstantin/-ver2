@@ -685,12 +685,13 @@ public System.Windows.Media.Brush brushes
                 //  Amp = new int[12];
                 // Nul = new int[12];
                 //   sig = new Double[12];
-                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { 
+                try
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { 
 
                 if (grafOtob==true && otobKl==NamKl)
                 {
-                    try
-                    {
+                   
 
 
                     // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsRaz.Clear(); }));
@@ -699,16 +700,17 @@ public System.Windows.Media.Brush brushes
                     //   Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Send, new Action(() => { MyGrafic.AddPointRaz(data); }));
                     Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data); });
                  //   MessageBox.Show("Записали");
-                    }
-                    catch(Exception ex)
-                    {
-                        MessageBox.Show(ex.Message + "\n" + "Ошибка 32");
-                    }
+                   
 
 
                 }
                 }));
-                ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, out sig, out Amp, ref Nul, out bool bad, false, 1, 6);
+            }
+            catch (Exception ex)
+            {
+                    File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка графика" + ex.Message.ToString() + "\n" + "otobKl " + otobKl + "\t"+ "NamKl "+ NamKl); //допишет текст в конец файла
+            }
+            ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, out sig, out Amp, ref Nul, out bool bad, false, 1, 6);
                // MaxAmpAndNul(data, out Amp, out Nul, out sig);
                 // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
                 // nn1 = new int[12];
@@ -716,7 +718,7 @@ public System.Windows.Media.Brush brushes
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message+"\n"+"Ошибка 33"+"\n"+buf00.Count.ToString()+"\n"+dataTail.Length.ToString());
+                File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка обработки данных" + ex.Message.ToString() + "\n" + "Время " + time + "\n"); //допишет текст в конец файла
             }
            
        }
