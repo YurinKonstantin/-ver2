@@ -37,6 +37,8 @@ using System.Net;
 using System.Drawing;
 using System.IO.Ports;
 using InteractiveDataDisplay.WPF;
+using URAN_2017.FolderSetUp;
+using System.Reactive;
 
 namespace URAN_2017
 {
@@ -63,11 +65,11 @@ namespace URAN_2017
             List2.ItemsSource = _DataColecVievList2;
             List3.ItemsSource = _DataColecVievList3;
             ListEror.ItemsSource = ListEr;
-            DataContext = customer;
+            //DataContext = customer;
             nf = new MyGrafic { };
             nf.NewCol();
             DataContext = nf;
-            comport.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
+            comport.DataReceived += new SerialDataReceivedEventHandler(Port_DataReceived);
             foreach(MainWindow window in App.Current.Windows)
             {
                 MyGrafic.MainWindow = window;
@@ -87,8 +89,8 @@ namespace URAN_2017
             if (BAAK12T.ConnnectURANDelegate != null)
             {
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { progres.IsIndeterminate = true; }));
-                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
-
+                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
+               
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Obnoviti.IsEnabled = false; }));
 
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
@@ -104,6 +106,7 @@ namespace URAN_2017
 
                     await ЗапускНастройкиТаск();
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
+                
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка режима синхронизации"; }));
 
                     await РежимСинхИлиНетТаск(set.DelayClok);
@@ -115,8 +118,9 @@ namespace URAN_2017
                     BDReadRAN(BAAK12T.NameRan, ClassParentsBAAK.Синхронизация, true, BAAK12T.PorogAll, BAAK12T.TrgAll, TimeTaimer1);
                     BdAddRANTimeПуск(BAAK12T.NameRan, TimeПуск());
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Black; }));
-
-                    ЗапускРеадТаск(IntervalNewFile, set.КолТригТест, set.ИнтервалТригТест, set.TimeRanHors, set.TimeRanMin, cancellationToken);
+                    Task.Run(() => MainYpravlenia(IntervalNewFile, set.КолТригТест, set.ИнтервалТригТест, set.TimeRanHors, set.TimeRanMin, cancellationToken));
+                    ЗапускРеадТаск(cancellationToken);
+                
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = true; }));
 
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = true; }));
@@ -124,23 +128,28 @@ namespace URAN_2017
                     ZapicDataBDTasc1(cancellationToken);
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; }));
                     await ZapicDataTasc1(cancellationToken);
+                
                 }
                 catch (NullReferenceException e)
                 {
-                    MessageBox.Show("Нет доступных плат" + e.ToString());
+                    MessageBox.Show("Нет доступных плат" + e.ToString(), "Ошибка");
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Произошла ошибка при СТАРТЕ" + "  " + "Имя ошибки" + ex.ToString());
+                    MessageBox.Show("Произошла ошибка при СТАРТЕ" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
                 }
                 finally
                 {
-                    Stop.IsEnabled = false;
-                    Start.IsEnabled = true;
-                    Obnoviti.IsEnabled = true;
+                    Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));//To Do
+             
+                    Start.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = true; }));
+
+
+                   
+                    Obnoviti.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Obnoviti.IsEnabled = true; }));
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
-                    rezimYst.Foreground = System.Windows.Media.Brushes.Red;
+                    
                 }
                 try
                 {
@@ -159,7 +168,7 @@ namespace URAN_2017
                             }
                             catch
                             {
-                                MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки");
+                                MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки", "Ошибка");
                             }
                             try
                             {
@@ -167,33 +176,37 @@ namespace URAN_2017
                             }
                             catch
                             {
-                                MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки");
+                                MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки", "Ошибка");
                             }
 
                         }
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Произошла ошибка при Остановке MS" + "  " + "Имя ошибки");
+                        MessageBox.Show("Произошла ошибка при Остановке MS" + "  " + "Имя ошибки", "Ошибка");
                     }
-                    BAAK12T.StopURANDelegate?.Invoke();
+                    
                     BdAddRANTimeСтоп(BAAK12T.NameRan, TimeПуск());
-                    Stop.IsEnabled = false;
-                    Start.IsEnabled = true;
-                    contextTestRan.IsEnabled = false;
+                    Start.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = true; }));
+                  
+                    Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));
+
+                  
+                    contextTestRan.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = false; }));
                     Obnoviti.IsEnabled = true;
-                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Остановка УРАН"; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН Завершила работу"; }));
 
                 }
 
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString());
+                    MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
                 }
                 finally
                 {
-                    Stop.IsEnabled = false;
+                   Stop.IsEnabled = false;
                     Start.IsEnabled = true;
+                 
                     contextTestRan.IsEnabled = false;
                     Obnoviti.IsEnabled = true;
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Остановка УРАН"; }));
@@ -203,7 +216,7 @@ namespace URAN_2017
             }
             else
             {
-                MessageBox.Show("Нет доступных плат");
+                MessageBox.Show("Нет доступных плат", "Остановка программы");
             }
 
         }
@@ -215,14 +228,18 @@ namespace URAN_2017
         private async void Stop_Click(object sender, RoutedEventArgs e)
         {
             Stop.IsEnabled = false;
+        
             contextTestRan.IsEnabled = false;
             rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
-
+   
             try
             {
                 if (cancellationTokenSource != null)
                 {
+                    BAAK12T.StopURANDelegate?.Invoke();
+                 
                     cancellationTokenSource.Cancel();
+                   
 
                 }
 
@@ -230,14 +247,16 @@ namespace URAN_2017
 
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString());
+                MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
 
 
             }
             finally
             {
                 Stop.IsEnabled = false;
-                Start.IsEnabled = true;
+               Start.IsEnabled = true;
+      
+
             }
         }
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -267,17 +286,19 @@ namespace URAN_2017
             Double res = 0;
             foreach (int i in n)
             {
-                res = res + Math.Pow((i - x), 2);
+                res += Math.Pow((i - x), 2);
             }
             return res;
         }
         private SerialPort comport = new SerialPort();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            int x = 5;
-            MessageBox.Show(x.ToString("00"));
+     
+
+
+
         }
-  
+
         private double _toRaz=10;
         private double _fromRaz=0;
         public double FromRaz
@@ -299,9 +320,9 @@ namespace URAN_2017
                 OnPropertyChanged("ToRaz");
             }
         }
+   
 
-
-        public async Task xcxc()
+        public async Task Xcxc()
         {
 
             int[,] dd = new int[12, 1024];
@@ -326,7 +347,7 @@ namespace URAN_2017
   
         
 
-        private void port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        private void Port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             // Read all the data waiting in the buffer
           //  string data = comport.ReadExisting();
@@ -336,7 +357,7 @@ namespace URAN_2017
         }
 
        
-        public async void dd1()
+        public async void Dd1()
         {
             try
             {
@@ -355,7 +376,7 @@ namespace URAN_2017
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.ToString(), "Ошибка");
             }
         }
         private async void Button_Click_3(object sender, RoutedEventArgs e)
@@ -401,18 +422,26 @@ namespace URAN_2017
                     MyGrafic.SeriesCollection.Clear();
                     MyGrafic.SeriesCollectionN.Clear();
                 }
+                catch (NullReferenceException ee)
+                {
+                    Debug.WriteLine("Error 427");
+                }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString()+" "+ "MyGrafic.SeriesCollection.Clear();");
+                    MessageBox.Show(ex.ToString()+" "+ "MyGrafic.SeriesCollection.Clear();", "Ошибка");
                 }
                 try
                 {
                     MyGrafic.Labels.Clear();
                     MyGrafic.LabelsN.Clear();
                 }
+                catch (NullReferenceException ee)
+                {
+                    Debug.WriteLine("Error 440");
+                }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString()+" "+"MyGrafic.Labels.Clear();");
+                    MessageBox.Show(ex.ToString()+" "+"MyGrafic.Labels.Clear();", "Ошибка");
                 }
             
           
@@ -425,7 +454,7 @@ namespace URAN_2017
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.ToString()+i.ToString()+" "+i1.ToString()+" "+i2.ToString()+" "+i3.ToString());
+                MessageBox.Show(ex.ToString()+i.ToString()+" "+i1.ToString()+" "+i2.ToString()+" "+i3.ToString(), "Ошибка");
             }
         }
 
@@ -491,17 +520,12 @@ namespace URAN_2017
 
             }
         }
-        private void jj(object sender, RoutedEventArgs e)
+        private void Jj(object sender, RoutedEventArgs e)
         {
-            BAAK12T dd = _DataColecViev[List1.SelectedIndex];
-           
-                    MessageBox.Show(BAAK12T.PorogAll.ToString());
-           
-            
-            dd = null;
-           
+ 
+                    MessageBox.Show(BAAK12T.PorogAll.ToString());         
         }
-        private void jj1(object sender, RoutedEventArgs e)
+        private void Jj1(object sender, RoutedEventArgs e)
         {
             BAAK12T dd = _DataColecViev[List1.SelectedIndex];
            string s = dd.NamKl.ToString() + " " + "Плата " + dd.NameBAAK12.ToString() + "\r\n";
@@ -513,11 +537,11 @@ namespace URAN_2017
             MessageBox.Show(s);
 
         }
-        private void jj2(object sender, RoutedEventArgs e)
+        private void Jj2(object sender, RoutedEventArgs e)
         {
-            BAAK12T dd = _DataColecViev[List1.SelectedIndex];
+          
             MessageBox.Show(BAAK12T.TrgAll.ToString());
-            dd = null;
+      
 
         }
         int eh=0;
@@ -542,20 +566,20 @@ namespace URAN_2017
                     {
                         Header = dd.NamKl,
                     };
-                    menuItemporog.Click += jj;
+                    menuItemporog.Click += Jj;
                     
                     context1.Items.Add(menuItemporog);
                     var menuItNull = new MenuItem
                     {
                         Header = dd.NamKl,
                     };
-                    menuItNull.Click += jj1;
+                    menuItNull.Click += Jj1;
                     context3.Items.Add(menuItNull);
                     var menuItTr = new MenuItem
                     {
                         Header = dd.NamKl,
                     };
-                    menuItTr.Click += jj2;
+                    menuItTr.Click += Jj2;
                     context2.Items.Add(menuItTr);
                 }
                 else
@@ -578,10 +602,15 @@ namespace URAN_2017
         {
 
 
+            var ff = (ListView)sender;
+            if (ff.SelectedIndex >= 0)
+            {
 
-            BAAK12T bAAK12T = (BAAK12T)sender;
-            BAAK12T.otobKl = bAAK12T.NamKl+bAAK12T.BAAKTAIL.ToString();
-           MessageBox.Show(bAAK12T.NamKl.ToString() + "ghg " + List1.SelectedIndex.ToString());
+
+                BAAK12T bAAK12T = (BAAK12T)ff.SelectedItem;
+                BAAK12T.otobKl = bAAK12T.NamKl + bAAK12T.BAAKTAIL.ToString();
+              
+            }
 
         }
 
@@ -622,7 +651,7 @@ namespace URAN_2017
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    MessageBox.Show(ex.ToString(), "Ошибка");
                 }
             }
             
@@ -676,7 +705,7 @@ namespace URAN_2017
 
             if (!Start.IsEnabled)
             {
-                MessageBox.Show("Вданный момент закрытие не возможно. Нажмите ОК, остановите работу программы и повторите закрытие");
+                MessageBox.Show("Вданный момент закрытие не возможно. Нажмите ОК, остановите работу программы и повторите закрытие", "Закрытие программы");
                 e.Cancel = true;
             }
             else
@@ -865,18 +894,18 @@ namespace URAN_2017
             
         }
 
-        public void fg(Socket socket)
+        public void Fg(Socket socket)
         {
             bool f = true;
             while (f)
             {
                 Socket s = socket.Accept();
-                string data = null;
-                byte[] bytes = new byte[1024];
-                int bytesCount = s.Receive(bytes);
-                data += Encoding.UTF8.GetString(bytes, 0, bytesCount);
+      
+             
+           
+              
                 //MessageBox.Show("Данные от клиента"+data);
-                string str = "Проблема";
+                string str;
                 if (_DataColecViev.Count!=0)
                 {
                     str = "Запущены БААК12-200Т"+_DataColecViev.Count;
@@ -929,23 +958,25 @@ namespace URAN_2017
 
                 comport.Write("0");
                 comport.Close();
-                 MessageBox.Show("Питание МС1 и МС2 перегружена, ожидайте загрузок плат и нажмите 'Обновить'");
+                 MessageBox.Show("Питание МС1 и МС2 перегружена, ожидайте загрузок плат и нажмите 'Обновить'", "Управление питанием");
             }
             else
             {
-                MessageBox.Show("Извините, на данный момент эта функция находится в разработке");
+                MessageBox.Show("Извините, на данный момент эта функция находится в разработке", "Управление питанием");
             }
            
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {if (Chart1 != null)
+        {
+            if (Chart1 != null)
             {
 
 
                 var vv = (TabControl)sender;
                 if (vv.SelectedIndex == 1)
                 {
+
                     BAAK12T.grafOtob = true;
                    
                 }

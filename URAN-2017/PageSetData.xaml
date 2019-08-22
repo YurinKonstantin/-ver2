@@ -34,18 +34,39 @@
                         </Style>
                     </TextBox.Resources>
                 </TextBox>
-                <Button x:Name="ButWay" Content="Путь" Click="ButWay_Click" HorizontalAlignment="Left"   Width="53" />
+                <Button x:Name="ButWay"  Click="ButWay_Click" HorizontalAlignment="Left"   Width="53" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/folderopen18dp.png" Width="24" Height="24"/>
+                            <TextBlock Text="Путь" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Label/>
                 <Label  Content="Расположение Базы Данных"  FontSize="18" />
                 <Label  Content="Сохранять данные о работе установки в БД"/>
                 <ToggleSwitch:HorizontalToggleSwitch x:Name="chekTogleBinSave1" HorizontalAlignment="Left" IsChecked="True" Checked="ChekTogleBinSave1_Checked" Unchecked="ChekTogleBinSave1_Unchecked"/>
                 <TextBox x:Name="WayBd" FontSize="16"   BorderThickness="0" TextChanged="WayBd_TextChanged"/>
-                <Button x:Name="ButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="ButWayBd_Click" />
+                <Button x:Name="ButWayBd"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="ButWayBd_Click" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/folderopen18dp.png" Width="24" Height="24"/>
+                            <TextBlock Text="Путь" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Label/>
 
                 <Label  Content="Расположение Базы Данных Тестового набора"  FontSize="18" />
                 <TextBox x:Name="TestWayBd" FontSize="16"   BorderThickness="0" TextChanged="TestWayBd_TextChanged" />
-                <Button x:Name="TestButWayBd" Content="Путь"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="TestButWayBd_Click" />
+                <Button x:Name="TestButWayBd"  HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="0,0,-1,0" Width="53" Click="TestButWayBd_Click" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/folderopen18dp.png" Width="24" Height="24"/>
+                            <TextBlock Text="Путь" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Label/>
 
                 <Label Content="Интервал создания нового файла, час" FontSize="18" />

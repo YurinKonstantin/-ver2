@@ -1,0 +1,64 @@
+﻿<Window x:Class="URAN_2017.WorkBD.AddDataTablNullLine"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:URAN_2017.WorkBD"
+        mc:Ignorable="d"
+        Title="AddDataTablNullLine" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock FontFamily="Arial">Введите Имя платы БААК:</TextBlock>
+        <TextBox Name="name" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Left">У1</TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Канал 1" FontFamily="Arial"/>
+            <TextBox Name="Сh1" FontStyle="Oblique" FontFamily="Arial" MinWidth="250">2048</TextBox>
+            <TextBlock Text="Канал 2" FontFamily="Arial"/>
+            <TextBox Name="Сh2"  FontStyle="Oblique" FontFamily="Arial" MinWidth="250">2048</TextBox>
+            <TextBlock Text="Канал 3" FontFamily="Arial"/>
+            <TextBox Name="Сh3" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 4" FontFamily="Arial"/>
+            <TextBox Name="Сh4" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 5" FontFamily="Arial"/>
+            <TextBox Name="Сh5" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 6" FontFamily="Arial"/>
+            <TextBox Name="Сh6" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+
+
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+
+
+
+            <TextBlock Text="Канал 7" FontFamily="Arial"/>
+            <TextBox Name="Сh7" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 8" FontFamily="Arial"/>
+            <TextBox Name="Сh8" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 9" FontFamily="Arial"/>
+            <TextBox Name="Сh9" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 10" FontFamily="Arial"/>
+            <TextBox Name="Сh10" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 11" FontFamily="Arial"/>
+            <TextBox Name="Сh11" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+            <TextBlock Text="Канал 12" FontFamily="Arial"/>
+            <TextBox Name="Сh12" MinWidth="250" FontStyle="Oblique" FontFamily="Arial">2048</TextBox>
+
+          
+        </StackPanel>
+        <WrapPanel  HorizontalAlignment="Right" Margin="0,15,20,20" Grid.Row="2" Grid.Column="1">
+            <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,4,0" Content="OK"/>
+            <Button IsCancel="True" MinWidth="60">Отмена</Button>
+        </WrapPanel>
+    </Grid>
+   
+</Window>

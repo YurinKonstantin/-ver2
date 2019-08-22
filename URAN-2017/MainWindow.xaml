@@ -12,10 +12,10 @@
     Closing="Window_Closing" 
         mc:Ignorable="d"
     Activated="Window_Activated"
-        Title="УРАН (ver. Release 1.0.3.100)-2019"  Height="771.74" Width="1059.018" MinWidth="966.776" MinHeight="679.359"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
+        Title="УРАН (ver. Release 1.0.4.9)-2019"  Height="960" Width="1680" MinWidth="966.776" MinHeight="679.359"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
 
     <Window.Resources>
-        <local:VisibilityToCheckedConverter x:Key="VisibilityToCheckedConverter"/>
+      
         <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
         <Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
@@ -106,7 +106,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="47*"/>
             <RowDefinition Height="572*"/>
-            <RowDefinition Height="12"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid.RenderTransform>
@@ -128,12 +128,18 @@
                 <StackPanel.Effect>
                     <DropShadowEffect BlurRadius="2" ShadowDepth="0"/>
                 </StackPanel.Effect>
-                <Button  x:Name="Start" Content="Старт" HorizontalContentAlignment="Center" Margin="1,1,0,0" Click="Start_Click" FontSize="18" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31" Height="31" VerticalAlignment="Top">
+                <Button  x:Name="Start" HorizontalContentAlignment="Center"  Margin="1,1,0,0" Click="Start_Click" FontSize="18" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/play18dp.png" Width="24" Height="24"/>
+                            <TextBlock Text="Старт" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
                 </Button>
-                <Button x:Name="Stop" IsEnabled="False" Content="Стоп" HorizontalContentAlignment="Center" Margin="1,1,0,0" FontSize="18" Click="Stop_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button x:Name="Stop" IsEnabled="False"  Content="Стоп" HorizontalContentAlignment="Center" Margin="1,1,0,0" FontSize="18" Click="Stop_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
@@ -143,15 +149,27 @@
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="dd" Content="Настройка" HorizontalContentAlignment="Center" FontSize="18" Margin="1,1,0,0" Click="Button_Click_1" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button x:Name="dd" HorizontalContentAlignment="Center" FontSize="18" Margin="1,1,0,0" Click="Button_Click_1" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/basesettings18dp.png" Width="24" Height="24"/>
+                            <TextBlock Text="Настройки" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
                 </Button>
-                <Button x:Name="Obnoviti" Content="Обновить" Margin="1,1,0,0" Click="Button_Click_3">
+                <Button x:Name="Obnoviti" Margin="1,1,0,0" Click="Button_Click_3">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/replay18dp.png" Width="24" Height="24"/>
+                            <TextBlock Text="Обновить" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
                 </Button>
                 <Border BorderBrush="Black"  Margin="16,1,0,0"  Background="White">
                     <Border.Effect>
@@ -209,20 +227,25 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
+                                
                                 <StackPanel Orientation="Vertical">
 
-                                    <StackPanel Orientation="Horizontal">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <StackPanel Orientation="Horizontal" >
                                         <Label Content="Кластер №" Padding="1" Margin="4,0,2,0"/>
                                         <Label FontSize="14" Padding="1" Margin="0,0,2,0"  Content="{Binding NamKl}" VerticalAlignment="Center"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" Foreground="{Binding brushes}"  VerticalAlignment="Stretch"/>
+                                      
+                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" Foreground="{Binding brushes}" VerticalAlignment="Stretch"/>
+                                     
                                     </StackPanel>
-                                 
+                                    </ScrollViewer>
                                     <Expander Header="События/нейтроны/среднее значение">
                                         <StackPanel>
                                             <Label FontSize="14" Padding="1" Margin="4,0,2,0" Content="{Binding Host}" VerticalAlignment="Stretch" />
                                             <StackPanel Orientation="Horizontal">
 
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"  Content="Пакетов" VerticalAlignment="Stretch"/>
+                                                <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="{Binding КолПакетов}" VerticalAlignment="Stretch" />
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content=")" VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
                                                 <Label FontSize="14" Padding="1" Margin="4,0,0,0"   Content="(" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
@@ -550,6 +573,19 @@
                         </Grid>
                     </TabItem.Content>
                 </TabItem>
+                <TabItem Tag="Viz">
+                    <TabItem.Header>
+                        <Label Content="Визуализация"/>
+                    </TabItem.Header>
+                    <TabItem.Content>
+                        <Grid Margin="0,0,8,0">
+
+
+                          
+
+                        </Grid>
+                    </TabItem.Content>
+                </TabItem>
             </TabControl>
 
             <TabControl   Grid.Row="2" Margin="4,0,4,0" TabStripPlacement="Bottom"   Style="{DynamicResource TabControlStyle1}">
@@ -631,7 +667,7 @@
         </Grid>
 
 
-        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"  Margin="4" Background="Transparent" BorderThickness="1" BorderBrush="Black" CornerRadius="8">
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"    BorderThickness="1" BorderBrush="Black" CornerRadius="8" Margin="4" Background="WhiteSmoke">
             <Grid UseLayoutRounding="True">
 
                 <Grid.ColumnDefinitions>
@@ -672,7 +708,7 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="8" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="dfddg" Margin="8,4,4,4" FontSize="22" FontStyle="Normal" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Left" />
         
         <ProgressBar UseLayoutRounding="True" Grid.Row="1" Grid.Column="2" x:Name="progres"  Height="20" Margin="4"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right" Width="122" >
             <ProgressBar.Effect>
@@ -680,8 +716,28 @@
             </ProgressBar.Effect>
        
         </ProgressBar>
+        <Grid Grid.Row="5" Grid.ColumnSpan="3" Background="DarkOrange">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
 
-        <Grid Grid.ColumnSpan="3" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfo" VerticalAlignment="Stretch"  >
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"  Margin="4">
+                <TextBlock Text="Текущее время: "  FontFamily="Time" Foreground="White"/>
+                <TextBlock x:Name="NowTime" FontFamily="Time" Foreground="White"/>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="1"  Margin="4">
+                <TextBlock Text="Продолжительность работы: "  FontFamily="Time" Foreground="White"/>
+                <TextBlock x:Name="prodTime" Text="0" FontFamily="Time" Foreground="White"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="2"  Margin="4">
+
+                <TextBlock x:Name="TimeTestO" FontFamily="Time" Foreground="White"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.ColumnSpan="3" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"    x:Name="GridStartInfo" VerticalAlignment="Stretch"  >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="60"/>
@@ -694,7 +750,8 @@
 
             <Label Content="Подготавливаем установку к старту" FontFamily="Arial" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Background="Black" Foreground="White" FontSize="22" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
             <Label Grid.Row="2" Content="Пожайлуста подождите..." FontStyle="Italic" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Background="WhiteSmoke" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
-            <Image x:Name="imgLoadingImage" Grid.Row="3" Source="Wrench.GIF"  Width="100" Height="100"/>
+            <MediaElement x:Name="myGif" MediaEnded="myGif_MediaEnded" Grid.Row="3" Width="100" Height="100" UnloadedBehavior="Manual" Source="Wrench.gif"  Visibility="Visible"  />
+
             <Label x:Name="rezimYst1" Grid.Column="0" Grid.Row="4"   VerticalAlignment="Stretch" VerticalContentAlignment="Center" Background="WhiteSmoke" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" />
             <ProgressBar Grid.Row="5" x:Name="progres1"  IsIndeterminate="True" Height="20" Margin="0,8,0,8"  HorizontalContentAlignment="Stretch" Foreground="Red" VerticalContentAlignment="Center" VerticalAlignment="Center" Background="Black" HorizontalAlignment="Center" Width="280" >
                 <ProgressBar.Effect>
@@ -702,7 +759,8 @@
                 </ProgressBar.Effect>
             </ProgressBar>
         </Grid>
-        <Grid Grid.ColumnSpan="3" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfoError" VerticalAlignment="Stretch"  >
+       
+        <Grid Grid.ColumnSpan="3" Grid.RowSpan="6" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"  x:Name="GridStartInfoError" VerticalAlignment="Stretch"  >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="60"/>
@@ -740,6 +798,6 @@
                 <Button Content="Обновить" Click="Button_Click_3" Margin="8"/>
             </StackPanel>
         </Grid>
-
+     
     </Grid>
 </Window>

@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using URAN_2017.FolderSetUp;
 
 namespace URAN_2017
 {
@@ -50,7 +51,7 @@ namespace URAN_2017
             using (fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 bf.Serialize(fs, set);
-                System.Windows.MessageBox.Show("Сохранено");
+                System.Windows.MessageBox.Show("Настройки удачно сохранены", "Сохранение");
 
             }
             fs.Close();
@@ -117,7 +118,8 @@ namespace URAN_2017
         {
             OpenFileDialog myDialog = new OpenFileDialog
             {
-                Filter = "База данных(*.MDB;*.MDB;*.accdb)|*.MDB;*.MDB;*.ACCDB" + "|Все файлы (*.*)|*.* ",
+                Filter = "База данных(*.MDB;*.MDB;*.accdb; *.db; *.db3)|*.MDB;*.MDB;*.ACCDB;*DB; *DB3;" + "|Все файлы (*.*)|*.* ",
+       
                 CheckFileExists = true,
                 Multiselect = true
             };

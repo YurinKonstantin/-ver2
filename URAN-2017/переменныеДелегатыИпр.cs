@@ -11,7 +11,7 @@ namespace URAN_2017
 {
     public partial class MainWindow : INotifyPropertyChanged
     {
-        Customer customer = new Customer();
+   
         ClassParentsBAAK bv = new ClassParentsBAAK();
 
         public ObservableCollection<BAAK12T> _DataColecViev;

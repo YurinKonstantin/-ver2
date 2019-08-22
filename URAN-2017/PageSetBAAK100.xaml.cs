@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using URAN_2017.FolderSetUp;
 
 namespace URAN_2017
 {
@@ -59,18 +60,19 @@ namespace URAN_2017
                 }
                 catch (Exception)
                 {
-                    System.Windows.MessageBox.Show("Ошибка серилизации");
+                    System.Windows.MessageBox.Show("Ошибка серилизации", "Ошибка");
                 }
             }
             catch (Exception)
             {
-                System.Windows.MessageBox.Show("Ошибка серилизации");
+                System.Windows.MessageBox.Show("Ошибка серилизации", "Ошибка");
             }
 
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Serial();
+            System.Windows.MessageBox.Show("Настройки успешно сохранены", "Настройки работы программы");
         }
 
         private void WaySet_TextChanged(object sender, TextChangedEventArgs e)
@@ -82,8 +84,8 @@ namespace URAN_2017
         {
            OpenFileDialog myDialog = new OpenFileDialog
             {
-                Filter = "База данных(*.MDB;*.MDB;*.accdb)|*.MDB;*.MDB;*.ACCDB" + "|Все файлы (*.*)|*.* ",
-                CheckFileExists = true,
+               Filter = "База данных(*.MDB;*.MDB;*.accdb; *.db; *.db3)|*.MDB;*.MDB;*.ACCDB;*DB; *DB3;" + "|Все файлы (*.*)|*.* ",
+               CheckFileExists = true,
                 Multiselect = true
             };
             if (myDialog.ShowDialog() == DialogResult.OK)

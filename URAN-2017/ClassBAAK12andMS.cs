@@ -20,13 +20,13 @@ namespace URAN_2017
 
     public partial class BAAK12T:IDisposable
     {
-        public void Dispose()
+        public new void Dispose()
         {
             throw new NotImplementedException();
         }
         
         private System.Windows.Media.Brush _myBrush;
-public System.Windows.Media.Brush brushes
+public System.Windows.Media.Brush Brushes
         {
             get { return _myBrush; }
             set
@@ -34,7 +34,7 @@ public System.Windows.Media.Brush brushes
                 if (value != _myBrush)
                 {
                     _myBrush = value;
-                    this.OnPropertyChanged(nameof(brushes));
+                    this.OnPropertyChanged(nameof(Brushes));
                 }
             }
         }
@@ -42,11 +42,11 @@ public System.Windows.Media.Brush brushes
 
    
         //Общее 
-        public void НастройкаКлок()
+        public virtual void НастройкаКлок()
         {
              if(clientBAAK12T.Connected && ns!=null)
             {
-                brushes = System.Windows.Media.Brushes.Black;
+                Brushes = System.Windows.Media.Brushes.Black;
                 //TODO настройка регистров с синхронизацией
                 CтатусБААК12 = "Запись настроик с клок"; 
                 
@@ -65,18 +65,18 @@ public System.Windows.Media.Brush brushes
                 ВычитываемДанныеНенужные();
             Thread.Sleep(50);
             CтатусБААК12 = "Работает";
-                brushes = Brushes.Green;
+                Brushes = System.Windows.Media.Brushes.Green;
             }
         else
             {
                 CтатусБААК12 = "НЕТ подключения";
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 InDe(false);
             }
             
 
         }
-        public void Настройка()
+        public virtual void Настройка()
         {
             if(Синхронизация)
             {
@@ -109,8 +109,8 @@ public System.Windows.Media.Brush brushes
         /// <summary>
         /// Вычитывает ненужные файлы
         /// </summary>
-        private void ВычитываемДанныеНенужные()
-        {
+       public void ВычитываемДанныеНенужные()
+       {
             bool endd = false;
             int x = 0;
            
@@ -144,59 +144,40 @@ public System.Windows.Media.Brush brushes
            
 
         }
+        
         /// <summary>
         /// Вычитывает нужные файлы
         /// </summary>
-        private void ВычитываемДанныеНужные()
+       public void ВычитываемДанныеНужные()
         {
             bool endd = false;
             int x = 0;
             while (!endd)
             {
-                int res = Read13007(out byte[] buf);//читаем с платы
-                if (res > 0)
-                {
-
-                    if (buf[0] == 0xFF)
+                    lock(OcherediNaZapic)
                     {
-                        CountFlagEnd++;
+
+
+                    if (OcherediNaZapic.Count() == 0)
+                    {
+                        x++;
                     }
                     else
                     {
-                        CountFlagEnd = 0;
+                        x = 0;
                     }
-                    DataBAAKList.Add(buf[0]);
-
-
-                    if ((data_w != null) & (data_fs != null) & CountFlagEnd == 4)
+                    if (x > 50)
                     {
-
-                        WriteFileData(DataBAAKList);
-                        DataBAAKList.Clear();
-                        CountFlagEnd = 0;
-
-                        КолПакетов++;
-                        DataBAAKList = new List<byte>();
+                        endd = true;
                     }
-
-                    x = 0;
-
-                }
-                else
-                {
-                    x++;
-                }
-                if(x<50)
-                {
-                    endd = true;
-                }
+                    }
 
             }
             
 
         }
        public bool FlagSaveBin=true;
-        private void СохраняемДанныеНужные()
+        public void СохраняемДанныеНужные()
         { if (FlagSaveBin)
             {
                 while (true)
@@ -237,11 +218,11 @@ public System.Windows.Media.Brush brushes
             
 
         }
-        public void НастройкаБезКлок()
+        public virtual void НастройкаБезКлок()
         {
             try
             {
-                brushes = Brushes.Black;
+                Brushes = System.Windows.Media.Brushes.Black;
                 CтатусБААК12 = "Запись настроик без клок";
                 SettingNoCloc();
                 CтатусБААК12 = "Запись общих настроик";
@@ -253,7 +234,7 @@ public System.Windows.Media.Brush brushes
                 CтатусБААК12 = "Вычитываем ненужные файлы";
                 ВычитываемДанныеНенужные();
                 CтатусБААК12 = "Работает";
-                brushes = Brushes.Green;
+                Brushes = System.Windows.Media.Brushes.Green;
             }
             catch (Exception ex)
             {
@@ -293,7 +274,7 @@ public System.Windows.Media.Brush brushes
             StartTime(2);
             TriggerStart();
         }
-        public void ПускСтартТайм()
+        public virtual void ПускСтартТайм()
         {
             if (Синхронизация)
             {
@@ -315,7 +296,7 @@ public System.Windows.Media.Brush brushes
                // else
                 //{
                     CтатусБААК12 = "НЕТ подключения";
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 //}
             }
         }
@@ -332,12 +313,12 @@ public System.Windows.Media.Brush brushes
            
             TriggerStart();
         }
-        public void Stop()
+        public virtual void Stop()
         {
             try
             {
 
-                brushes = Brushes.Black;
+                Brushes = System.Windows.Media.Brushes.Black;
                 Thread.Sleep(50);
                 CтатусБААК12 = "Триггер СТОП";
                 TriggerStop();
@@ -356,7 +337,7 @@ public System.Windows.Media.Brush brushes
                 CloseFile();
                 Thread.Sleep(50);
                 CтатусБААК12 = "Отключена";
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
             }
             catch(Exception)
             {
@@ -366,7 +347,7 @@ public System.Windows.Media.Brush brushes
             
 
         }      
-        public void TriggerStart()//Разрешение выроботки триггерного сигнала
+        public virtual void TriggerStart()//Разрешение выроботки триггерного сигнала
         {
             if (clientBAAK12T.Connected && ns != null)
             {
@@ -376,11 +357,11 @@ public System.Windows.Media.Brush brushes
             else
             {
                 CтатусБААК12 = "НЕТ подключения";
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 InDe(false);
             }
         }
-        public void TriggerStop()//Запрет выроботки триггерного сигнала
+        public virtual void TriggerStop()//Запрет выроботки триггерного сигнала
         {
             if (clientBAAK12T.Connected && ns != null)
             {
@@ -390,7 +371,7 @@ public System.Windows.Media.Brush brushes
             }
             else
             {
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 CтатусБААК12 = "НЕТ подключения";
                 InDe(false);
             }
@@ -399,10 +380,9 @@ public System.Windows.Media.Brush brushes
         /// <summary>
         /// запускаем передачу данных
         /// </summary>
-        public void StartdataReg()//запускаем передачу данных
+        public virtual void StartdataReg()//запускаем передачу данных
         {
-            // WreadReg3000(0x10, 0x0);
-            //WRbuffer = new Byte[14];//Создаем буффер для записи
+          
             if (clientBAAK12T.Connected && ns != null)
             {
                 Rbuffer = new Byte[14];//Создаем буффер для чтения
@@ -411,7 +391,7 @@ public System.Windows.Media.Brush brushes
             else
             {
                 CтатусБААК12 = "НЕТ подключения";
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 InDe(false);
             }
             
@@ -420,7 +400,7 @@ public System.Windows.Media.Brush brushes
         /// <summary>
         /// останавливаем передачу данных
         /// </summary>
-        public void StopdataReg()//останавливаем передачу данных
+        public virtual void StopdataReg()//останавливаем передачу данных
         {
             if (clientBAAK12T.Connected && ns != null)
             {
@@ -430,7 +410,7 @@ public System.Windows.Media.Brush brushes
             else
             {
                 CтатусБААК12 = "НЕТ подключения";
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 InDe(false);
             }
       
@@ -439,18 +419,13 @@ public System.Windows.Media.Brush brushes
        {
             
             DateTime tmp = DateTime.UtcNow;
-
-
-
-
-            
             return tmp.Day.ToString("00") + "." + tmp.Month.ToString("00") + "." + tmp.Year.ToString() + " " + tmp.Hour.ToString("00") + "." + tmp.Minute.ToString("00") + "." + tmp.Second.ToString("00"); ;
         }
         /// <summary>
         /// Расчет темпа и запись результата в БД
         /// </summary>
         /// 
-        public void TempPacetov()
+        public virtual void TempPacetov()
         {
             //if (Conect300Statys)
            // {
@@ -468,8 +443,13 @@ public System.Windows.Media.Brush brushes
             }
             try
             {
-               // Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(Nkl, ТемпПакетов); }));
-                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddPoint(Nkl, ТемпПакетов, ТемпПакетовN); }));
+                // Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(Nkl, ТемпПакетов); }));
+                lock (MyGrafic.Labels)
+                {
+                    MyGrafic.AddPoint(Nkl, ТемпПакетов, ТемпПакетовN);
+
+                    //  Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddPoint(Nkl, ТемпПакетов, ТемпПакетовN); }));
+                }
                
             }
             catch
@@ -482,13 +462,12 @@ public System.Windows.Media.Brush brushes
           
            // }
         }
-        int TecPacetov = 0;
+       
         /// <summary>
         /// Создает новый файл
         /// </summary>
-        public void CreatFileData()
-        {//if (Conect300Statys)
-           // {
+        public virtual void CreatFileData()
+        {
                 try
                 {
                 string tipPl;
@@ -501,18 +480,18 @@ public System.Windows.Media.Brush brushes
                     BDReadFile(NamKl + "_" + sd + "_" + tipPl, NameBAAK12, sd, BAAK12T.NameRan);
                     NameFileClose = NamKl + "_" + sd+ "_"+tipPl;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 InDe(false);
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 CтатусБААК12 = "Ошибка при создании файла";
-            }
-           // }
+                }
+          
         }
         /// <summary>
         /// закрытие файла
         /// </summary>
-        public void CloseFile()//закрытие файла
+        public virtual void CloseFile()//закрытие файла
         {
            // if(Conect300Statys)
             //{
@@ -527,7 +506,7 @@ public System.Windows.Media.Brush brushes
                 catch (Exception)
                 {
                     InDe(false);
-                    brushes = Brushes.Red;
+                    Brushes = System.Windows.Media.Brushes.Red;
                     CтатусБААК12 = "Ошибка при закрытии потока файла";
                 }
            // }
@@ -540,7 +519,7 @@ public System.Windows.Media.Brush brushes
                 }
                 catch (Exception )
                 {
-                        brushes = Brushes.Red;
+                        Brushes = System.Windows.Media.Brushes.Red;
                         CтатусБААК12 = "Ошибка при закрытии файла";
                     }
             }
@@ -552,14 +531,19 @@ public System.Windows.Media.Brush brushes
             
                 
                     try
-                    {foreach(Byte b in DataBAAKList)
                     {
-                    data_w.Write(b);
-                    }
+                        foreach (Byte b in DataBAAKList)
+                        {
+                         data_w.Write(b);
+                        }
                         //data_w.Write(buf);
                         
                     }
-                    catch (Exception)
+            catch (NullReferenceException ee)
+            {
+                Debug.WriteLine("Error 551");
+            }
+            catch (Exception)
                     {
                         MessageBox.Show("Ошибка записи");
                     }
@@ -569,19 +553,19 @@ public System.Windows.Media.Brush brushes
         /// <summary>
         /// записываем данных о событии из очереди в в бд
         /// </summary>
-        public void WriteInFileIzOcherediBD()
+        public virtual void WriteInFileIzOcherediBD()
         {
-            ClassZapicBD BDData = new ClassZapicBD();
+          
             try
             {
                 
-                OcherediNaZapicBD.TryDequeue(out BDData);
+                OcherediNaZapicBD.TryDequeue(out ClassZapicBD BDData);
                 if (BDData != null)
                 {
                    // OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
                     if(BDData.tipDataSob)
                     {
-                    BDReadСобытие(BDData.nameFileBD, BDData.nameBAAKBD, BDData.timeBD, BDData.nameRanBD, BDData.AmpBD, BDData.nameklasterBD, BDData.NnutBD, BDData.NlBD, BDData.sigBDnew, BDData.tipDataTest);//пишем в бд
+                    BDReadСобытие(BDData.nameFileBD, BDData.nameBAAKBD, BDData.timeBD, BDData.AmpBD, BDData.nameklasterBD, BDData.NnutBD, BDData.NlBD, BDData.sigBDnew, BDData.tipDataTest);//пишем в бд
                         КолПакетовОчер2++;
                     }
                     else
@@ -594,13 +578,17 @@ public System.Windows.Media.Brush brushes
 
 
             }
+            catch (NullReferenceException ee)
+            {
+                Debug.WriteLine("Error 590");
+            }
             catch (InvalidOperationException)
             {
 
             }
             catch (Exception e)
             {
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
 
                 CтатусБААК12 = "Ошибка. Отключена " + e;
                 InDe(false);
@@ -612,14 +600,17 @@ public System.Windows.Media.Brush brushes
         /// <summary>
         /// записываем данные из очереди в файл и в бд
         /// </summary>
-        public void WriteInFileIzOcheredi()//работа с данными из очереди
+        public virtual void WriteInFileIzOcheredi()//работа с данными из очереди
         {
             try
             {
                dataYu = new DataYu();
-                OcherediNaZapic.TryDequeue(out dataYu);
-                if (dataYu.ListData != null)
-                {   
+              bool? ed= OcherediNaZapic?.TryDequeue(out dataYu);
+               
+                if (ed == true)
+                {
+                    if (dataYu.ListData != null)
+                    {
                     byte[] d = new byte[dataYu.ListData.Count];
                     int x = 0;
                     foreach (Byte b in dataYu.ListData)
@@ -647,27 +638,29 @@ public System.Windows.Media.Brush brushes
                             OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
                         }
                     }
-                        КолПакетовОчер++;
-                   DataBAAKList1=null;
+                    КолПакетовОчер++;
+                    DataBAAKList1 = null;
                     d = null;
+                    }
                 }
             }
             catch (InvalidOperationException)
             {
 
             }
-            catch(NullReferenceException )
+            catch (NullReferenceException ee)
             {
-
+                Debug.WriteLine("Error 656");
             }
+       
             catch(Exception e)
             {
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 CтатусБААК12 = "Ошибка. Отключена "+e;
                 InDe(false);
             }
         }
-       int TecPaketovN=0;
+      
         private  void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out int[] nn1, out double[] Nul, out double[] sig, bool testT)
         {
             int[,] data = new int[12, 1024];
@@ -687,9 +680,10 @@ public System.Windows.Media.Brush brushes
                 //   sig = new Double[12];
                 try
                 {
+                   
                     Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { 
 
-                if (grafOtob==true && otobKl==NamKl)
+                if (grafOtob==true && otobKl==(NamKl+BAAKTAIL.ToString()))
                 {
                    
 
@@ -706,17 +700,26 @@ public System.Windows.Media.Brush brushes
                 }
                 }));
             }
-            catch (Exception ex)
+                catch (NullReferenceException ee)
+                {
+                    Debug.WriteLine("Error 708");
+                }
+                catch (Exception ex)
             {
                     File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка графика" + ex.Message.ToString() + "\n" + "otobKl " + otobKl + "\t"+ "NamKl "+ NamKl); //допишет текст в конец файла
             }
-            ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, out sig, out Amp, ref Nul, out bool bad, false, 1, 6);
+                bool bad = false;
+            ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, ref sig, ref Amp, ref Nul, ref bad, false, 1, 6);
                // MaxAmpAndNul(data, out Amp, out Nul, out sig);
                 // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
                 // nn1 = new int[12];
                 Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT);
             }
-            catch(Exception ex)
+            catch (NullReferenceException ee)
+            {
+                Debug.WriteLine("Error 723");
+            }
+            catch (Exception ex)
             {
                 File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка обработки данных" + ex.Message.ToString() + "\n" + "Время " + time + "\n"); //допишет текст в конец файла
             }
@@ -735,10 +738,10 @@ public System.Windows.Media.Brush brushes
                 for (int j = 100; j < 20000; j++)
                 {
                     int countmaxtime = 0;
-                    int countfirsttime = 0;
-                    int countendtime = 0;
-                    int countfirsttime3 = 0;
-                    int countendtime3 = 0;
+                    int countfirsttime;
+                    int countendtime;
+                    int countfirsttime3;
+                    int countendtime3;
                     int Amp= n[i,j];
                     if (Amp >= AmpOtbora1)//ищем претендента на нейтрон по порогу
                     {
@@ -784,7 +787,7 @@ public System.Windows.Media.Brush brushes
                           }
                          if (countendtime3 - countfirsttime3 >= dlitOtb)
                           {
-                                 Amp = Amp - Nu;
+                                 Amp -= Nu;
                                 OcherediNaZapicBD.Enqueue(new ClassZapicBD() {tipDataTest=test, tipDataSob = false,nameFileBD=NameFileClose, DBD=i, AmpSobBD=Amp, TimeFirstBD= countfirsttime, TimeEndBD= countendtime, timeBD= timeSob, TimeAmpBD= countmaxtime, TimeFirst3BD= countfirsttime3, TimeEnd3BD= countendtime3 });
                                 countnutron++;
                           
@@ -801,57 +804,7 @@ public System.Windows.Media.Brush brushes
         }
 
 
-        /// <summary>
-        ///Определение амплитуды сигнала от заряженной компаненты
-        /// </summary>
-        /// <param name="data1"></param>
-        /// <param name="Amp1"></param>
-       /* private void MaxAmpAndNul(int [,] data1, out int[] Amp1, out int[] maxNul, out Double[] sigma)
-        {
-            Amp1 = new int[12];
-            sigma = new Double[12];
-            maxNul = new int[12];//сумма всех точек
-            for (int z = 0; z < 12; z++)
-            {
-                int Nu = Convert.ToInt32(masnul[z]);
-                int max = 0;
-
-                for (int a = 0; a < 1024; a++)
-                {
-                    if (max < data1[z, a])
-                    {
-                        max = data1[z, a];
-                    }
-                }
-                Amp1[z] = max- Nu;
-            }
-
-           
-            int Nsob = 150;//число точек от начала для поиска нулевой линнии
-            for(int i=0; i<12; i++)
-            {
-                int [] sumNul= new int[Nsob];// точки нулевой линии для "a" - го канала
-                for (int a = 0; a < Nsob; a++)
-                {
-
-                    maxNul[i] = (maxNul[i] + data1[i, a]);
-                    sumNul[a]=  data1[i, a];// точки нулевой линии для "a"-го канала
-
-                }
-                maxNul[i] = maxNul[i] / Nsob;
-                sigma[i] = Math.Sqrt(Sum(sumNul, maxNul[i]) / Nsob);
-            }
-        }
-        private Double Sum(int[] n, int x)
-        {
-            Double res = 0;
-            foreach(int i in n)
-            {
-                res =res + Math.Pow((i - x), 2) ;
-            }
-            return res;
-        }
-        */
+     
         private int CountFlagEnd = 0;
         private int CountFlagEndErroy = 0;
      
@@ -859,16 +812,16 @@ public System.Windows.Media.Brush brushes
         /// <summary>
         /// Читает данные с платы и пишет их в очередь, считаем количество пакетов
         /// </summary>
-        public void ReadData()//Читает данные с платы и пишет их в очередь
+        public virtual void ReadData()//Читает данные с платы и пишет их в очередь
         {
             try
             {
                 if (clientBAAK12TData.Connected && nsData != null)
                 { 
                     int res = Read13007(out byte[] buf);//читаем с платы
-                if (res > 0)
-                {
-                    for (int i = 0; i < res; i++)
+                    if (res > 0)
+                    {
+                         for (int i = 0; i < res; i++)
                     {
                         if (buf[i] == 0xFF)
                         {
@@ -911,19 +864,29 @@ public System.Windows.Media.Brush brushes
                         }
                     }
 
+                    }
+                    if(res==-2)
+                    {
+                        Brushes = System.Windows.Media.Brushes.Red;
+                        CтатусБААК12 = nsData.CanRead.ToString()+ nsData.ToString();
+                        InDe(false);
+                    }
                 }
-            }
                 else
                 {
-                    brushes = Brushes.Red;
+                    Brushes = System.Windows.Media.Brushes.Red;
                     CтатусБААК12 = "Ошибка 1 чтения с платы. Отключена";
                     InDe(false);
                 }
                 
             }
+            catch (NullReferenceException ee)
+            {
+                Debug.WriteLine("Error 939");
+            }
             catch (Exception)
             {
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 CтатусБААК12 = "Ошибка 2 чтения с платы. Отключена";
                 InDe(false);
             }
@@ -961,11 +924,11 @@ public System.Windows.Media.Brush brushes
             }
         }
         
-        private void TriggerStopОго()
+      public void TriggerStopОго()
         {
             Trigger(0x200006, 11);
         }
-        private void InitializeKlaster1()//Функция производит подписку на все необходимые действия для работы
+        public void InitializeKlaster1()//Функция производит подписку на все необходимые действия для работы
         {
             try
             {
@@ -995,11 +958,11 @@ public System.Windows.Media.Brush brushes
             {
                 DeInitializeKlaster1();
                 CтатусБААК12 = "Ошибка инициализации. Отключена";
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
 
             }
         }
-        public void DeInitializeKlaster1()//Функция производит отписку от всех  действия для работы
+     public void DeInitializeKlaster1()//Функция производит отписку от всех  действия для работы
         {
             try
             {

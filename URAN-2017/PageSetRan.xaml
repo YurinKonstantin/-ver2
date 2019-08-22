@@ -110,10 +110,16 @@
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="1"  Background="WhiteSmoke">
-            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+            <Button  Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
                 <Button.Effect>
                     <DropShadowEffect />
                 </Button.Effect>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/ImgSourse/baselinesave18dp.png" Width="24" Height="24"/>
+                        <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
             </Button>
         </Grid>
     </Grid>

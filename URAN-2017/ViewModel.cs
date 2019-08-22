@@ -37,5 +37,28 @@ namespace URAN_2017
         public MyCommand<ChartPoint> DataClickCommand { get; set; }
         public MyCommand<LiveCharts.Wpf.CartesianChart> UpdaterTickCommand { get; set; }
         public MyCommand<RangeChangedEventArgs> RangeChangedCommand { get; set; }
+        bool startButton = true;
+        public bool StartButton
+        {
+            get
+            {
+                return startButton;
+            }
+            set
+            {
+                startButton = value;
+            }
+        }
+        public bool StopButton
+        {
+            get
+            {
+                return !startButton;
+            }
+            set
+            {
+                startButton = !value;
+            }
+        }
     }
 }

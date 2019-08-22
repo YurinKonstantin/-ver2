@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace URAN_2017
 {
@@ -29,11 +30,12 @@ namespace URAN_2017
         }
         private void ВремяОтобрTask()
         {
+           
             Task myReadDateTask = Task.Run(() => TimeTask());
         }
-        public void ЗапускРеадТаск(int intervalNewFile1, int kolTestRan, int iTestRan, int timeRanH, int timeRanM, CancellationToken cancellationToken)
+        public void ЗапускРеадТаск(CancellationToken cancellationToken)
         {
-            Task myReadDataTask = Task.Run(() => ReadDataTask(intervalNewFile1, kolTestRan, iTestRan, timeRanH, timeRanM, cancellationToken));
+            Task myReadDataTask = Task.Run(() => ReadDataTask(cancellationToken));
             
         }
         public async Task ZapicDataTasc1(CancellationToken cancellationToken)

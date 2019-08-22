@@ -1,0 +1,31 @@
+﻿<Window x:Class="URAN_2017.WorkBD.AddDataTablBAAK"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:URAN_2017.WorkBD"
+        mc:Ignorable="d"
+        Title="AddDataTablBAAK" Height="450" Width="800">
+    <StackPanel>
+        <TextBlock>Введите Имя платы БААК:</TextBlock>
+        <StackPanel Orientation="Horizontal">
+     
+            <TextBox Name="name" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Left">У1</TextBox>
+        </StackPanel>
+        <TextBlock Text="IP платы"/>
+        <TextBox Name="ip" MinWidth="250">192.168.2.161</TextBox>
+        <TextBlock Text="Тип платы"/>
+        <TextBox Name="tip"  MinWidth="250">БААК12-200Т</TextBox>
+
+        <TextBlock Text="Номер кластера"/>
+        <TextBox Name="nomerKl"  MinWidth="250">1</TextBox>
+
+        <TextBlock Text="Коментарий"/>
+        <TextBox Name="coment"  MinWidth="250">dgdfdg</TextBox>
+
+        <WrapPanel  HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,0,0" Content="OK"/>
+            <Button IsCancel="True" MinWidth="60">Отмена</Button>
+        </WrapPanel>
+    </StackPanel>
+</Window>

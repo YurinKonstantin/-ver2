@@ -14,70 +14,11 @@ namespace URAN_2017
 {
    public class ClassBAAK12NoTail: BAAK12T, IDisposable
     {
-        public void Dispose()
+        public new void Dispose()
         {
             throw new NotImplementedException();
         }
-        public void НастройкаКлок()
-        {
-            if (clientBAAK12T.Connected && ns != null)
-            {
-                //TODO настройка регистров с синхронизацией
-                CтатусБААК12 = "Запись настроик с клок";
-                SettingCloc();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Запись общих настроик";
-                SettingAll();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Создаем файл";
-                CreatFileData();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Разрешаем передачу данных";
-                StartdataReg();//Разрешает передачу данных
-                Thread.Sleep(50);
-                CтатусБААК12 = "Вычитываем ненужные файлы";
-                ВычитываемДанныеНенужные();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Работает";
-            }
-            else
-            {
-                CтатусБААК12 = "НЕТ подключения";
-                InDe(false);
-            }
-
-
-        }
-        public void Настройка()
-        {
-            if (Синхронизация)
-            {
-                //if (Conect300Statys)
-                // {
-                TriggerStop();
-                НастройкаКлок();
-
-                // }
-                // else
-                // {
-                //    CтатусБААК12 = "НЕТ подключения";
-                //}
-            }
-            else
-            {
-                // if (Conect300Statys)
-                //{
-                TriggerStop();
-                //MessageBox.Show("Настройка без клок");
-                НастройкаБезКлок();
-
-                // }
-                //  else
-                //  {
-                //    CтатусБААК12 = "НЕТ подключения";
-                // }
-            }
-        }
+    
         /// <summary>
         /// Вычитывает ненужные файлы
         /// </summary>
@@ -118,47 +59,28 @@ namespace URAN_2017
             int x = 0;
             while (!endd)
             {
-                int res = Read13007(out byte[] buf);//читаем с платы
-                if (res > 0)
+
+                lock (OcherediNaZapic)
                 {
 
-                    if (buf[0] == 0xFF)
+
+                    if (OcherediNaZapic.Count() == 0)
                     {
-                        CountFlagEnd++;
+                        x++;
                     }
                     else
                     {
-                        CountFlagEnd = 0;
+                        x = 0;
                     }
-                    DataBAAKList.Add(buf[0]);
-
-
-                    if ((data_w != null) & (data_fs != null) & CountFlagEnd == 4)
+                    if (x > 50)
                     {
-
-                        WriteFileData(DataBAAKList);
-                        DataBAAKList.Clear();
-                        CountFlagEnd = 0;
-
-                        КолПакетов++;
-                        DataBAAKList = new List<byte>();
+                        endd = true;
                     }
-
-                    x = 0;
-
                 }
-                else
-                {
-                    x++;
-                }
-                if (x < 50)
-                {
-                    endd = true;
-                }
+             
 
             }
-
-
+               
         }
         private void СохраняемДанныеНужные()
         {
@@ -199,7 +121,7 @@ namespace URAN_2017
 
 
         }
-        public void НастройкаБезКлок()
+        public override void НастройкаБезКлок()
         {
             try
             {
@@ -223,37 +145,9 @@ namespace URAN_2017
 
 
         }
-        public void Пуск()
-        {
-            if (Синхронизация)
-            {
-                // if (Conect300Statys)
-                // {
-                ПускКлок();
-                //  }
-                // else
-                //{
-                //    CтатусБААК12 = "НЕТ подключения";
-                //}
-            }
-            else
-            {
-                // if (Conect300Statys)
-                // {
-                ПускБезКлок();
-                // }
-                // else
-                // {
-                //     CтатусБААК12 = "НЕТ подключения";
-                // }
-            }
-        }
-        public void ПускБезКлок()
-        {
-            StartTime(2);
-            TriggerStart();
-        }
-        public void ПускСтартТайм()
+
+    
+        public override void ПускСтартТайм()
         {
             if (Синхронизация)
             {
@@ -278,20 +172,9 @@ namespace URAN_2017
                 //}
             }
         }
-        public void СтартТаймКлок()
-        {
-            StartTime(1);
-        }
-        public void СтартТаймНоКлок()
-        {
-            StartTime(2);
-        }
-        public void ПускКлок()
-        {
-
-            TriggerStart();
-        }
-        public void Stop()
+ 
+  
+        public override void Stop()
         {
             Thread.Sleep(50);
             CтатусБААК12 = "Триггер СТОП";
@@ -315,7 +198,7 @@ namespace URAN_2017
 
 
         }
-        public void TriggerStart()//Разрешение выроботки триггерного сигнала
+        public override void TriggerStart()//Разрешение выроботки триггерного сигнала
         {
             if (clientBAAK12T.Connected && ns != null)
             {
@@ -328,7 +211,7 @@ namespace URAN_2017
                 InDe(false);
             }
         }
-        public void TriggerStop()//Запрет выроботки триггерного сигнала
+        public override void TriggerStop()//Запрет выроботки триггерного сигнала
         {
             if (clientBAAK12T.Connected && ns != null)
             {
@@ -346,7 +229,7 @@ namespace URAN_2017
         /// <summary>
         /// запускаем передачу данных
         /// </summary>
-        public void StartdataReg()//запускаем передачу данных
+        public override void StartdataReg()//запускаем передачу данных
         {
             // WreadReg3000(0x10, 0x0);
             //WRbuffer = new Byte[14];//Создаем буффер для записи
@@ -366,7 +249,7 @@ namespace URAN_2017
         /// <summary>
         /// останавливаем передачу данных
         /// </summary>
-        public void StopdataReg()//останавливаем передачу данных
+        public override void StopdataReg()//останавливаем передачу данных
         {
             if (clientBAAK12T.Connected && ns != null)
             {
@@ -380,61 +263,11 @@ namespace URAN_2017
             }
 
         }
-        public string Time()
-        {
-            String s, shour, sMinute, sDay, sMonth, sSec;
-            DateTime tmp = DateTime.UtcNow;
 
-            if (Convert.ToUInt32(tmp.Hour.ToString()) < 10)
-            {
-                shour = Convert.ToString("0" + tmp.Hour.ToString());
-            }
-            else
-            {
-                shour = Convert.ToString(tmp.Hour.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Minute.ToString()) < 10)
-            {
-                sMinute = Convert.ToString("0" + tmp.Minute.ToString());
-            }
-            else
-            {
-                sMinute = Convert.ToString(tmp.Minute.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Day.ToString()) < 10)
-            {
-                sDay = Convert.ToString("0" + tmp.Day.ToString());
-            }
-            else
-            {
-                sDay = Convert.ToString(tmp.Day.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Month.ToString()) < 10)
-            {
-                sMonth = Convert.ToString("0" + tmp.Month.ToString());
-            }
-            else
-            {
-                sMonth = Convert.ToString(tmp.Month.ToString());
-            }
-
-            if (Convert.ToUInt32(tmp.Second.ToString()) < 10)
-            {
-                sSec = Convert.ToString("0" + tmp.Second.ToString());
-            }
-            else
-            {
-                sSec = Convert.ToString(tmp.Second.ToString());
-            }
-
-            s = sDay + "." + sMonth + "." + tmp.Year.ToString() + " " + shour + "." + sMinute + "." + sSec;
-            // s = sDay + "." + sMonth + "." + "" + shour + ":" + sMinute;
-            return s;
-        }
         /// <summary>
         /// Расчет темпа и запись результата в БД
         /// </summary>
-        public void TempPacetov()
+        public override void TempPacetov()
         {
             //if (Conect300Statys)
             // {
@@ -449,12 +282,13 @@ namespace URAN_2017
         /// <summary>
         /// Создает новый файл
         /// </summary>
-        public void CreatFileData()
+        public override void CreatFileData()
         {//if (Conect300Statys)
          // {
             try
             {
                 string path = NameFileWay;
+                
                 string subpath = @"7d";
                 DirectoryInfo dirInfo = new DirectoryInfo(path);
                 if (!dirInfo.Exists)
@@ -467,14 +301,14 @@ namespace URAN_2017
                 {
                     dirInfo.Create();
                 }
-                string tipPl;
-                tipPl = "N";
+             
+          
                 String sd = Time();
                 NameFile = NameFileWay +@"\"+ subpath+ @"\" + NamKl + "_" + sd + "_" +"N" + ".bin";
                 data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
                 data_w = new BinaryWriter(data_fs);
                 BDReadFile(NamKl + "_" + sd+"_"+"N", NameBAAK12, sd, BAAK12T.NameRan);
-                NameFileClose = NamKl + "_" + sd + "_" + tipPl;
+                NameFileClose = NamKl + "_" + sd + "_" + "N";
             }
             catch (Exception ex)
             {
@@ -487,7 +321,7 @@ namespace URAN_2017
         /// <summary>
         /// закрытие файла
         /// </summary>
-        public void CloseFile()//закрытие файла
+        public override void CloseFile()//закрытие файла
         {
             // if(Conect300Statys)
             //{
@@ -519,31 +353,12 @@ namespace URAN_2017
                 }
             }
         }
-        public void WriteFileData(List<byte> DataBAAKList)//пишет в файл
-        {
-
-
-
-            try
-            {
-                foreach (Byte b in DataBAAKList)
-                {
-                    data_w.Write(b);
-                }
-                //data_w.Write(buf);
-
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Ошибка записи");
-            }
-
-        }
+    
 
         /// <summary>
         /// записываем данных о событии из очереди в в бд
         /// </summary>
-        public void WriteInFileIzOcherediBD()
+        public override void WriteInFileIzOcherediBD()
         {
             ClassZapicBD BDData = new ClassZapicBD();
             try
@@ -579,13 +394,12 @@ namespace URAN_2017
                 InDe(false);
             }
         }
-        DataYu dataYu;
-        public Boolean Flagtest = false;
-        public Boolean BAAKTAIL = true;
+
+
         /// <summary>
         /// записываем данные из очереди в файл и в бд
         /// </summary>
-        public void WriteInFileIzOcheredi()//работа с данными из очереди
+        public override void WriteInFileIzOcheredi()//работа с данными из очереди
         {
             try
             {
@@ -720,7 +534,7 @@ namespace URAN_2017
         /// <summary>
         /// Читает данные с платы и пишет их в очередь, считаем количество пакетов
         /// </summary>
-        public void ReadData()//Читает данные с платы и пишет их в очередь
+        public override void ReadData()//Читает данные с платы и пишет их в очередь
         {
             try
             {
@@ -787,42 +601,12 @@ namespace URAN_2017
             }
 
         }
-        public void NewFileData()
-        {
+   
+ 
 
-            // if (Conect300Statys)
-            // {
-            TriggerStop();
-            CloseFile();
-            CreatFileData();
-            TriggerStart();
-            //  }
+   
 
-        }
-        /// <summary>
-        /// программный сигнал триггер
-        /// </summary>
-        public void TriggerStartProgram()//программный сигнал триггер
-        {
-            WreadReg3000(0x200034, 1);
-        }
-
-        private void InDe(bool f)
-        {
-            if (f)
-            {
-                InitializeKlaster1();
-            }
-            else
-            {
-                DeInitializeKlaster1();
-            }
-        }
-
-        private void TriggerStopОго()
-        {
-            Trigger(0x200006, 11);
-        }
+  
         private void InitializeKlaster1()//Функция производит подписку на все необходимые действия для работы
         {
             try
@@ -912,38 +696,8 @@ namespace URAN_2017
             }
         }
 
-        public void StartTime(uint t)
-        {
-            WreadReg3000(0x200002, t);
-        }
-        public void SettingNoCloc()
-        {
 
-            WreadReg3000(0x20001c, 0);
-
-            WreadReg3000(0x200026, 0); // Generator Clock
-
-            WreadReg3000(0x200024, 1);
-            WreadReg3000(0x200024, 0);//Сброс регистров
-            Thread.Sleep(500);
-            WreadReg3000(0x20001c, 0);
-            WreadReg3000(0x200026, 0); // Generator Clock
-
-        }
-        public void SettingCloc()
-        {
-            WreadReg3000(0x20001c, 1);
-            WreadReg3000(0x200026, 1); // optc Clock
-            WreadReg3000(0x200002, 1);// Запуск по клоку
-            WreadReg3000(0x20001c, 1);//синхронизация таймера
-            WreadReg3000(0x200024, 1); //Сброс регистров
-            Thread.Sleep(600);
-            WreadReg3000(0x200024, 0);// нормальная работа регистров
-            WreadReg3000(0x20001c, 1);//синхронизация таймера
-            WreadReg3000(0x200026, 1);
-
-        }
-        public void SettingAll()
+        public override void SettingAll()
         {
             BlocAndPolarnost(9252);
             TriggerStop();
@@ -975,7 +729,7 @@ namespace URAN_2017
                 Trigger(0x200006, 256);
             }
             Winduws(0x20000a, 10);
-            WreadReg3000(0x200208, ДискретностьХвост);//дискретность хвоста
+     
             AllStopDelay(650);
             for (uint j = 0; j < 12; j++)
             {
@@ -983,102 +737,14 @@ namespace URAN_2017
             }
             WreadReg3000(0x200020, 0x1);
         }
-        public bool trigOtBAAK = false;
-        public void FirsTime()//Время внутреннего таймера
-        {
+        public new bool trigOtBAAK = false;
+  
 
-            WreadReg3000(0x200010, Time0x10);
 
-            WreadReg3000(0x200012, Time0x12);
+        public new uint[] masnul = new uint[12];
 
-            WreadReg3000(0x200014, Time0x14);
-
-            WreadReg3000(0x200016, Time0x16);
-
-        }
-        public void BlocAndPolarnost(uint x)//Полярность сигнала 8224 - запрос разрешен и положительная полярность, 9252 - запрос запрешен, и положительная полярность
-        {
-            WreadReg3000(0x90000, x);
-
-            WreadReg3000(0x98000, x);
-
-            WreadReg3000(0xb0000, x);
-
-            WreadReg3000(0xb8000, x);
-
-            WreadReg3000(0xd0000, x);
-
-            WreadReg3000(0xd8000, x);
-
-        }
-        public void AllStopDelay(uint wind)//задержка остановки записи после прихода триггера
-        {
-            WreadReg3000(0x9000e, wind);
-            WreadReg3000(0x9800e, wind);
-            WreadReg3000(0xb000e, wind);
-            WreadReg3000(0xb800e, wind);
-            WreadReg3000(0xd000e, wind);
-            WreadReg3000(0xb800e, wind);
-        }
-        public void StopDelay(uint Reg, uint wind)//задержка остановки записи после прихода триггера в отсчетах
-        {
-            WreadReg3000(Reg, wind);
-        }
-        public void Trigger(uint Reg, uint tr)//Кратность совпадений и подверждение
-        {
-            WreadReg3000(Reg, tr);
-        }
-        public void Winduws(uint Reg, uint wind)//окно совпадений дискретность 10 нс от 0 до 254
-        {
-            WreadReg3000(Reg, wind);
-        }
-        public void SetPorog(uint Reg, uint por)
-        {
-            WreadReg3000(Reg, por);
-        }
-        public uint[] masnul = new uint[12];
-        public void AllSetPorogAll(uint PorogAll1)
-        {
-            BDselect(out masnul);
-            SetPorog(0x90010, masnul[0] + PorogAll1);//низкий порог для канала 0(первый)
-            SetPorog(0x90020, masnul[0] + 1 + PorogAll1);//высокий порог для канала 0(первый)
-
-            SetPorog(0x90014, masnul[1] + PorogAll1);//низкий порог для канала 1
-            SetPorog(0x90024, masnul[1] + 1 + PorogAll1);//высокий порог для канала 1
-
-            SetPorog(0x98010, masnul[2] + PorogAll1);//низкий порог для канала 2
-            SetPorog(0x98020, masnul[2] + 1 + PorogAll1);//высокий порог для канала 2
-
-            SetPorog(0x98014, masnul[3] + PorogAll1);//низкий порог для канала 3
-            SetPorog(0x98024, masnul[3] + 1 + PorogAll1);//высокий порог для канала 3
-
-            SetPorog(0xb0010, masnul[4] + PorogAll1);//низкий порог для канала 4
-            SetPorog(0xb0020, masnul[4] + 1 + PorogAll1);//высокий порог для канала 4
-
-            SetPorog(0xb0014, masnul[5] + PorogAll1);//низкий порог для канала 5
-            SetPorog(0xb0024, masnul[5] + 1 + PorogAll1);//высокий порог для канала 5
-
-            SetPorog(0xb8010, masnul[6] + PorogAll1);//низкий порог для канала 6
-            SetPorog(0xb8020, masnul[6] + 1 + PorogAll1);//высокий порог для канала 6
-
-            SetPorog(0xb8014, masnul[7] + PorogAll1);//низкий порог для канала 7
-            SetPorog(0xb8024, masnul[7] + 1 + PorogAll1);//высокий порог для канала 7
-
-            SetPorog(0xd0010, masnul[8] + PorogAll1);//низкий порог для канала 8
-            SetPorog(0xd0020, masnul[8] + 1 + PorogAll1);//высокий порог для канала 8
-
-            SetPorog(0xd0014, masnul[9] + PorogAll1);//низкий порог для канала 9
-            SetPorog(0xd0024, masnul[9] + 1 + PorogAll1);//высокий порог для канала 9
-
-            SetPorog(0xd8010, masnul[10] + PorogAll1);//низкий порог для канала 10
-            SetPorog(0xd8020, masnul[10] + 1 + PorogAll1);//высокий порог для канала 10
-
-            SetPorog(0xd8014, masnul[11] + PorogAll1);//низкий порог для канала 11
-            SetPorog(0xd8024, masnul[11] + 1 + PorogAll1);//высокий порог для канала 11
-
-        }
         //   +++ Настройка АЦП+++
-        public void ADCSetUp()
+        public new void ADCSetUp()
         {
             WreadReg3000(0x200004 + 8, 0x3ff);// пишем во все АЦП одновременно
             WreadReg3000(0x200000 + 12 * 2, 0x10);// пишем во все АЦП одновременно
@@ -1089,40 +755,9 @@ namespace URAN_2017
             WreadReg3000(0x200000 + 13 * 2, 0x181d);// Full Scale
             WreadReg3000(0x200000 + 13 * 2, 0xff01);// Update Register
         }
-        public void OffSetData()
-        {
-            WreadReg3000(0x90040, 10300);//смешение данных канала 0
-            WreadReg3000(0x90042, 10300);//смешение данных канала 1
-            WreadReg3000(0x98040, 10300);//смешение данных канала 2
-            WreadReg3000(0x98042, 10300);//смешение данных канала 3
-            WreadReg3000(0xb0040, 10300);//смешение данных канала 4
-            WreadReg3000(0xb0042, 10300);//смешение данных канала 5
-            WreadReg3000(0xb8040, 10300);//смешение данных канала 6
-            WreadReg3000(0xb8042, 10300);//смешение данных канала 7
-            WreadReg3000(0xd0040, 10300);//смешение данных канала 8
-            WreadReg3000(0xd0042, 10300);//смешение данных канала 9
-            WreadReg3000(0xd8040, 10300);//смешение данных канала 10
-            WreadReg3000(0xd8042, 10300);//смешение данных канала 11
-        }
-        public void DataLengt()
-        {
-            WreadReg3000(0x90044, 2048 * DataLenght);//длинна данных канала 0
-            WreadReg3000(0x90046, 2048 * DataLenght);//длинна данных канала 1
-            WreadReg3000(0x98044, 2048 * DataLenght);//длинна данных канала 2
-            WreadReg3000(0x98046, 2048 * DataLenght);//длинна данных канала 3
-            WreadReg3000(0xb0044, 2048 * DataLenght);//длинна данных канала 4
-            WreadReg3000(0xb0046, 2048 * DataLenght);//длинна данных канала 5
-            WreadReg3000(0xb8044, 2048 * DataLenght);//длинна данных канала 6
-            WreadReg3000(0xb8046, 2048 * DataLenght);//длинна данных канала 7
-            WreadReg3000(0xd0044, 2048 * DataLenght);//длинна данных канала 8
-            WreadReg3000(0xd0046, 2048 * DataLenght);//длинна данных канала 9
-            WreadReg3000(0xd8044, 2048 * DataLenght);//длинна данных канала 10
-            WreadReg3000(0xd8046, 2048 * DataLenght);//длинна данных канала 11
-        }
-        public void TriggerProgramSetap()//внешний триггер
-        {
-            WreadReg3000(0x200006, 0x101);
-        }
+
+
+
 
 
         /// <summary>
@@ -1131,7 +766,7 @@ namespace URAN_2017
         /// <param name="porog">порог срабатывания</param>
         /// <param name="trig">триггер</param>
         /// <param name="trigProg">если =true, то по количеству</param>
-        public void TestRanПодготовка(int porog, int trig, Boolean trigProg)
+        public override void TestRanПодготовка(int porog, int trig, Boolean trigProg)
         {
 
             CтатусБААК12 = "Подготовка к тестовому набору";
@@ -1159,15 +794,10 @@ namespace URAN_2017
             Thread.Sleep(500);
             //if (Conect300Statys)
             // {
-            string tipPl;
-            if (!BAAKTAIL)
-            {
-                tipPl = "N";
-            }
-            else
-            {
-                tipPl = "T";
-            }
+          
+               
+            
+        
             try
             {
                 string path = NameFileWay;
@@ -1184,11 +814,11 @@ namespace URAN_2017
                     dirInfo.Create();
                 }
                 String sd = Time();
-                NameFile = NameFileWay + @"\" + subpath + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + tipPl + ".bin";
+                NameFile = NameFileWay + @"\" + subpath + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + "N" + ".bin";
                 data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
                 data_w = new BinaryWriter(data_fs);
                 BDReadFile(NamKl + "_" + "Test" + "_" + sd, NameBAAK12, sd, BAAK12T.NameRan);
-                NameFileClose = NamKl + "_" + "Test" + "_" + sd + "_" + tipPl;
+                NameFileClose = NamKl + "_" + "Test" + "_" + sd + "_" + "N";
             }
             catch (Exception ex)
             {
@@ -1230,7 +860,7 @@ namespace URAN_2017
         /// <summary>
         /// Завершение тестовго набора и возрат настроек обычного набора
         /// </summary>
-        public void TestRanTheEnd(Boolean trigProg)
+        public override void TestRanTheEnd(Boolean trigProg)
         {
             TriggerStopОго();
 
@@ -1244,7 +874,7 @@ namespace URAN_2017
             while (OcherediNaZapic.Count != 0 | koloch < 50)
             {
                 koloch++;
-                //Thread.Sleep(500);
+              
                 CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
             }
             Thread.Sleep(500);
@@ -1291,8 +921,8 @@ namespace URAN_2017
             Flagtest = false;
 
         }
-        public List<byte> DataBAAKList = new List<byte>();
-        public List<byte> DataBAAKList1 = new List<byte>();
+        public new List<byte> DataBAAKList = new List<byte>();
+        public new List<byte> DataBAAKList1 = new List<byte>();
         /// <summary>
         /// Очередь с данными для записи
         /// </summary>
@@ -1309,110 +939,110 @@ namespace URAN_2017
         private static uint time0x12 = 0;
         private static uint time0x14 = 0;
         private static uint time0x16 = 0;
-        public int Nkl = 0;
-        public delegate Task ConnectDelegate();       // Тип делегата   
+        public new int Nkl = 0;
+        public new delegate Task ConnectDelegate();       // Тип делегата   
         /// <summary>
         /// конектимся к плате
         /// </summary>
-        public static ConnectDelegate ConnnectURANDelegate;
+        public new static ConnectDelegate ConnnectURANDelegate;
 
-        public delegate void DiscConnectDelegate();       // Тип делегата   
+        public new delegate void DiscConnectDelegate();       // Тип делегата   
         /// <summary>
         /// отключается от платы
         /// </summary>
-        public static DiscConnectDelegate DiscConnnectURANDelegate;
+        public new static DiscConnectDelegate DiscConnnectURANDelegate;
 
-        public delegate void НастройкаUranDelegate();
+        public new delegate void НастройкаUranDelegate();
         /// <summary>
         /// загрузка регистров начало, создание файла и тд
         /// </summary>
-        public static НастройкаUranDelegate НастройкаURANDelegate;
+        public new static НастройкаUranDelegate НастройкаURANDelegate;
 
-        public delegate void StopUranDelegate();
+        public new delegate void StopUranDelegate();
         /// <summary>
         /// остоновку набора кластера
         /// </summary>
-        public static StopUranDelegate StopURANDelegate;
+        public new static StopUranDelegate StopURANDelegate;
 
-        public delegate void RedDataDelegate();
+        public new delegate void RedDataDelegate();
         /// <summary>
         /// чтение данных с платы
         /// </summary>
-        public static RedDataDelegate ReadDataURANDelegate;
+        public new static RedDataDelegate ReadDataURANDelegate;
 
-        public delegate void NewFileDelegate();
+        public new delegate void NewFileDelegate();
         /// <summary>
         /// создание нового файла
         /// </summary>
-        public static NewFileDelegate NewFileURANDelegate;
+        public new static NewFileDelegate NewFileURANDelegate;
 
-        public delegate void ПускDelegate();
+        public new delegate void ПускDelegate();
         /// <summary>
         /// запускает тамер и разрешает триггер
         /// </summary>
-        public static ПускDelegate ПускURANDelegate;
+        public new static ПускDelegate ПускURANDelegate;
 
-        public delegate void TempDelegate();
+        public new delegate void TempDelegate();
         /// <summary>
         /// Расчет темпа и запись результата в БД
         /// </summary>
-        public static TempDelegate TempURANDelegate;
+        public new static TempDelegate TempURANDelegate;
 
-        public delegate void CountPac();
-        public static CountPac CountPacDelegate;
+        public new delegate void CountPac();
+        public new static CountPac CountPacDelegate;
 
-        public delegate void ДеИнсталяция();
+        public new delegate void ДеИнсталяция();
         /// <summary>
         /// убирает все подписки делегата
         /// </summary>
-        public static ДеИнсталяция ДеИнсталяцияDelegate;
+        public new static ДеИнсталяция ДеИнсталяцияDelegate;
 
-        public delegate void TestRanSetUp(int x, int e, Boolean t);//
+        public new delegate void TestRanSetUp(int x, int e, Boolean t);//
         /// <summary>
         /// подготовка к тестовому набоу по длительности или количеству, если trigPorog=true, то по количеству
         /// </summary>
-        public static TestRanSetUp TestRanSetUpDelegate;
+        public new static TestRanSetUp TestRanSetUpDelegate;
 
-        public delegate void TestRanStart();
+        public new delegate void TestRanStart();
         /// <summary>
         /// программный сигнал триггер
         /// </summary>
-        public static TestRanStart TestRanStartDelegate;
+        public new static TestRanStart TestRanStartDelegate;
 
-        public delegate void TestRanTheEndD(Boolean z);
+        public new delegate void TestRanTheEndD(Boolean z);
         /// <summary>
         /// Завершение тестовго набора и возрат настроек обычного набора
         /// </summary>
-        public static TestRanTheEndD TestRanTheEndDelegate;
+        public new static TestRanTheEndD TestRanTheEndDelegate;
 
-        public delegate void ЗаписьВремяРегистр();
-        public static ЗаписьВремяРегистр ЗаписьВремяРегистрDelegate;
+        public new delegate void ЗаписьВремяРегистр();
+        public new static ЗаписьВремяРегистр ЗаписьВремяРегистрDelegate;
 
 
-        public delegate void СтартЧасов();
-        public static СтартЧасов СтартЧасовDelegate;
+        public new delegate void СтартЧасов();
+        public new static СтартЧасов СтартЧасовDelegate;
 
-        public delegate void ЗаписьвФайл();
+        public new delegate void ЗаписьвФайл();
         /// <summary>
         /// записываем данные из очереди в файл и в бд
         /// </summary>
-        public static ЗаписьвФайл ЗаписьвФайлDelegate;
+        public new static ЗаписьвФайл ЗаписьвФайлDelegate;
 
-        public delegate void ЗаписьвФайлБД();
+        public new delegate void ЗаписьвФайлБД();
         /// <summary>
         /// записываем данные из очереди в файл и в бд
         /// </summary>
-        public static ЗаписьвФайл ЗаписьвФайлБДDelegate;
+        public new static ЗаписьвФайл ЗаписьвФайлБДDelegate;
 
-        public delegate void СтопТриггер();
+        public new delegate void СтопТриггер();
         /// <summary>
         /// Запрещает триггер
         /// </summary>
-        public static СтопТриггер СтопТриггерDelegate;
+        public new static СтопТриггер СтопТриггерDelegate;
 
 
         private bool inciliz = false;
-        public bool Inciliz
+        public new bool Inciliz
         {
             get
             {
@@ -1429,7 +1059,7 @@ namespace URAN_2017
         /// <summary>
         /// значение общего порога срабатывания
         /// </summary>
-        public static uint PorogAll
+        public new static uint PorogAll
         {
             get
             {
@@ -1441,7 +1071,7 @@ namespace URAN_2017
             }
         }
         private static uint дискретностьХвост = 100;
-        public static uint ДискретностьХвост
+        public new static uint ДискретностьХвост
         {
             get
             {
@@ -1458,7 +1088,7 @@ namespace URAN_2017
         /// <summary>
         /// Занчение общего триггера
         /// </summary>
-        public static uint TrgAll
+        public new static uint TrgAll
         {
             get
             {
@@ -1469,15 +1099,14 @@ namespace URAN_2017
                 _TrgAll = value;
             }
         }
-        public static string wayDataBD;
-        public static string wayDataTestBD;
+        
         FileStream data_fs;
         BinaryWriter data_w;
         private const uint BaseA_M = 0x200000;
         private const uint AM_FThrBase = 0x80;
-        public string NameFile = "";
+        public new string NameFile = "";
         private static string _nameFileWay = @"D:\";
-        public static string NameFileWay
+        public new static string NameFileWay
         {
             get
             {
@@ -1495,7 +1124,7 @@ namespace URAN_2017
         /// <summary>
         /// Количество принятых пакетов
         /// </summary>
-        public long КолПакетов
+        public new long КолПакетов
         {
             get
             {
@@ -1508,7 +1137,7 @@ namespace URAN_2017
                 this.OnPropertyChanged(nameof(КолПакетов));
             }
         }
-        public long КолПакетовEr
+        public new long КолПакетовEr
         {
             get
             {
@@ -1521,7 +1150,7 @@ namespace URAN_2017
                 this.OnPropertyChanged(nameof(КолПакетовEr));
             }
         }
-        public long КолПакетовОчер
+        public new long КолПакетовОчер
         {
             get
             {
@@ -1534,7 +1163,7 @@ namespace URAN_2017
                 this.OnPropertyChanged(nameof(КолПакетовОчер));
             }
         }
-        public long КолПакетовОчер2
+        public new long КолПакетовОчер2
         {
             get
             {
@@ -1552,7 +1181,7 @@ namespace URAN_2017
         /// <summary>
         /// Темп счета принятых пакетов
         /// </summary>
-        public int ТемпПакетов
+        public new int ТемпПакетов
         {
             get
             {
@@ -1566,7 +1195,7 @@ namespace URAN_2017
 
         }
         private int пакетов = 0;
-        public int Пакетов
+        public new int Пакетов
         {
             get
             {
@@ -1580,7 +1209,7 @@ namespace URAN_2017
 
         }
         private int интервалТемпаСчета = 0;
-        public int ИнтервалТемпаСчета
+        public new int ИнтервалТемпаСчета
         {
             get
             {
@@ -1594,7 +1223,7 @@ namespace URAN_2017
 
         }
         private static string _nameFileSetUp = @"D:\";
-        public static string NameFileSetUp
+        public new static string NameFileSetUp
         {
             get
             {
@@ -1606,7 +1235,7 @@ namespace URAN_2017
             }
         }
         private static uint dataLenght = 1;
-        public static uint DataLenght
+        public new static uint DataLenght
         {
             get
             {
@@ -1621,7 +1250,7 @@ namespace URAN_2017
         /// <summary>
         /// Имя платы БААК12
         /// </summary>
-        public string NameBAAK12
+        public new string NameBAAK12
         {
             get
             {
@@ -1635,7 +1264,7 @@ namespace URAN_2017
         /// <summary>
         /// Имя кластера
         /// </summary>
-        public string NamKl
+        public new string NamKl
         {
             get
             {
@@ -1649,16 +1278,16 @@ namespace URAN_2017
             }
 
         }
-        public static uint Time0x10 { get => time0x10; set => time0x10 = value; }
-        public static uint Time0x12 { get => time0x12; set => time0x12 = value; }
-        public static uint Time0x14 { get => time0x14; set => time0x14 = value; }
-        public static uint Time0x16 { get => time0x16; set => time0x16 = value; }
+        public new static uint Time0x10 { get => time0x10; set => time0x10 = value; }
+        public new static uint Time0x12 { get => time0x12; set => time0x12 = value; }
+        public new static uint Time0x14 { get => time0x14; set => time0x14 = value; }
+        public new static uint Time0x16 { get => time0x16; set => time0x16 = value; }
         /// <summary>
         /// Имя рана
         /// </summary>
-        public static string NameRan { get => nameRan; set => nameRan = value; }
+        public new static string NameRan { get => nameRan; set => nameRan = value; }
 
-      public void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
+      public new void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
         {
             if (FlagSaveBD)
             {
@@ -1888,7 +1517,7 @@ namespace URAN_2017
                 }
             }
         }
-        public void BDReadTemP(string nameBAAK, int temp)
+        public new void BDReadTemP(string nameBAAK, int temp)
         {
             if (FlagSaveBD)
             {

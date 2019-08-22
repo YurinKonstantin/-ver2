@@ -22,7 +22,14 @@
             <StackPanel>
                 <Label Content="Путь к файлу с параметрами плат БААК12-100" FontSize="18" />
                 <TextBox x:Name="WaySet" FontSize="16" Grid.Column="0" Grid.Row="1" BorderThickness="0" Grid.ColumnSpan="1" VerticalAlignment="Center" TextChanged="WaySet_TextChanged"/>
-                <Button x:Name="ButWaySet" Content="Путь"  HorizontalAlignment="Left"  Width="62" Click="ButWaySet_Click" />
+                <Button x:Name="ButWaySet"  HorizontalAlignment="Left"  Width="62" Click="ButWaySet_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/folderopen18dp.png" Width="24" Height="24"/>
+                            <TextBlock Text="Путь" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Label Content="Имя платы в каждом кластере"/>
                 <ListView x:Name="list" Grid.Row="2" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" >
 
@@ -55,10 +62,16 @@
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="2"  Background="WhiteSmoke">
-            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+            <Button Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
                 <Button.Effect>
                     <DropShadowEffect />
                 </Button.Effect>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/ImgSourse/baselinesave18dp.png" Width="24" Height="24"/>
+                        <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
             </Button>
         </Grid>
     </Grid>

@@ -7,7 +7,7 @@
     <ProjectGuid>{C21600F7-8020-401A-8EF5-2B25D6CD985C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>URAN_2017</RootNamespace>
-    <AssemblyName>URAN-2017</AssemblyName>
+    <AssemblyName>URAN-2019</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -15,6 +15,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>Z:\SetPO1\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
@@ -29,8 +31,8 @@
     <ProductName>URAN</ProductName>
     <PublisherName>YuKO</PublisherName>
     <MinimumRequiredVersion>1.0.2.10</MinimumRequiredVersion>
-    <ApplicationRevision>107</ApplicationRevision>
-    <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
+    <ApplicationRevision>21</ApplicationRevision>
+    <ApplicationVersion>1.0.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -58,6 +60,8 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Homegroup.ico</ApplicationIcon>
@@ -99,16 +103,18 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'my|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -135,7 +141,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -155,8 +161,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ClassLibraryParserDataBAAK12-200\ClassLibrary3\bin\Release\ClassLibrary5.dll</HintPath>
     </Reference>
-    <Reference Include="InteractiveDataDisplay.WPF, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\UWP\DataYRAN\packages\avostres.InteractiveDataDisplay.WPF.1.0.1\lib\net46\InteractiveDataDisplay.WPF.dll</HintPath>
+    <Reference Include="InteractiveDataDisplay.WPF, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\avostres.InteractiveDataDisplay.WPF.1.1.0\lib\net46\InteractiveDataDisplay.WPF.dll</HintPath>
     </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
@@ -172,11 +178,14 @@
       <HintPath>..\..\..\..\Users\yurin\source\repos\NeutronObrabotka\NeutronObrabotka\bin\Release\NeutronObrabotka.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationBuildTasks" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.111.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.111.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive, Version=4.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.4.2.0-preview.102\lib\net46\System.Reactive.dll</HintPath>
@@ -222,16 +231,16 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddKl.xaml.cs">
+    <Compile Include="FolderSetUp\AddKl.xaml.cs">
       <DependentUpon>AddKl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddKl100.xaml.cs">
+    <Compile Include="FolderSetUp\AddKl100.xaml.cs">
       <DependentUpon>AddKl100.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddTimeRanTest.xaml.cs">
+    <Compile Include="FolderSetUp\AddTimeRanTest.xaml.cs">
       <DependentUpon>AddTimeRanTest.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BakSetup.cs" />
+    <Compile Include="FolderSetUp\BakSetup.cs" />
     <Compile Include="ClassBAAK12-100.cs" />
     <Compile Include="ClassBAAK12BD.cs" />
     <Compile Include="ClassBAAK12NoTail.cs" />
@@ -253,22 +262,29 @@
     <Compile Include="ClassTime.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="InitializeBAAK.cs" />
+    <Compile Include="MainPageTestNabor.cs" />
     <Compile Include="MainДиагностикаСтарт.cs" />
     <Compile Include="MainНовыйРанАвто.cs" />
     <Compile Include="MainСинхронихация.cs" />
     <Compile Include="MyCommand.cs" />
     <Compile Include="MyGrafic.cs" />
     <Compile Include="MainSerilizacia.cs" />
-    <Compile Include="NastroikiAll.xaml.cs">
+    <Compile Include="FolderSetUp\NastroikiAll.xaml.cs">
       <DependentUpon>NastroikiAll.xaml</DependentUpon>
     </Compile>
     <Compile Include="PageAddKlNoTail.xaml.cs">
       <DependentUpon>PageAddKlNoTail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PageOtbor.xaml.cs">
+    <Compile Include="FolderSetUp\PageOtbor.xaml.cs">
       <DependentUpon>PageOtbor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PageParametersBAAK.xaml.cs">
+    <Compile Include="WorkBD\AddDataTablBAAK.xaml.cs">
+      <DependentUpon>AddDataTablBAAK.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkBD\AddDataTablNullLine.xaml.cs">
+      <DependentUpon>AddDataTablNullLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkBD\PageParametersBAAK.xaml.cs">
       <DependentUpon>PageParametersBAAK.xaml</DependentUpon>
     </Compile>
     <Compile Include="PageSetBAAK.xaml.cs">
@@ -328,18 +344,23 @@
     <Compile Include="WindowОзапуске.xaml.cs">
       <DependentUpon>WindowОзапуске.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkBD\DataAccesBDBAAK.cs" />
+    <Compile Include="WorkBD\ViewTaiblBDBAAK\ClassIzmen.cs" />
+    <Compile Include="WorkBD\ViewTaiblBDBAAK\ClassNullLine.cs" />
+    <Compile Include="WorkBD\ViewTaiblBDBAAK\ClassPorog.cs" />
+    <Compile Include="WorkBD\ViewTaiblBDBAAK\ClassTablPSBBAAK.cs" />
     <Compile Include="переменныеДелегатыИпр.cs" />
     <Compile Include="ТаскМетоды.cs" />
     <Compile Include="MainТестНабор.cs" />
-    <Page Include="AddKl.xaml">
+    <Page Include="FolderSetUp\AddKl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddKl100.xaml">
+    <Page Include="FolderSetUp\AddKl100.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AddTimeRanTest.xaml">
+    <Page Include="FolderSetUp\AddTimeRanTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -352,12 +373,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClassBAAK12andMS.cs" />
-    <Compile Include="Customer.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NastroikiAll.xaml">
+    <Page Include="FolderSetUp\NastroikiAll.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -365,11 +385,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PageOtbor.xaml">
+    <Page Include="FolderSetUp\PageOtbor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PageParametersBAAK.xaml">
+    <Page Include="WorkBD\AddDataTablBAAK.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkBD\AddDataTablNullLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkBD\PageParametersBAAK.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -496,6 +524,16 @@
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 и x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
@@ -535,6 +573,76 @@
   <ItemGroup>
     <Resource Include="ImgSourse\list18dp.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="ImgSourse\baselinesave18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImgSourse\folderopen18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImgSourse\settings18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImgSourse\play18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImgSourse\replay18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImgSourse\basesettings18dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="netfx.force.conflicts">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="System.Data.SQLite">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="x64\SQLite.Interop.dll">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>DataFile</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="x86\SQLite.Interop.dll">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="x64\SQLite.Interop.dll" />
+    <Content Include="x86\SQLite.Interop.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
 </Project>

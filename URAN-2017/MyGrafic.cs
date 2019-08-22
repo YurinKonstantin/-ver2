@@ -17,7 +17,7 @@ namespace URAN_2017
     {
        public double _toRaz=100;
        public double _fromRaz=0;
-        public static double _to = 72;
+        public static double _to = 48;
         public static double  _from = 0;
        public static MainWindow MainWindow;
         static public SeriesCollection SeriesCollection { get; set; }
@@ -122,8 +122,25 @@ namespace URAN_2017
         }
         static  public void AddPoint(int NKl, int temp, int tempN)
         {
-          
-           if(temp>=0)
+          if(SeriesCollection[NKl].Values.Count> _to)
+            {
+                SeriesCollection[NKl].Values.RemoveAt(0);
+                
+            }
+            if (SeriesCollectionN[NKl].Values.Count > _to)
+            {
+                SeriesCollectionN[NKl].Values.RemoveAt(0);
+               
+            }
+            if(Labels.Count> _to)
+            {
+                Labels.RemoveAt(0);
+            }
+            if (LabelsN.Count > _to)
+            {
+                LabelsN.RemoveAt(0);
+            }
+            if (temp>=0)
             {
                 SeriesCollection[NKl].Values.Add(temp);
             }

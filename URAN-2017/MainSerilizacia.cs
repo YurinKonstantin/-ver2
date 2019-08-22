@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Serialization;
+using URAN_2017.FolderSetUp;
 
 namespace URAN_2017
 {
@@ -16,7 +17,7 @@ namespace URAN_2017
     {
         UserSetting set = new UserSetting();
         ClassOtborNeutron otbN = new ClassOtborNeutron();
-        public ObservableCollection<Bak> _DataColec1;
+        public ObservableCollection<URAN_2017.FolderSetUp.Bak> _DataColec1;
         public ObservableCollection<Bak> _DataColecBAAK12100;
         public ObservableCollection<ClassTestRan> _DataColecClassTestRan;
 

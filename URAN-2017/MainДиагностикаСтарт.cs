@@ -8,12 +8,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using URAN_2017.FolderSetUp;
 
 namespace URAN_2017
 {
     public partial class MainWindow
     {
         bool diag;
+        private void myGif_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            myGif.Position = new TimeSpan(0, 0, 1);
+            myGif.Play();
+        }
         bool conectsr;
         private int intervalNewFile = 5;
         private int intervalTemp = 1;
@@ -31,7 +37,7 @@ namespace URAN_2017
 
 
                 Ping pingSender = new Ping();
-                PingReply reply = await pingSender.SendPingAsync(ip, 500);
+                PingReply reply = await pingSender.SendPingAsync(ip, 200);
                 if (reply.Status == IPStatus.Success)
                 {
                     return true;
@@ -48,7 +54,7 @@ namespace URAN_2017
         }
   
         /// <summary>
-        /// Из файла настроек загрузаем настройки
+        /// Из файла настроек загружаем настройки
         /// (нужно ли сразу производить конект, тест, ip адреса для кластеров и модуля синхронизации)
         /// </summary>
         public async Task НачальныеНастройки()//Из файла настроек загрузаем настройки(нужно ли сразу производить конект, тест, ip адреса для кластеров и модуля синхронизации)
@@ -398,599 +404,135 @@ namespace URAN_2017
             int k = 0;
             if (setP.FlagMainRezim)
             {
-               
-
                 if (_DataColec1.Count != 0)
                 {
-                    foreach (Bak bak in _DataColec1)
+                    var ListBAAK12T = from BAAK_T in _DataColec1 where BAAK_T.BAAK12NoT ==false select BAAK_T;
+                    foreach (Bak bak in ListBAAK12T)
                     {
+
+                       
+
+
                         k++;
-                        switch (k)
+                        if (bak.FkagNameBAAK)
                         {
 
-                            case 1:
-                                if (bak.FkagNameBAAK)
+                            if (await LocalPing(bak.KLIP))
+                            {
+
+
+                               // if (bak.BAAK12NoT)
                                 {
-                                    if (await LocalPing(bak.KLIP))
+                                //    Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                 //   Кластер1_2.Inciliz = true;
+                                  //  _DataColecVievList2.Add(Кластер1_2);
+                                 //   await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
+                                  //  await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
+                                  //  await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
+                                    //ViewSet(true, true);
+                                }
+                               // else
+                                {
+                                    await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
+                                    await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
+                                    await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
+                                    Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                    Кластер1.Inciliz = true;
+                                    _DataColecViev.Add(Кластер1);
+                                    //ViewSet(true, false);
+
+                                    try
                                     {
+                                        Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
 
 
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
-                                            Кластер1_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер1_2);
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                            //ViewSet(true, true);
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
-                                            Кластер1.Inciliz = true;
-                                            _DataColecViev.Add(Кластер1);
-                                            //ViewSet(true, false);
-
-
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-
-
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-
-                                        //InitializeKlaster1(Кластер1);
+                                        h++;
                                     }
-                                    else
+                                    catch (Exception ex)
                                     {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                            "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                            "3. Установите все галочки Relay и нажмите 'Set'" +
-                                            "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
-
-
+                                        MessageBox.Show(ex.ToString());
                                     }
                                 }
-                                break;
 
-                            case 2:
-                                if (bak.FkagNameBAAK)
+
+                                //InitializeKlaster1(Кластер1);
+                            }
+                            else
+                            {
+                                string ss = null;
+                             //   if (bak.BAAK12NoT)
                                 {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            Кластер2_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер2_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер2_2);
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                          //  ViewSet(true, true);
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер2 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black,  ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер2.Inciliz = true;
-                                            _DataColecViev.Add(Кластер2);
-                                           /// ViewSet(true, false);
-
-
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-
-                                        //InitializeKlaster2(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                            "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                            "3. Установите все галочки Relay и нажмите 'Set'" +
-                                            "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
-
-
-                                    }
+                                //    ss = "БААК12-200";
                                 }
-                                break;
-                            case 3:
-                                if (bak.FkagNameBAAK)
+                             //   else
                                 {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер3_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер3_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер3_2);
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                           // ViewSet(true, true);
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер3 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер3.Inciliz = true;
-                                            _DataColecViev.Add(Кластер3);
-
-                                          //  ViewSet(true,false);
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-                                        //InitializeKlaster3(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                             "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                             "3. Установите все галочки Relay и нажмите 'Set'" +
-                                             "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
-
-
-                                    }
+                                    ss = "БААК12-200N";
                                 }
-                                break;
-                            case 4:
-                                if (bak.FkagNameBAAK)
+                                ListEr.Add(new ClassErrorStartAndIspravlenie()
                                 {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер4_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер4_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер4_2);
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                          //  ViewSet(true, true);
-
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер4 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер4.Inciliz = true;
-                                            _DataColecViev.Add(Кластер4);
-                                         //   ViewSet(true, false);
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-                                        //InitializeKlaster4(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                              "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                              "3. Установите все галочки Relay и нажмите 'Set'" +
-                                              "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
+                                    Name = "Кластер " + bak.Klname.ToString(),
+                                    ArduinoIP = "1",
+                                    Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                    ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                    "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                    "3. Установите все галочки Relay и нажмите 'Set'" +
+                                    "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                });
 
 
-                                    }
-                                }
-                                break;
+                            }
+                        }
 
-                            case 5:
-                                if (bak.FkagNameBAAK)
+                    }
+                    var ListBAAK12 = from BAAK_NT in _DataColec1 where BAAK_NT.BAAK12NoT == true select BAAK_NT;
+                    foreach (Bak bak in ListBAAK12)
+                    {
+
+
+
+
+                        k++;
+                        if (bak.FkagNameBAAK)
+                        {
+
+                            if (await LocalPing(bak.KLIP))
+                            {
+
+
+                                
+                                        Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                       Кластер1_2.Inciliz = true;
+                                      _DataColecVievList2.Add(Кластер1_2);
+                                       await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
+                                      await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
+                                     await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
+                                    //ViewSet(true, true);
+                                
+                             
+
+
+                           
+                            }
+                            else
+                            {
+                                string ss = "БААК12-200";
+                             
+                                        
+                                
+                              
+                                ListEr.Add(new ClassErrorStartAndIspravlenie()
                                 {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер5_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер5_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер5_2);
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                           // ViewSet(true, true);
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер5 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", ИнтервалТемпаСчета = IntervalTemp, brushes = Brushes.Black, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер5.Inciliz = true;
-                                            _DataColecViev.Add(Кластер5);
-                                            //ViewSet(true, false);
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-                                        //InitializeKlaster5(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                                  "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                                  "3. Установите все галочки Relay и нажмите 'Set'" +
-                                                  "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
+                                    Name = "Кластер " + bak.Klname.ToString(),
+                                    ArduinoIP = "1",
+                                    Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
+                                    ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
+                                    "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
+                                    "3. Установите все галочки Relay и нажмите 'Set'" +
+                                    "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
+                                });
 
 
-                                    }
-                                }
-                                break;
-                            case 6:
-                                if (bak.FkagNameBAAK)
-                                {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер6_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер6_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер6_2);
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                          //  ViewSet(true, true);
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер6 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер6.Inciliz = true;
-                                            _DataColecViev.Add(Кластер6);
-                                           // ViewSet(true, false);
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-                                        //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                              "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                              "3. Установите все галочки Relay и нажмите 'Set'" +
-                                              "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
-
-
-                                    }
-                                }
-                                break;
-                            case 7:
-                                if (bak.FkagNameBAAK)
-                                {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер7_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = true, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер7_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер7_2);
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                           // ViewSet(true, true);
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер7 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер7.Inciliz = true;
-                                            _DataColecViev.Add(Кластер7);
-                                          //  ViewSet(true, false);
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-                                        //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                          "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                          "3. Установите все галочки Relay и нажмите 'Set'" +
-                                          "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
-
-
-                                    }
-                                }
-                                break;
-                            case 8:
-                                if (bak.FkagNameBAAK)
-                                {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер8_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер8_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер8_2);
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                          //  ViewSet(true, true);
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер8 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер8.Inciliz = true;
-                                            _DataColecViev.Add(Кластер8);
-                                           // ViewSet(true, false);
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-                                        //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                              "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                              "3. Установите все галочки Relay и нажмите 'Set'" +
-                                              "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
-
-
-                                    }
-                                }
-                                break;
-                            case 9:
-                                if (bak.FkagNameBAAK)
-                                {
-                                    if (await LocalPing(bak.KLIP))
-                                    {
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            Кластер9_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер9_2.Inciliz = true;
-                                            _DataColecVievList2.Add(Кластер9_2);
-                                            await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                            await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                          //  ViewSet(true, true);
-
-                                        }
-                                        else
-                                        {
-                                            await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                            await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
-                                            await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                            Кластер9 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin = set.FlagSaveBin, FlagSaveBD = set.FlagSaveBD };
-                                            Кластер9.Inciliz = true;
-                                            _DataColecViev.Add(Кластер9);
-                                          //  ViewSet(true, false);
-                                            try
-                                            {
-                                                Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Add(bak.Klname); }));
-                                                h++;
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.ToString());
-                                            }
-                                        }
-
-                                        //InitializeKlaster6(bak.KLIP, bak.Klname, bak.nameBAAK);
-                                    }
-                                    else
-                                    {
-                                        string ss = null;
-                                        if (bak.BAAK12NoT)
-                                        {
-                                            ss = "БААК12-200";
-                                        }
-                                        else
-                                        {
-                                            ss = "БААК12-200N";
-                                        }
-                                        ListEr.Add(new ClassErrorStartAndIspravlenie()
-                                        {
-                                            Name = "Кластер " + bak.Klname.ToString(),
-                                            ArduinoIP = "1",
-                                            Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
-                                            ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
-                                               "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
-                                               "3. Установите все галочки Relay и нажмите 'Set'" +
-                                               "\n" + "4. Закройте программу Relay control, ожидайте 2- 3 минуты завершения перезапуска платы, после нажмите «Обновить»."
-                                        });
-
-
-                                    }
-                                }
-                                break;
+                            }
                         }
 
                     }
@@ -1014,7 +556,7 @@ namespace URAN_2017
 
                                 
                                             Кластер1_3 = new ClassBAAK12_100 { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ",
-                                                brushes = Brushes.Black,
+                                                Brushes = Brushes.Black,
                                                 ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT,
                                                 trigOtBAAK = bak.TrigOtBAAK, FlagSaveBin=set.FlagSaveBin, FlagSaveBD=set.FlagSaveBD };
                                             Кластер1_3.Inciliz = true;

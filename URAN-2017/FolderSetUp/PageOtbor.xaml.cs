@@ -19,8 +19,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 using ToggleSwitch;
+using URAN_2017;
 
-namespace URAN_2017
+
+namespace URAN_2017.FolderSetUp
 {
     /// <summary>
     /// Логика взаимодействия для PageOtbor.xaml
@@ -31,7 +33,7 @@ namespace URAN_2017
         ClassOtborNeutron otb = new ClassOtborNeutron();
         public PageOtbor()
         {
-            InitializeComponent();
+           this.InitializeComponent();
             DeSerial();
             DlitNeu.Text = otb.Dlit.ToString();
             PorogNeutrona.Text = otb.Porog.ToString();

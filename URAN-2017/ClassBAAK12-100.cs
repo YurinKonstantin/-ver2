@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,113 +12,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using URAN_2017.FolderSetUp;
 
 namespace URAN_2017
 {
    public class ClassBAAK12_100 : BAAK12T, IDisposable
     {
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-        public void НастройкаКлок()
-        {
-            if (clientBAAK12T.Connected && ns != null)
-            {
-                brushes = Brushes.Black;
-                //TODO настройка регистров с синхронизацией
-                CтатусБААК12 = "Запись настроик с клок";
-                SettingCloc();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Запись общих настроик";
-                SettingAll();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Создаем файл";
-                CreatFileData();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Разрешаем передачу данных";
-                StartdataReg();//Разрешает передачу данных
-                Thread.Sleep(50);
-                CтатусБААК12 = "Вычитываем ненужные файлы";
-                ВычитываемДанныеНенужные();
-                Thread.Sleep(50);
-                CтатусБААК12 = "Работает";
-                brushes = Brushes.Green;
-            }
-            else
-            {
-                brushes = Brushes.Red;
-                CтатусБААК12 = "НЕТ подключения";
-                InDe(false);
-            }
-
-
-        }
-        public void Настройка()
-        {
-            if (Синхронизация)
-            {
-                //if (Conect300Statys)
-                // {
-                TriggerStop();
-                НастройкаКлок();
-
-                // }
-                // else
-                // {
-                //    CтатусБААК12 = "НЕТ подключения";
-                //}
-            }
-            else
-            {
-                // if (Conect300Statys)
-                //{
-                TriggerStop();
-                //MessageBox.Show("Настройка без клок");
-                НастройкаБезКлок();
-
-                // }
-                //  else
-                //  {
-                //    CтатусБААК12 = "НЕТ подключения";
-                // }
-            }
-        }
-        /// <summary>
-        /// Вычитывает ненужные файлы
-        /// </summary>
-        private void ВычитываемДанныеНенужные()
-        {
-            bool endd = false;
-            int x = 0;
-            while (!endd)
-            {
-                //MessageBox.Show("ghghdddd");
-                byte[] buf = new byte[2048];
-                int res = Read13007(out buf);//читаем с платы
-                CтатусБААК12 = res.ToString();
-                if (res > 0)
-                {
-                    CтатусБААК12 = res.ToString();
-                    x = 0;
-                }
-                else
-                {
-                    x++;
-                    CтатусБААК12 = x.ToString();
-                }
-                if (x < 2)
-                {
-                    endd = true;
-                }
-
-            }
-
-        }
+    
+ 
+      
+    
         /// <summary>
         /// Вычитывает нужные файлы
         /// </summary>
-        private void ВычитываемДанныеНужные()
+       public void ВычитываемДанныеНужные1()
         {
             bool endd = false;
             int x = 0;
@@ -165,298 +73,29 @@ namespace URAN_2017
 
 
         }
-        private void СохраняемДанныеНужные()
-        {
-            while (true)
-            {
-                try
-                {
-                    DataYu clasdata = new DataYu();
-                    OcherediNaZapic.TryDequeue(out clasdata);
-                    if (clasdata.ListData != null)
-                    {
-                        int f = clasdata.ListData.Count;
-                        byte[] d = new byte[f];
-                        int x = 0;
-                        foreach (Byte b in clasdata.ListData)
-                        {
-                            d[x] = b;
-                            x++;
-                        }
-                        data_w.Write(d);
-                        clasdata.ListData.Clear();
-                        Array.Clear(d, 0, f);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    break;
-                }
-                catch (NullReferenceException)
-                {
-                    break;
-                }
-            }
-
-
-        }
-        public void НастройкаБезКлок()
-        {
-            try
-            {
-                CтатусБААК12 = "Запись настроик без клок";
-                SettingNoCloc();
-                CтатусБААК12 = "Запись общих настроик";
-                SettingAll();
-                CтатусБААК12 = "Создаем файл";
-                CreatFileData();
-                CтатусБААК12 = "Разрешаем передачу данных";
-                StartdataReg();//Разрешает передачу данных
-                CтатусБААК12 = "Вычитываем ненужные файлы";
-                ВычитываемДанныеНенужные();
-                CтатусБААК12 = "Работает";
-            }
-            catch (Exception)
-            {
-                InDe(false);
-                MessageBox.Show("Ошибка при старте");
-            }
-
-
-        }
-        public void Пуск()
-        {
-            if (Синхронизация)
-            {
-                // if (Conect300Statys)
-                // {
-                ПускКлок();
-                //  }
-                // else
-                //{
-                //    CтатусБААК12 = "НЕТ подключения";
-                //}
-            }
-            else
-            {
-                // if (Conect300Statys)
-                // {
-                ПускБезКлок();
-                // }
-                // else
-                // {
-                //     CтатусБААК12 = "НЕТ подключения";
-                // }
-            }
-        }
-        public void ПускБезКлок()
-        {
-            StartTime(2);
-            TriggerStart();
-        }
-        public void ПускСтартТайм()
-        {
-            if (Синхронизация)
-            {
-                // if (Conect300Statys)
-                //{
-                СтартТаймКлок();
-                // }
-                // else
-                // {
-                //    CтатусБААК12 = "НЕТ подключения";
-                //  }
-            }
-            else
-            {
-                // if (Conect300Statys)
-                // {
-                СтартТаймНоКлок();
-                //}
-                // else
-                //{
-                CтатусБААК12 = "НЕТ подключения";
-                //}
-            }
-        }
-        public void СтартТаймКлок()
-        {
-            StartTime(1);
-        }
-        public void СтартТаймНоКлок()
-        {
-            StartTime(2);
-        }
-        public void ПускКлок()
-        {
-
-            TriggerStart();
-        }
-        public void Stop()
-        {
-            Thread.Sleep(50);
-            CтатусБААК12 = "Триггер СТОП";
-            TriggerStop();
-            Thread.Sleep(50);
-            CтатусБААК12 = "Вычитываем данные";
-            ВычитываемДанныеНужные();
-            Thread.Sleep(50);
-            WreadReg3000(0x200020, 0x0);
-            Thread.Sleep(50);
-            StopdataReg();
-            Thread.Sleep(50);
-            CтатусБААК12 = "Сохраняем";
-            СохраняемДанныеНужные();
-            Thread.Sleep(50);
-            CтатусБААК12 = "Закрытие файла";
-            CloseFile();
-            Thread.Sleep(50);
-            CтатусБААК12 = "Отключена";
 
 
 
-        }
-        public void TriggerStart()//Разрешение выроботки триггерного сигнала
-        {
-            if (clientBAAK12T.Connected && ns != null)
-            {
-                BlocAndPolarnost(8224);
-                WreadReg3000(0x200200, 1);
-            }
-            else
-            {
-                CтатусБААК12 = "НЕТ подключения";
-                InDe(false);
-            }
-        }
-        public void TriggerStop()//Запрет выроботки триггерного сигнала
-        {
-            if (clientBAAK12T.Connected && ns != null)
-            {
-                BlocAndPolarnost(9252);
-                Thread.Sleep(10);
-                WreadReg3000(0x200200, 0);
-            }
-            else
-            {
-                CтатусБААК12 = "НЕТ подключения";
-                InDe(false);
-            }
+   
+   
 
-        }
-        /// <summary>
-        /// запускаем передачу данных
-        /// </summary>
-        public void StartdataReg()//запускаем передачу данных
-        {
-            // WreadReg3000(0x10, 0x0);
-            //WRbuffer = new Byte[14];//Создаем буффер для записи
-            if (clientBAAK12T.Connected && ns != null)
-            {
-                Rbuffer = new Byte[14];//Создаем буффер для чтения
-                Write1(Preob3(WRbuffer, 0x10, 0x0), 0, 14);//Формируем и Отправляем созданный пакет
-            }
-            else
-            {
-                CтатусБААК12 = "НЕТ подключения";
-                InDe(false);
-            }
-
-
-        }
-        /// <summary>
-        /// останавливаем передачу данных
-        /// </summary>
-        public void StopdataReg()//останавливаем передачу данных
-        {
-            if (clientBAAK12T.Connected && ns != null)
-            {
-                Rbuffer = new Byte[14];//Создаем буффер для чтения
-                Write1(Preob3(WRbuffer, 0x12, 0x0), 0, 14);//Формируем и Отправляем созданный пакет
-            }
-            else
-            {
-                CтатусБААК12 = "НЕТ подключения";
-                InDe(false);
-            }
-
-        }
-        public string Time()
-        {
-            String s, shour, sMinute, sDay, sMonth, sSec;
-            DateTime tmp = DateTime.UtcNow;
-
-            if (Convert.ToUInt32(tmp.Hour.ToString()) < 10)
-            {
-                shour = Convert.ToString("0" + tmp.Hour.ToString());
-            }
-            else
-            {
-                shour = Convert.ToString(tmp.Hour.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Minute.ToString()) < 10)
-            {
-                sMinute = Convert.ToString("0" + tmp.Minute.ToString());
-            }
-            else
-            {
-                sMinute = Convert.ToString(tmp.Minute.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Day.ToString()) < 10)
-            {
-                sDay = Convert.ToString("0" + tmp.Day.ToString());
-            }
-            else
-            {
-                sDay = Convert.ToString(tmp.Day.ToString());
-            }
-            if (Convert.ToUInt32(tmp.Month.ToString()) < 10)
-            {
-                sMonth = Convert.ToString("0" + tmp.Month.ToString());
-            }
-            else
-            {
-                sMonth = Convert.ToString(tmp.Month.ToString());
-            }
-
-            if (Convert.ToUInt32(tmp.Second.ToString()) < 10)
-            {
-                sSec = Convert.ToString("0" + tmp.Second.ToString());
-            }
-            else
-            {
-                sSec = Convert.ToString(tmp.Second.ToString());
-            }
-
-            s = sDay + "." + sMonth + "." + tmp.Year.ToString() + " " + shour + "." + sMinute + "." + sSec;
-            // s = sDay + "." + sMonth + "." + "" + shour + ":" + sMinute;
-            return s;
-        }
         /// <summary>
         /// Расчет темпа и запись результата в БД
         /// </summary>
-        public void TempPacetov()
+        public override void TempPacetov()
         {
-            //if (Conect300Statys)
-            // {
+         
             ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов;
             Пакетов = Convert.ToInt32(КолПакетов);
-            // BDReadTemP(NameBAAK12, ТемпПакетов);
-            // MyGrafic.AddPoint(Nkl, ТемпПакетов);
 
-
-            // }
+            ТемпПакетовN = Convert.ToInt32(КолПакетовN) - ПакетовN;
+            ПакетовN = Convert.ToInt32(КолПакетовN);
         }
         /// <summary>
         /// Создает новый файл
         /// </summary>
-        public void CreatFileData()
-        {//if (Conect300Statys)
-         // {
+        public override void CreatFileData()
+        {
             try
             {
                 string path = NameFileWay;
@@ -465,7 +104,7 @@ namespace URAN_2017
                 if (!dirInfo.Exists)
                 {
                     dirInfo.Create();
-                    MessageBox.Show("папки небыло" + "\n" + NameFile);
+                    MessageBox.Show("папки небыло" + "\n" + NameFile, "Сохранение данных");
                 }
                 dirInfo = new DirectoryInfo(path + @"\" + subpath);
 
@@ -486,71 +125,17 @@ namespace URAN_2017
             catch (Exception ex)
             {
                 InDe(false);
-                MessageBox.Show(ex.ToString() + "\n" + NameFile);
+                Brushes = System.Windows.Media.Brushes.Red;
                 CтатусБААК12 = "Ошибка при создании файла";
             }
             // }
         }
-        /// <summary>
-        /// закрытие файла
-        /// </summary>
-        public void CloseFile()//закрытие файла
-        {
-            // if(Conect300Statys)
-            //{
-            if (data_w != null)
-            {
-                try
-                {
-                    data_w.Close();
-                    data_w = null;
-                    BDReadCloseFile(NameFileClose, Time());
-                }
-                catch (Exception)
-                {
-                    InDe(false);
-                    CтатусБААК12 = "Ошибка при закрытии потока файла";
-                }
-                // }
-                if (data_fs != null)
-                {
-                    try
-                    {
-                        data_fs.Close();
-                        data_fs.Dispose();
-                    }
-                    catch (Exception)
-                    {
-                        CтатусБААК12 = "Ошибка при закрытии файла";
-                    }
-                }
-            }
-        }
-        public void WriteFileData(List<byte> DataBAAKList)//пишет в файл
-        {
-
-
-
-            try
-            {
-                foreach (Byte b in DataBAAKList)
-                {
-                    data_w.Write(b);
-                }
-                //data_w.Write(buf);
-
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Ошибка записи");
-            }
-
-        }
+   
 
         /// <summary>
         /// записываем данных о событии из очереди в в бд
         /// </summary>
-        public void WriteInFileIzOcherediBD()
+        public override void WriteInFileIzOcherediBD()
         {
             ClassZapicBD100 BDData = new ClassZapicBD100();
             try
@@ -576,6 +161,10 @@ namespace URAN_2017
             {
 
             }
+            catch (NullReferenceException ee)
+            {
+                Debug.WriteLine("Error 590");
+            }
             catch (Exception e)
             {
 
@@ -583,45 +172,50 @@ namespace URAN_2017
                 InDe(false);
             }
         }
-        DataYu dataYu;
-        public Boolean Flagtest = false;
-        public Boolean BAAKTAIL = true;
+      
+        
         /// <summary>
         /// записываем данные из очереди в файл и в бд
         /// </summary>
-        public new void WriteInFileIzOcheredi()//работа с данными из очереди
+        public override void WriteInFileIzOcheredi()//работа с данными из очереди
         {
             try
             {
-               
-                OcherediNaZapic.TryDequeue(out dataYu);
-                if (dataYu.ListData != null)
+
+                bool? ed = OcherediNaZapic.TryDequeue(out dataYu);
+                if (ed == true)
                 {
-                    byte[] d = new byte[dataYu.ListData.Count];
-                    int x = 0;
-                    foreach (Byte b in dataYu.ListData)
-                    {
-                        d[x] = b;
-                        x++;
-                    }
-                    if (data_w != null)
-                    {
-                        data_w.Write(d);
-                    }
-           
 
-                    Double[] sigm = new double[12];
-                    
-                      Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out double[] NL, out sigm, (int)DataLenght, out int dN, out bool neu);//парсинг данных
-                    if(neu)
+
+                    if (dataYu.ListData != null)
                     {
-                        OcherediNaZapicBD.Enqueue(new ClassZapicBD100() { nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = (int)Ampl[dN-1], nameklasterBD = NamKl, NlBD = (int)NL[dN-1], sigBDnew = sigm[dN-1] });
+                        byte[] d = new byte[dataYu.ListData.Count];
+                        int x = 0;
+                        foreach (Byte b in dataYu.ListData)
+                        {
+                            d[x] = b;
+                            x++;
+                        }
+                        if (data_w != null)
+                        {
+                            data_w.Write(d);
+                        }
 
+
+                        Double[] sigm = new double[12];
+
+                        Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out double[] NL, out sigm, (int)DataLenght, out int dN, out bool neu);//парсинг данных
+
+                        if (neu)
+                        {
+                            OcherediNaZapicBD.Enqueue(new ClassZapicBD100() { nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = (int)Ampl[dN - 1], nameklasterBD = NamKl, NlBD = (int)NL[dN - 1], sigBDnew = sigm[dN - 1] });
+
+                        }
+
+                        КолПакетовОчер++;
+                        // DataBAAKList1 = null;
+                        d = null;
                     }
-
-                    КолПакетовОчер++;
-                   // DataBAAKList1 = null;
-                    d = null;
                 }
             }
             catch (InvalidOperationException)
@@ -662,7 +256,7 @@ namespace URAN_2017
                
                 ParserBAAK12.ParseBinFileBAAK12.ParseBinFileBAAK200(buf00.ToArray(), dl,  out data, out time);
         // To Do
-                ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, out sig, out Amp, ref Nul, out bad, true, 1, 1);
+                ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, ref sig, ref Amp, ref Nul, ref bad, true, 1, 1);
                 if(!bad)
                 {
                     Obrabotca.AmpAndTime(data, masnul, out int[] maxTime, out int[] maxAmp);
@@ -695,7 +289,7 @@ namespace URAN_2017
         /// <summary>
         /// Читает данные с платы и пишет их в очередь, считаем количество пакетов
         /// </summary>
-        public void ReadData()//Читает данные с платы и пишет их в очередь
+        public override void ReadData()//Читает данные с платы и пишет их в очередь
         {
             try
             {
@@ -718,14 +312,6 @@ namespace URAN_2017
                                 CountFlagEnd = 0;
                             }
 
-                            if (buf[i] == 0xFE)
-                            {
-                                CountFlagEndErroy++;
-                            }
-                            else
-                            {
-                                CountFlagEndErroy = 0;
-                            }
                             DataBAAKList.Add(buf[i]);
                             if (CountFlagEndErroy == 4)
                             {
@@ -755,7 +341,7 @@ namespace URAN_2017
                 }
                 else
                 {
-                    brushes = Brushes.Red;
+                    Brushes = System.Windows.Media.Brushes.Red;
                     CтатусБААК12 = "Ошибка 1 чтения с платы. Отключена";
                     InDe(false);
                 }
@@ -763,171 +349,19 @@ namespace URAN_2017
             }
             catch (Exception ex)
             {
-                brushes = Brushes.Red;
+                Brushes = System.Windows.Media.Brushes.Red;
                 CтатусБААК12 = "Ошибка 2 чтения с платы. Отключена" + ex.ToString();
                 InDe(false);
-                MessageBox.Show("Не Работает");
+                MessageBox.Show("Не Работает", "Ошибка");
             }
 
         }
-        public void NewFileData()
-        {
-
-            // if (Conect300Statys)
-            // {
-            TriggerStop();
-            CloseFile();
-            CreatFileData();
-            TriggerStart();
-            //  }
-
-        }
-        /// <summary>
-        /// программный сигнал триггер
-        /// </summary>
-        public void TriggerStartProgram()//программный сигнал триггер
-        {
-            WreadReg3000(0x200034, 1);
-        }
-
-        private void InDe(bool f)
-        {
-            if (f)
-            {
-                InitializeKlaster1();
-            }
-            else
-            {
-                DeInitializeKlaster1();
-            }
-        }
-
-        private void TriggerStopОго()
-        {
-            Trigger(0x200006, 11);
-        }
-        private void InitializeKlaster1()//Функция производит подписку на все необходимые действия для работы
-        {
-            try
-            {
-                BAAK12T.ConnnectURANDelegate += ConnectAll; //подписка на конект
-                BAAK12T.НастройкаURANDelegate += Настройка; //подписка на запуск(загрузка регистров начало, создание файла и тд )
-                BAAK12T.ПускURANDelegate += Пуск;//запускает тамер и разрешает триггер
-                BAAK12T.ReadDataURANDelegate += ReadData;//подписка на чтение данных с платы
-                BAAK12T.NewFileURANDelegate += NewFileData;//подписка на создание нового файла
-                BAAK12T.StopURANDelegate += Stop;//подписка на остоновку набора кластера 1
-                BAAK12T.DiscConnnectURANDelegate += DicsConectAll;
-                BAAK12T.TempURANDelegate += TempPacetov;
-                BAAK12T.ДеИнсталяцияDelegate += DeInitializeKlaster1;
-
-                BAAK12T.TestRanSetUpDelegate += TestRanПодготовка;
-                BAAK12T.TestRanStartDelegate += TriggerStartProgram;
-                BAAK12T.TestRanTheEndDelegate += TestRanTheEnd;
-                //_DataColecViev.Add(inz);//Добавляем кластер для отображения
-                BAAK12T.ЗаписьВремяРегистрDelegate += FirsTime;
-                BAAK12T.СтартЧасовDelegate += ПускСтартТайм;
-                BAAK12T.ЗаписьвФайлDelegate += WriteInFileIzOcheredi;
-                BAAK12T.СтопТриггерDelegate += TriggerStopОго;
-                BAAK12T.ЗаписьвФайлБДDelegate += WriteInFileIzOcherediBD;
+    
 
 
-            }
-            catch (Exception)
-            {
-                DeInitializeKlaster1();
-                CтатусБААК12 = "Ошибка инициализации. Отключена";
-                brushes = Brushes.Red;
 
-            }
-        }
-        public void DeInitializeKlaster1()//Функция производит отписку от всех  действия для работы
-        {
-            try
-            {
-                BAAK12T.ConnnectURANDelegate -= ConnectAll;//подписка на конект
-                BAAK12T.НастройкаURANDelegate -= Настройка;//подписка на запуск(загрузка регистров начало, создание файла и тд )
-                BAAK12T.ReadDataURANDelegate -= ReadData;
-                BAAK12T.NewFileURANDelegate -= NewFileData;
-                BAAK12T.StopURANDelegate -= Stop;
-                BAAK12T.DiscConnnectURANDelegate -= DicsConectAll;
-
-                BAAK12T.ПускURANDelegate -= Пуск;
-                BAAK12T.TempURANDelegate -= TempPacetov;
-                BAAK12T.TestRanSetUpDelegate -= TestRanПодготовка;
-                BAAK12T.TestRanStartDelegate -= TriggerStartProgram;
-                BAAK12T.TestRanTheEndDelegate -= TestRanTheEnd;
-                BAAK12T.ЗаписьВремяРегистрDelegate -= FirsTime;
-                BAAK12T.СтартЧасовDelegate -= ПускСтартТайм;
-                BAAK12T.ЗаписьвФайлDelegate -= WriteInFileIzOcheredi;
-                BAAK12T.СтопТриггерDelegate -= TriggerStop;
-                BAAK12T.ЗаписьвФайлБДDelegate -= WriteInFileIzOcherediBD;
-                while (!OcherediNaZapicBD.IsEmpty)
-                {
-                    OcherediNaZapicBD.TryDequeue(out ClassZapicBD100 ClassZapicBD100);
-                }
-                while (!OcherediNaZapic.IsEmpty)
-                {
-                    DataYu dataYu = new DataYu();
-                    OcherediNaZapic.TryDequeue(out dataYu);
-                }
-                //OcherediNaZapic.
-                //OcherediNaZapicBD
-                if (clientBAAK12T.Connected)
-                {
-                    clientBAAK12T.Close();
-                    ns.Close();
-                    ns = null;
-
-                }
-
-                if (clientBAAK12TData.Connected)
-                {
-                    clientBAAK12TData.Close();
-                    nsData.Close();
-                    nsData = null;
-                }
-                CloseFile();
-                BAAK12T.ДеИнсталяцияDelegate -= DeInitializeKlaster1;
-
-            }
-            catch
-            {
-                // MessageBox.Show("Ошибка");
-            }
-        }
-
-        public void StartTime(uint t)
-        {
-            WreadReg3000(0x200002, t);
-        }
-        public void SettingNoCloc()
-        {
-
-            WreadReg3000(0x20001c, 0);
-
-            WreadReg3000(0x200026, 0); // Generator Clock
-
-            WreadReg3000(0x200024, 1);
-            WreadReg3000(0x200024, 0);//Сброс регистров
-            Thread.Sleep(500);
-            WreadReg3000(0x20001c, 0);
-            WreadReg3000(0x200026, 0); // Generator Clock
-
-        }
-        public void SettingCloc()
-        {
-            WreadReg3000(0x20001c, 1);
-            WreadReg3000(0x200026, 1); // optc Clock
-            WreadReg3000(0x200002, 1);// Запуск по клоку
-            WreadReg3000(0x20001c, 1);//синхронизация таймера
-            WreadReg3000(0x200024, 1); //Сброс регистров
-            Thread.Sleep(600);
-            WreadReg3000(0x200024, 0);// нормальная работа регистров
-            WreadReg3000(0x20001c, 1);//синхронизация таймера
-            WreadReg3000(0x200026, 1);
-
-        }
-        public void SettingAll()
+    
+        public override void SettingAll()
         {
             BlocAndPolarnost(9252);
             TriggerStop();
@@ -967,146 +401,12 @@ namespace URAN_2017
             }
             WreadReg3000(0x200020, 0x1);
         }
-        public bool trigOtBAAK = false;
-        public void FirsTime()//Время внутреннего таймера
-        {
 
-            WreadReg3000(0x200010, Time0x10);
 
-            WreadReg3000(0x200012, Time0x12);
 
-            WreadReg3000(0x200014, Time0x14);
 
-            WreadReg3000(0x200016, Time0x16);
 
-        }
-        public void BlocAndPolarnost(uint x)//Полярность сигнала 8224 - запрос разрешен и положительная полярность, 9252 - запрос запрешен, и положительная полярность
-        {
-            WreadReg3000(0x90000, x);
 
-            WreadReg3000(0x98000, x);
-
-            WreadReg3000(0xb0000, x);
-
-            WreadReg3000(0xb8000, x);
-
-            WreadReg3000(0xd0000, x);
-
-            WreadReg3000(0xd8000, x);
-
-        }
-        public void AllStopDelay(uint wind)//задержка остановки записи после прихода триггера
-        {
-            WreadReg3000(0x9000e, wind);
-            WreadReg3000(0x9800e, wind);
-            WreadReg3000(0xb000e, wind);
-            WreadReg3000(0xb800e, wind);
-            WreadReg3000(0xd000e, wind);
-            WreadReg3000(0xb800e, wind);
-        }
-        public void StopDelay(uint Reg, uint wind)//задержка остановки записи после прихода триггера в отсчетах
-        {
-            WreadReg3000(Reg, wind);
-        }
-        public void Trigger(uint Reg, uint tr)//Кратность совпадений и подверждение
-        {
-            WreadReg3000(Reg, tr);
-        }
-        public void Winduws(uint Reg, uint wind)//окно совпадений дискретность 10 нс от 0 до 254
-        {
-            WreadReg3000(Reg, wind);
-        }
-        public void SetPorog(uint Reg, uint por)
-        {
-            WreadReg3000(Reg, por);
-        }
-        public uint[] masnul = new uint[12];
-        public void AllSetPorogAll(uint PorogAll1)
-        {
-            BDselect(out masnul);
-            SetPorog(0x90010, masnul[0] + PorogAll1);//низкий порог для канала 0(первый)
-            SetPorog(0x90020, masnul[0] + 1 + PorogAll1);//высокий порог для канала 0(первый)
-
-            SetPorog(0x90014, masnul[1] + PorogAll1);//низкий порог для канала 1
-            SetPorog(0x90024, masnul[1] + 1 + PorogAll1);//высокий порог для канала 1
-
-            SetPorog(0x98010, masnul[2] + PorogAll1);//низкий порог для канала 2
-            SetPorog(0x98020, masnul[2] + 1 + PorogAll1);//высокий порог для канала 2
-
-            SetPorog(0x98014, masnul[3] + PorogAll1);//низкий порог для канала 3
-            SetPorog(0x98024, masnul[3] + 1 + PorogAll1);//высокий порог для канала 3
-
-            SetPorog(0xb0010, masnul[4] + PorogAll1);//низкий порог для канала 4
-            SetPorog(0xb0020, masnul[4] + 1 + PorogAll1);//высокий порог для канала 4
-
-            SetPorog(0xb0014, masnul[5] + PorogAll1);//низкий порог для канала 5
-            SetPorog(0xb0024, masnul[5] + 1 + PorogAll1);//высокий порог для канала 5
-
-            SetPorog(0xb8010, masnul[6] + PorogAll1);//низкий порог для канала 6
-            SetPorog(0xb8020, masnul[6] + 1 + PorogAll1);//высокий порог для канала 6
-
-            SetPorog(0xb8014, masnul[7] + PorogAll1);//низкий порог для канала 7
-            SetPorog(0xb8024, masnul[7] + 1 + PorogAll1);//высокий порог для канала 7
-
-            SetPorog(0xd0010, masnul[8] + PorogAll1);//низкий порог для канала 8
-            SetPorog(0xd0020, masnul[8] + 1 + PorogAll1);//высокий порог для канала 8
-
-            SetPorog(0xd0014, masnul[9] + PorogAll1);//низкий порог для канала 9
-            SetPorog(0xd0024, masnul[9] + 1 + PorogAll1);//высокий порог для канала 9
-
-            SetPorog(0xd8010, masnul[10] + PorogAll1);//низкий порог для канала 10
-            SetPorog(0xd8020, masnul[10] + 1 + PorogAll1);//высокий порог для канала 10
-
-            SetPorog(0xd8014, masnul[11] + PorogAll1);//низкий порог для канала 11
-            SetPorog(0xd8024, masnul[11] + 1 + PorogAll1);//высокий порог для канала 11
-
-        }
-        //   +++ Настройка АЦП+++
-        public void ADCSetUp()
-        {
-            WreadReg3000(0x200004 + 8, 0x3ff);// пишем во все АЦП одновременно
-            WreadReg3000(0x200000 + 12 * 2, 0x10);// пишем во все АЦП одновременно
-            WreadReg3000(0x200000 + 13 * 2, 0x0503); //данные для обоих каналов
-            WreadReg3000(0x200000 + 13 * 2, 0xff01); //Update Register
-            WreadReg3000(0x200000 + 13 * 2, 0x1404); //Offset Binary
-            WreadReg3000(0x200000 + 13 * 2, 0x1792); // DCO Delay  -- (2,5-0,4-0,2) ns = 1,9 ns = (18+1)= 0x12 (+ invert)
-            WreadReg3000(0x200000 + 13 * 2, 0x181d);// Full Scale
-            WreadReg3000(0x200000 + 13 * 2, 0xff01);// Update Register
-        }
-        public void OffSetData()
-        {
-            WreadReg3000(0x90040, 10300);//смешение данных канала 0
-            WreadReg3000(0x90042, 10300);//смешение данных канала 1
-            WreadReg3000(0x98040, 10300);//смешение данных канала 2
-            WreadReg3000(0x98042, 10300);//смешение данных канала 3
-            WreadReg3000(0xb0040, 10300);//смешение данных канала 4
-            WreadReg3000(0xb0042, 10300);//смешение данных канала 5
-            WreadReg3000(0xb8040, 10300);//смешение данных канала 6
-            WreadReg3000(0xb8042, 10300);//смешение данных канала 7
-            WreadReg3000(0xd0040, 10300);//смешение данных канала 8
-            WreadReg3000(0xd0042, 10300);//смешение данных канала 9
-            WreadReg3000(0xd8040, 10300);//смешение данных канала 10
-            WreadReg3000(0xd8042, 10300);//смешение данных канала 11
-        }
-        public void DataLengt()
-        {
-            WreadReg3000(0x90044, 2048 * DataLenght);//длинна данных канала 0
-            WreadReg3000(0x90046, 2048 * DataLenght);//длинна данных канала 1
-            WreadReg3000(0x98044, 2048 * DataLenght);//длинна данных канала 2
-            WreadReg3000(0x98046, 2048 * DataLenght);//длинна данных канала 3
-            WreadReg3000(0xb0044, 2048 * DataLenght);//длинна данных канала 4
-            WreadReg3000(0xb0046, 2048 * DataLenght);//длинна данных канала 5
-            WreadReg3000(0xb8044, 2048 * DataLenght);//длинна данных канала 6
-            WreadReg3000(0xb8046, 2048 * DataLenght);//длинна данных канала 7
-            WreadReg3000(0xd0044, 2048 * DataLenght);//длинна данных канала 8
-            WreadReg3000(0xd0046, 2048 * DataLenght);//длинна данных канала 9
-            WreadReg3000(0xd8044, 2048 * DataLenght);//длинна данных канала 10
-            WreadReg3000(0xd8046, 2048 * DataLenght);//длинна данных канала 11
-        }
-        public void TriggerProgramSetap()//внешний триггер
-        {
-            WreadReg3000(0x200006, 0x101);
-        }
 
 
         /// <summary>
@@ -1115,18 +415,21 @@ namespace URAN_2017
         /// <param name="porog">порог срабатывания</param>
         /// <param name="trig">триггер</param>
         /// <param name="trigProg">если =true, то по количеству</param>
-        public void TestRanПодготовка(int porog, int trig, Boolean trigProg)
+        public override void TestRanПодготовка(int porog, int trig, Boolean trigProg)
         {
-            brushes = Brushes.Black;
+
             CтатусБААК12 = "Подготовка к тестовому набору";
             Thread.Sleep(500);
 
             TriggerStopОго();
             CтатусБААК12 = "Вычитываем данные";
             Thread.Sleep(500);
-            ВычитываемДанныеНужные();
+            // ВычитываемДанныеНужные();
+            ВычитываемДанныеНенужные();
+
             //TriggerStop();
             CтатусБААК12 = "вычитываем очередь";
+
             Thread.Sleep(500);
             int koloch = 0;
             while (OcherediNaZapic.Count != 0 | koloch < 50)
@@ -1143,19 +446,12 @@ namespace URAN_2017
             Thread.Sleep(500);
             //if (Conect300Statys)
             // {
-            string tipPl;
-            if (!BAAKTAIL)
-            {
-                tipPl = "N";
-            }
-            else
-            {
-                tipPl = "T";
-            }
+            string tipPl="V";
+      
             try
             {
                 string path = NameFileWay;
-                string subpath = @"Test7d";
+                string subpath = @"TestV";
                 DirectoryInfo dirInfo = new DirectoryInfo(path);
                 if (!dirInfo.Exists)
                 {
@@ -1167,6 +463,7 @@ namespace URAN_2017
                 {
                     dirInfo.Create();
                 }
+
                 String sd = Time();
                 NameFile = NameFileWay + @"\" + subpath + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + tipPl + ".bin";
                 data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
@@ -1176,28 +473,20 @@ namespace URAN_2017
             }
             catch (Exception ex)
             {
-                brushes = Brushes.Red;
-                MessageBox.Show("Ошибка открытия файла" + ex.ToString());
+                MessageBox.Show("Ошибка открытия файла" + ex.ToString(), "Ошибка");
             }
             // }
             КолПакетов = 0;
             КолПакетовEr = 0;
             КолПакетовОчер = 0;
             КолПакетовОчер2 = 0;
+            КолПакетовN = 0;
             if (!trigProg)//по длительности
             {
                 CтатусБААК12 = "Тестовый набор по длительности";
                 Thread.Sleep(500);
                 AllSetPorogAll(Convert.ToUInt32(porog));
-
-                if (!trigOtBAAK)
-                {
-                    Trigger(0x200006, TrgAll);
-                }
-                else
-                {
-                    Trigger(0x200006, 256);
-                }
+                Trigger(0x200006, Convert.ToUInt32(trig));
                 //TriggerStart();
 
             }
@@ -1215,70 +504,8 @@ namespace URAN_2017
         /// <summary>
         /// Завершение тестовго набора и возрат настроек обычного набора
         /// </summary>
-        public void TestRanTheEnd(Boolean trigProg)
-        {
-            TriggerStopОго();
 
-
-            CтатусБААК12 = "Вычитываем данные";
-            Thread.Sleep(500);
-            ВычитываемДанныеНужные();
-            CтатусБААК12 = "вычитываем очередь";
-            Thread.Sleep(500);
-            int koloch = 0;
-            while (OcherediNaZapic.Count != 0 | koloch < 50)
-            {
-                koloch++;
-                //Thread.Sleep(500);
-                CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
-            }
-            brushes = Brushes.Green;
-            Thread.Sleep(500);
-            CтатусБААК12 = "Работает";
-            //TriggerStop();
-            NewFileData();
-            if (!trigProg)
-            {
-
-                if (!trigOtBAAK)
-                {
-                    Trigger(0x200006, TrgAll);
-                }
-                else
-                {
-                    Trigger(0x200006, 256);
-                }
-                AllSetPorogAll(PorogAll);
-            }
-            else
-            {
-
-                if (!trigOtBAAK)
-                {
-                    Trigger(0x200006, TrgAll);
-                }
-                else
-                {
-                    Trigger(0x200006, 256);
-                }
-                //ToDo подготовить к запуску отвнешнего триггера
-            }
-
-
-            //TriggerStart();
-            Thread.Sleep(500);
-            КолПакетовОчер = 0;
-            КолПакетовОчер2 = 0;
-            КолПакетовEr = 0;
-            КолПакетов = 0;
-
-            Пакетов = 0;
-            ТемпПакетов = 0;
-            Flagtest = false;
-
-        }
-        public List<byte> DataBAAKList = new List<byte>();
-        public List<byte> DataBAAKList1 = new List<byte>();
+     
         /// <summary>
         /// Очередь с данными для записи
         /// </summary>
@@ -1295,356 +522,27 @@ namespace URAN_2017
         private static uint time0x12 = 0;
         private static uint time0x14 = 0;
         private static uint time0x16 = 0;
-        public int Nkl = 0;
-        public delegate Task ConnectDelegate();       // Тип делегата   
-        /// <summary>
-        /// конектимся к плате
-        /// </summary>
-        public static ConnectDelegate ConnnectURANDelegate;
-
-        public delegate void DiscConnectDelegate();       // Тип делегата   
-        /// <summary>
-        /// отключается от платы
-        /// </summary>
-        public static DiscConnectDelegate DiscConnnectURANDelegate;
-
-        public delegate void НастройкаUranDelegate();
-        /// <summary>
-        /// загрузка регистров начало, создание файла и тд
-        /// </summary>
-        public static НастройкаUranDelegate НастройкаURANDelegate;
-
-        public delegate void StopUranDelegate();
-        /// <summary>
-        /// остоновку набора кластера
-        /// </summary>
-        public static StopUranDelegate StopURANDelegate;
-
-        public delegate void RedDataDelegate();
-        /// <summary>
-        /// чтение данных с платы
-        /// </summary>
-        public static RedDataDelegate ReadDataURANDelegate;
-
-        public delegate void NewFileDelegate();
-        /// <summary>
-        /// создание нового файла
-        /// </summary>
-        public static NewFileDelegate NewFileURANDelegate;
-
-        public delegate void ПускDelegate();
-        /// <summary>
-        /// запускает тамер и разрешает триггер
-        /// </summary>
-        public static ПускDelegate ПускURANDelegate;
-
-        public delegate void TempDelegate();
-        /// <summary>
-        /// Расчет темпа и запись результата в БД
-        /// </summary>
-        public static TempDelegate TempURANDelegate;
-
-        public delegate void CountPac();
-        public static CountPac CountPacDelegate;
-
-        public delegate void ДеИнсталяция();
-        /// <summary>
-        /// убирает все подписки делегата
-        /// </summary>
-        public static ДеИнсталяция ДеИнсталяцияDelegate;
-
-        public delegate void TestRanSetUp(int x, int e, Boolean t);//
-        /// <summary>
-        /// подготовка к тестовому набоу по длительности или количеству, если trigPorog=true, то по количеству
-        /// </summary>
-        public static TestRanSetUp TestRanSetUpDelegate;
-
-        public delegate void TestRanStart();
-        /// <summary>
-        /// программный сигнал триггер
-        /// </summary>
-        public static TestRanStart TestRanStartDelegate;
-
-        public delegate void TestRanTheEndD(Boolean z);
-        /// <summary>
-        /// Завершение тестовго набора и возрат настроек обычного набора
-        /// </summary>
-        public static TestRanTheEndD TestRanTheEndDelegate;
-
-        public delegate void ЗаписьВремяРегистр();
-        public static ЗаписьВремяРегистр ЗаписьВремяРегистрDelegate;
-
-
-        public delegate void СтартЧасов();
-        public static СтартЧасов СтартЧасовDelegate;
-
-        public delegate void ЗаписьвФайл();
-        /// <summary>
-        /// записываем данные из очереди в файл и в бд
-        /// </summary>
-        public static ЗаписьвФайл ЗаписьвФайлDelegate;
-
-        public delegate void ЗаписьвФайлБД();
-        /// <summary>
-        /// записываем данные из очереди в файл и в бд
-        /// </summary>
-        public static ЗаписьвФайл ЗаписьвФайлБДDelegate;
-
-        public delegate void СтопТриггер();
-        /// <summary>
-        /// Запрещает триггер
-        /// </summary>
-        public static СтопТриггер СтопТриггерDelegate;
 
 
         private bool inciliz = false;
-        public bool Inciliz
-        {
-            get
-            {
-                return inciliz;
-            }
-            set
-            {
-                inciliz = value;
+   
 
-                InDe(value);
-                this.OnPropertyChanged(nameof(Inciliz));
-            }
-        }
-        /// <summary>
-        /// значение общего порога срабатывания
-        /// </summary>
-        public static uint PorogAll
-        {
-            get
-            {
-                return _PorogAll;
-            }
-            set
-            {
-                _PorogAll = Convert.ToUInt32(value);
-            }
-        }
-        private static uint дискретностьХвост = 100;
-        public static uint ДискретностьХвост
-        {
-            get
-            {
-                return дискретностьХвост;
-            }
-            set
-            {
-                дискретностьХвост = Convert.ToUInt32(value);
-            }
-        }
+
         private static uint _TrgAll = 1;
         private static string nameRan = "0";
         private string NameFileClose = "9";
-        /// <summary>
-        /// Занчение общего триггера
-        /// </summary>
-        public static uint TrgAll
-        {
-            get
-            {
-                return _TrgAll;
-            }
-            set
-            {
-                _TrgAll = value;
-            }
-        }
-        public static string wayDataBD;
-        public static string wayDataTestBD;
+   
+  
         FileStream data_fs;
         BinaryWriter data_w;
         private const uint BaseA_M = 0x200000;
         private const uint AM_FThrBase = 0x80;
-        public string NameFile = "";
+
         private static string _nameFileWay = @"D:\";
-        public static string NameFileWay
-        {
-            get
-            {
-                return _nameFileWay;
-            }
-            set
-            {
-                _nameFileWay = value;
-            }
-
-        }
 
 
 
-        /// <summary>
-        /// Количество принятых пакетов
-        /// </summary>
-        public long КолПакетов
-        {
-            get
-            {
-                return колПакетов;
-            }
-            set
-            {
-                колПакетов = value;
-
-                this.OnPropertyChanged(nameof(КолПакетов));
-            }
-        }
-        public long КолПакетовEr
-        {
-            get
-            {
-                return колПакетовEr;
-            }
-            set
-            {
-                колПакетовEr = value;
-
-                this.OnPropertyChanged(nameof(КолПакетовEr));
-            }
-        }
-        public long КолПакетовОчер
-        {
-            get
-            {
-                return колПакетовОчер;
-            }
-            set
-            {
-                колПакетовОчер = value;
-
-                this.OnPropertyChanged(nameof(КолПакетовОчер));
-            }
-        }
-        public long КолПакетовОчер2
-        {
-            get
-            {
-                return колПакетовОчер2;
-            }
-            set
-            {
-                колПакетовОчер2 = value;
-
-                this.OnPropertyChanged(nameof(КолПакетовОчер2));
-            }
-        }
-
-        private int темпПакетов = 0;
-        /// <summary>
-        /// Темп счета принятых пакетов
-        /// </summary>
-        public int ТемпПакетов
-        {
-            get
-            {
-                return темпПакетов;
-            }
-            set
-            {
-                темпПакетов = value;
-                this.OnPropertyChanged(nameof(ТемпПакетов));
-            }
-
-        }
-        private int пакетов = 0;
-        public int Пакетов
-        {
-            get
-            {
-                return пакетов;
-            }
-            set
-            {
-                пакетов = value;
-                this.OnPropertyChanged(nameof(Пакетов));
-            }
-
-        }
-        private int интервалТемпаСчета = 0;
-        public int ИнтервалТемпаСчета
-        {
-            get
-            {
-                return интервалТемпаСчета;
-            }
-            set
-            {
-                интервалТемпаСчета = value;
-                this.OnPropertyChanged(nameof(ИнтервалТемпаСчета));
-            }
-
-        }
-        private static string _nameFileSetUp = @"D:\";
-        public static string NameFileSetUp
-        {
-            get
-            {
-                return _nameFileSetUp;
-            }
-            set
-            {
-                _nameFileSetUp = value;
-            }
-        }
-        private static uint dataLenght = 1;
-        public static uint DataLenght
-        {
-            get
-            {
-                return dataLenght;
-            }
-            set
-            {
-                dataLenght = Convert.ToUInt32(value);
-            }
-        }
-        private string nameBAAK12 = "У1";
-        /// <summary>
-        /// Имя платы БААК12
-        /// </summary>
-        public string NameBAAK12
-        {
-            get
-            {
-                return nameBAAK12;
-            }
-            set
-            {
-                nameBAAK12 = value;
-            }
-        }
-        /// <summary>
-        /// Имя кластера
-        /// </summary>
-        public string NamKl
-        {
-            get
-            {
-                return namKl;
-            }
-            set
-            {
-                namKl = value;
-                this.OnPropertyChanged(nameof(NamKl));
-
-            }
-
-        }
-        public static uint Time0x10 { get => time0x10; set => time0x10 = value; }
-        public static uint Time0x12 { get => time0x12; set => time0x12 = value; }
-        public static uint Time0x14 { get => time0x14; set => time0x14 = value; }
-        public static uint Time0x16 { get => time0x16; set => time0x16 = value; }
-        /// <summary>
-        /// Имя рана
-        /// </summary>
-        public static string NameRan { get => nameRan; set => nameRan = value; }
-
-        public void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
+        public override  void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
         {
             if (false)
             {
@@ -1693,7 +591,7 @@ namespace URAN_2017
         }
     
 
-        private void BDReadСобытие(string nameFile, string nameBAAK, string time, string nameRan, int Amp, string nameklaster, int Nl, Double sig, int nD, int TimeFirst, int TimeAmp)
+        public void BDReadСобытие(string nameFile, string nameBAAK, string time, string nameRan, int Amp, string nameklaster, int Nl, Double sig, int nD, int TimeFirst, int TimeAmp)
         {
             if (FlagSaveBD)
             {
@@ -1766,7 +664,7 @@ namespace URAN_2017
                 }
             }
         }
-        private void BDReadCloseFile(string nameFile, string time)
+       public override void BDReadCloseFile(string nameFile, string time)
         {
             if (FlagSaveBD)
             {
@@ -1814,7 +712,7 @@ namespace URAN_2017
                 }
             }
         }
-        public void BDReadTemP(string nameBAAK, int temp)
+        public override void BDReadTemP(string nameBAAK, int temp)
         {
             if (FlagSaveBD)
             {
@@ -1857,52 +755,6 @@ namespace URAN_2017
                 }
             }
         }
-        private void BDselect(out uint[] masNul)
-        {
-            string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + NameFileSetUp;
-            masNul = new uint[12];
-            // Создание подключения
-            var podg = new OleDbConnection(connectionString);
-            try
-            {
-
-                // Открываем подключение
-                podg.Open();
-
-                var chit = new OleDbCommand
-                {
-                    Connection = podg,
-                    CommandText = "select * from [Нулевая линия] where ИмяПлаты ='" + NameBAAK12 + "'"
-                }.ExecuteReader(CommandBehavior.CloseConnection);
-                while (chit.Read() == true)
-                {
-
-                    for (int i = 2; i < chit.FieldCount; i++)
-                    {
-                        masNul[i - 2] = Convert.ToUInt32(chit.GetValue(i));
-                    
-
-                    }
-                }
-                new OleDbCommand
-                {
-                    Connection = podg,
-                    CommandText = "select * from [Нулевая линия] where ИмяПлаты ='" + NameBAAK12 + "'"
-                }.Dispose();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                // закрываем подключение
-                podg.Close();
-
-            }
-        }
-
 
     }
 }

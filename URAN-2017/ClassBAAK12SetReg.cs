@@ -41,7 +41,7 @@ namespace URAN_2017
             WreadReg3000(0x200026, 1);
 
         }
-        public void SettingAll()
+        public virtual void SettingAll()
         {
            
 

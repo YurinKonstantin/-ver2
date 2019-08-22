@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace URAN_2017
 {
@@ -21,21 +23,15 @@ namespace URAN_2017
             DateTime taimer = DateTime.UtcNow;
             return taimer.Day.ToString("00") + "." + taimer.Month.ToString("00") + "." + Convert.ToString(taimer.Year) + " " + taimer.Hour.ToString("00") + ":" + taimer.Minute.ToString("00") + ":" + taimer.Second.ToString("00") + ":" +taimer.Millisecond.ToString("000");
         }
-        private void TimeTask()
+        private async void TimeTask()
         {
             while (true)
             {
 
-
-                Thread.Sleep(1000);
-               
+                Thread.Sleep(1000);         
                 DateTime tmp = DateTime.UtcNow;
-
-              
-
-                customer.CustomerTime = "  " + tmp.Hour.ToString("00") + ":" + tmp.Minute.ToString("00") + ":" + tmp.Second.ToString("00") + "  " + tmp.Day.ToString("00") + "." + tmp.Month.ToString("00") + "." + tmp.Year.ToString();
-
-                //return s;
+                await NowTime.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { NowTime.Text = "  " + tmp.Hour.ToString("00") + ":" + tmp.Minute.ToString("00") + ":" + tmp.Second.ToString("00") + "  " + tmp.Day.ToString("00") + "." + tmp.Month.ToString("00") + "." + tmp.Year.ToString(); }));
+            
             }
         }
     }

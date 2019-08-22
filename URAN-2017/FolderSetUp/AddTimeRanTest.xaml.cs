@@ -11,8 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using URAN_2017;
 
-namespace URAN_2017
+namespace URAN_2017.FolderSetUp
 {
     /// <summary>
     /// Логика взаимодействия для AddTimeRanTest.xaml

@@ -1,4 +1,4 @@
-﻿<Page x:Class="URAN_2017.PageOtbor"
+﻿<Page x:Class="URAN_2017.FolderSetUp.PageOtbor"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -40,10 +40,16 @@
         </ScrollViewer>
 
         <Grid Grid.Row="2"  Background="WhiteSmoke">
-            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+            <Button Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
                 <Button.Effect>
                     <DropShadowEffect />
                 </Button.Effect>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/ImgSourse/baselinesave18dp.png" Width="24" Height="24"/>
+                        <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
             </Button>
           
            

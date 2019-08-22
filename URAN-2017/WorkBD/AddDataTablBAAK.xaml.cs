@@ -12,38 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace URAN_2017
+namespace URAN_2017.WorkBD
 {
     /// <summary>
-    /// Логика взаимодействия для AddKl100.xaml
+    /// Логика взаимодействия для AddDataTablBAAK.xaml
     /// </summary>
-    public partial class AddKl100 : Window
+    public partial class AddDataTablBAAK : Window
     {
-        public AddKl100()
+        public AddDataTablBAAK()
         {
             InitializeComponent();
         }
-    
-     
-
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
+            DataAccesBDBAAK.AddDataTablPlats(new ViewTaiblBDBAAK.ClassTablPSBBAAK() {namePSB=name.Text, Coment=coment.Text, IpPSB=ip.Text, nomerKlastera=Convert.ToInt32(nomerKl.Text), tipPSB=tip.Text });
             this.DialogResult = true;
         }
-        public string Name2
-        {
-            get { return name.Text; }
-        }
-        public string IP
-        {
-            get { return ip.Text; }
-        }
-        public string NameB
-        {
-            get { return nameB.Text; }
-        }
-        
-
-     
     }
 }

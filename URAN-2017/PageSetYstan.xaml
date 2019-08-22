@@ -118,10 +118,16 @@
             <TextBox x:Name="NameMS1" FontSize="16" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Left" TextChanged="NameMS1_TextChanged" Text="192.168.2.191" />
         </StackPanel>
         <Grid Grid.Row="1"  Background="WhiteSmoke">
-            <Button Content="Сохранить" Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
+            <Button Background="White"  Grid.Row="1"  Margin="8,16,0,16" HorizontalAlignment="Left" Click="Button_Click">
                 <Button.Effect>
                     <DropShadowEffect />
                 </Button.Effect>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/ImgSourse/baselinesave18dp.png" Width="24" Height="24"/>
+                        <TextBlock Text="Сохранить" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button.Content>
             </Button>
         </Grid>
 

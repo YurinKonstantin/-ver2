@@ -18,7 +18,7 @@ namespace URAN_2017
         /// <param name="porog">порог срабатывания</param>
         /// <param name="trig">триггер</param>
         /// <param name="trigProg">если =true, то по количеству</param>
-        public void TestRanПодготовка(int porog, int trig, Boolean trigProg)
+        public virtual void TestRanПодготовка(int porog, int trig, Boolean trigProg)
         {
             
             CтатусБААК12 = "Подготовка к тестовому набору";
@@ -114,7 +114,7 @@ namespace URAN_2017
         /// <summary>
         /// Завершение тестовго набора и возрат настроек обычного набора
         /// </summary>
-        public void TestRanTheEnd(Boolean trigProg)
+        public virtual void TestRanTheEnd(Boolean trigProg)
         {
             TriggerStopОго();
 

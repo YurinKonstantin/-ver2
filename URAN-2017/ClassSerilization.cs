@@ -104,9 +104,9 @@ namespace URAN_2017
                 BinaryFormatter bf = new BinaryFormatter();
                 set = (UserSetting)bf.Deserialize(fs);
             }
-            catch (SerializationException)
+            catch (SerializationException ex)
             {
-                System.Windows.MessageBox.Show("ошибка");
+                System.Windows.MessageBox.Show("ошибка"+ex.Message);
             }
             finally
             {

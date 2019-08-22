@@ -86,7 +86,19 @@ namespace URAN_2017
                 {
                     foreach (ClassTestRan test in _DataColecClassTestRan)
                     {
-                        if (DateTime.Compare(DateTime.UtcNow, test.Alam) > 0)
+                    if(test.Alam.Subtract(DateTime.UtcNow).TotalMinutes<5)
+                    {
+                        DateTime tmp = DateTime.UtcNow;
+                        var ff = test.Alam.Subtract(tmp);
+                       TimeTestO.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { TimeTestO.Text ="До тестового набора"+ ff.Minutes.ToString("00") + "м" + ff.Seconds.ToString("00") + "c"; }));
+
+                    }
+                    else
+                    {
+                        TimeTestO.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { TimeTestO.Text = String.Empty; }));
+
+                    }
+                    if (DateTime.Compare(DateTime.UtcNow, test.Alam) >= 0)
                         {
                             try
                             {

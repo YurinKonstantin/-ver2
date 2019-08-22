@@ -21,6 +21,8 @@ using System.Xml.Serialization;
 using System.Windows.Navigation;
 
 using Microsoft.Win32;
+using URAN_2017.FolderSetUp;
+using URAN_2017.WorkBD;
 
 namespace URAN_2017
 {
@@ -42,18 +44,7 @@ namespace URAN_2017
 
             ClassSerilization.DeSerial(out set);
           
-            _DataColec = new ObservableCollection<Data1>
-            {
-                new Data1 { Name = "Установка", Pyti = "", Img="ImgSourse/stars18dp.png" },
-                new Data1 { Name = "Набор/Ran", Pyti = "", Img="ImgSourse/bike8dp.png" },
-                new Data1 { Name = "Плата BAAK", Pyti = "",  Img="ImgSourse/board18dp.png"  },
-                new Data1 { Name = "Данные", Pyti = "", Img="ImgSourse/assess18dp.png"  },
-                new Data1 { Name = "Синхронизация", Pyti = "", Img="ImgSourse/alarm18dp.png" },
-                new Data1 { Name = "Параметры плат", Pyti = "",  Img="ImgSourse/list18dp.png"  },
-                new Data1 { Name = "Методический набор", Pyti = "",  Img="ImgSourse/widg18dp.png"  },
-                new Data1 { Name = "Метод отбора", Pyti = "",  Img="ImgSourse/tur18dp.png" }
-            };
-            listView1.ItemsSource = _DataColec;
+        
             BuFMR.Toggled1 = !set.FlagMainRezim;
             if (BuFMR.Toggled1 == true)
             {
@@ -62,7 +53,18 @@ namespace URAN_2017
                 LabFlagMainR.Content = "Вкл";
                 LabFlagMainR.Foreground = System.Windows.Media.Brushes.Green;
 
-
+                _DataColec = new ObservableCollection<Data1>
+            {
+                new Data1 { Name = "Установка", Pyti = "", Img="/ImgSourse/stars18dp.png" },
+                new Data1 { Name = "Набор/Ran", Pyti = "", Img="/ImgSourse/bike8dp.png" },
+                new Data1 { Name = "Плата BAAK", Pyti = "",  Img="/ImgSourse/board18dp.png"  },
+                new Data1 { Name = "Данные", Pyti = "", Img="/ImgSourse/assess18dp.png"  },
+                new Data1 { Name = "Синхронизация", Pyti = "", Img="/ImgSourse/alarm18dp.png" },
+                new Data1 { Name = "Параметры плат", Pyti = "",  Img="/ImgSourse/list18dp.png"  },
+                new Data1 { Name = "Методический набор", Pyti = "",  Img="/ImgSourse/widg18dp.png"  },
+                new Data1 { Name = "Метод отбора", Pyti = "",  Img="/ImgSourse/tur18dp.png" }
+            };
+                listView1.ItemsSource = _DataColec;
 
             }
             else
@@ -70,6 +72,18 @@ namespace URAN_2017
               //  ClassSetUpProgram.FlagMainRezim = false;
                 LabFlagMainR.Content = "Выкл";
                 LabFlagMainR.Foreground = System.Windows.Media.Brushes.Red;
+                _DataColec = new ObservableCollection<Data1>
+            {
+                new Data1 { Name = "Установка", Pyti = "", Img="/ImgSourse/stars18dp.png" },
+                new Data1 { Name = "Набор/Ran", Pyti = "", Img="/ImgSourse/bike8dp.png" },
+                new Data1 { Name = "Плата BAAK", Pyti = "",  Img="/ImgSourse/board18dp.png"  },
+                new Data1 { Name = "Данные", Pyti = "", Img="/ImgSourse/assess18dp.png"  },
+                new Data1 { Name = "Синхронизация", Pyti = "", Img="/ImgSourse/alarm18dp.png" },
+                new Data1 { Name = "Параметры плат", Pyti = "",  Img="/ImgSourse/list18dp.png"  },
+                new Data1 { Name = "Методический набор", Pyti = "",  Img="/ImgSourse/widg18dp.png"  }
+                
+            };
+                listView1.ItemsSource = _DataColec;
 
             }
           
@@ -85,7 +99,18 @@ namespace URAN_2017
                 set.FlagMainRezim = true;
                 LabFlagMainR.Content = "Вкл";
                 LabFlagMainR.Foreground = System.Windows.Media.Brushes.Green;
-
+                _DataColec = new ObservableCollection<Data1>
+            {
+                new Data1 { Name = "Установка", Pyti = "", Img="/ImgSourse/stars18dp.png" },
+                new Data1 { Name = "Набор/Ran", Pyti = "", Img="/ImgSourse/bike8dp.png" },
+                new Data1 { Name = "Плата BAAK", Pyti = "",  Img="/ImgSourse/board18dp.png"  },
+                new Data1 { Name = "Данные", Pyti = "", Img="/ImgSourse/assess18dp.png"  },
+                new Data1 { Name = "Синхронизация", Pyti = "", Img="/ImgSourse/alarm18dp.png" },
+                new Data1 { Name = "Параметры плат", Pyti = "",  Img="/ImgSourse/list18dp.png"  },
+                new Data1 { Name = "Методический набор", Pyti = "",  Img="/ImgSourse/widg18dp.png"  },
+                new Data1 { Name = "Метод отбора", Pyti = "",  Img="/ImgSourse/tur18dp.png" }
+            };
+                listView1.ItemsSource = _DataColec;
 
 
             }
@@ -94,6 +119,18 @@ namespace URAN_2017
                 set.FlagMainRezim = false;
                 LabFlagMainR.Content = "Выкл";
                 LabFlagMainR.Foreground = System.Windows.Media.Brushes.Red;
+                _DataColec = new ObservableCollection<Data1>
+            {
+                new Data1 { Name = "Установка", Pyti = "", Img="/ImgSourse/stars18dp.png" },
+                new Data1 { Name = "Набор/Ran", Pyti = "", Img="/ImgSourse/bike8dp.png" },
+                new Data1 { Name = "Плата BAAK", Pyti = "",  Img="/ImgSourse/board18dp.png"  },
+                new Data1 { Name = "Данные", Pyti = "", Img="/ImgSourse/assess18dp.png"  },
+                new Data1 { Name = "Синхронизация", Pyti = "", Img="/ImgSourse/alarm18dp.png" },
+                new Data1 { Name = "Параметры плат", Pyti = "",  Img="/ImgSourse/list18dp.png"  },
+                new Data1 { Name = "Методический набор", Pyti = "",  Img="/ImgSourse/widg18dp.png"  }
+               
+            };
+                listView1.ItemsSource = _DataColec;
 
             }
             ClassSerilization.SerialProg(set);
@@ -157,16 +194,8 @@ namespace URAN_2017
                     }
              
                     break;
-                case 5:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageParametersBAAK.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageParametersBAAK.xaml", UriKind.Relative));
-                    }
-                 
+                case 5:                
+                        frameName.NavigationService.Navigate(new Uri("WorkBD/PageParametersBAAK.xaml", UriKind.Relative));
                     break;
                 case 4:
                     if (set.FlagMainRezim)
@@ -193,7 +222,7 @@ namespace URAN_2017
                 case 7:
                     if (set.FlagMainRezim)
                     {
-                        frameName.NavigationService.Navigate(new Uri("PageOtbor.xaml", UriKind.Relative));
+                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageOtbor.xaml", UriKind.Relative));
                     }
                     else
                     {

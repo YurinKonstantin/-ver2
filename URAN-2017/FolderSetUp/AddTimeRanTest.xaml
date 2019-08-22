@@ -1,4 +1,4 @@
-﻿<Window x:Class="URAN_2017.AddTimeRanTest"
+﻿<Window x:Class="URAN_2017.FolderSetUp.AddTimeRanTest"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
