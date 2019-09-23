@@ -20,13 +20,13 @@ namespace URAN_2017
         /// <param name="trigProg">если =true, то по количеству</param>
         public virtual void TestRanПодготовка(int porog, int trig, Boolean trigProg)
         {
-            
+            Flagtest = true;
             CтатусБААК12 = "Подготовка к тестовому набору";
-            Thread.Sleep(500);
+          
 
             TriggerStopОго();
             CтатусБААК12 = "Вычитываем данные";
-            Thread.Sleep(500);
+          
            // ВычитываемДанныеНужные();
             ВычитываемДанныеНенужные();
 
@@ -42,7 +42,7 @@ namespace URAN_2017
                 CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
             }
             CтатусБААК12 = "Закрытие файла";
-            Thread.Sleep(1000);
+          
             CloseFile();
             Flagtest = true;
             CтатусБААК12 = "Открытие тестового файла";
@@ -120,18 +120,22 @@ namespace URAN_2017
 
 
             CтатусБААК12 = "Вычитываем данные";
-            Thread.Sleep(500);
+        
             ВычитываемДанныеНужные();
             CтатусБААК12 = "вычитываем очередь";
-            Thread.Sleep(500);
+         
             int koloch = 0;
             while (OcherediNaZapic.Count != 0 | koloch<50)
             {
-                koloch++;
+                
                 //Thread.Sleep(500);
                 CтатусБААК12 = "вычитываем очередь"+ " ="+OcherediNaZapic.Count;
+                if(OcherediNaZapic.Count==0)
+                {
+                    koloch++;
+                }
             }
-            Thread.Sleep(500);
+      
             CтатусБААК12 = "Работает";
             //TriggerStop();
             NewFileData();

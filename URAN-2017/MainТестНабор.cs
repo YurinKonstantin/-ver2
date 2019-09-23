@@ -23,11 +23,11 @@ namespace URAN_2017
             int min = 0;
             while(min< Dlitt * 60000)
             {
-               rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Тестовый набор длительностью =" + Dlitt+"мин."+ " Осталось "+ (((Dlitt * 60000)-min)/1000).ToString()+"сек."; }));
+               rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Тестовый набор длительностью =" + Dlitt+"мин."+ " Осталось "+ (((Dlitt * 60000)-min)/1000).ToString()+"сек."; }));
                 Thread.Sleep(1000);
                 min = min + 1000;
             }
-          rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>{rezimYst.Content = "Завершение тестовго набора";}));
+          rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>{rezimYst.Content = "Завершение тестовго набора";}));
             BAAK12T.СтопТриггерDelegate?.Invoke();
             if (BAAK12T.TestRanTheEndDelegate!=null)
             {
@@ -52,7 +52,7 @@ namespace URAN_2017
 
               for (int i = 0; i < kTestRan; i++)
             {
-               rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>{ rezimYst.Content = "Тестовый набор по количеству: " + i.ToString() + " из" + " " + kTestRan;;}));
+               rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>{ rezimYst.Content = "Тестовый набор по количеству: " + i.ToString() + " из" + " " + kTestRan;;}));
                 
                 Thread.Sleep(intTestRan);
                 if(BAAK12T.TestRanStartDelegate!=null)
@@ -102,6 +102,7 @@ namespace URAN_2017
                         {
                             try
                             {
+                          
                                 if (!test.ProgramTrigTest)//Тест по времени
                                 {
                                     BAAK12T.TestRanSetUpDelegate?.Invoke(test.Porog, test.Trig, test.ProgramTrigTest);
@@ -111,7 +112,6 @@ namespace URAN_2017
                                 {
                                     BAAK12T.TestRanSetUpDelegate?.Invoke(test.Porog, test.Trig, test.ProgramTrigTest);
                                     Task myTestRan = Task.Run(() => TestRanTask1(test.Kolsob, test.Interval));
-
                                 }
 
                                 // }

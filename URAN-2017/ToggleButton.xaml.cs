@@ -20,6 +20,7 @@ namespace ToggleSwitch
         SolidColorBrush Off = new SolidColorBrush(Color.FromRgb(160, 160, 160));
         SolidColorBrush On = new SolidColorBrush(Color.FromRgb(130, 190, 125));
         private bool Toggled = false;
+        public bool On1 = false;
 
         public ToggleButton()
         {
@@ -60,16 +61,18 @@ namespace ToggleSwitch
                 Back.Fill = On;
                 Toggled = true;
                 Dot.Margin = RightSide;
-               
+                On1 = true;
 
-            }
+
+    }
             else
             {
 
                 Back.Fill = Off;
                 Toggled = false;
                 Dot.Margin = LeftSide;
-              
+                On1 = false;
+
 
             }
 
@@ -85,7 +88,8 @@ namespace ToggleSwitch
                 Back.Fill = On;
                 Toggled = true;
                 Dot.Margin = RightSide;
-         
+                On1 = true;
+
 
             }
             else
@@ -94,7 +98,8 @@ namespace ToggleSwitch
                 Back.Fill = Off;
                 Toggled = false;
                 Dot.Margin = LeftSide;
-            
+                On1 = false;
+
 
             }
 

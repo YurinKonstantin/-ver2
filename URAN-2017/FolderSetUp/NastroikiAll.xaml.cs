@@ -62,7 +62,8 @@ namespace URAN_2017
                 new Data1 { Name = "Синхронизация", Pyti = "", Img="/ImgSourse/alarm18dp.png" },
                 new Data1 { Name = "Параметры плат", Pyti = "",  Img="/ImgSourse/list18dp.png"  },
                 new Data1 { Name = "Методический набор", Pyti = "",  Img="/ImgSourse/widg18dp.png"  },
-                new Data1 { Name = "Метод отбора", Pyti = "",  Img="/ImgSourse/tur18dp.png" }
+                new Data1 { Name = "Метод отбора", Pyti = "",  Img="/ImgSourse/tur18dp.png" },
+                    new Data1 { Name = "Визуализация", Pyti = "",  Img="/ImgSourse/tur18dp.png" }
             };
                 listView1.ItemsSource = _DataColec;
 
@@ -108,7 +109,8 @@ namespace URAN_2017
                 new Data1 { Name = "Синхронизация", Pyti = "", Img="/ImgSourse/alarm18dp.png" },
                 new Data1 { Name = "Параметры плат", Pyti = "",  Img="/ImgSourse/list18dp.png"  },
                 new Data1 { Name = "Методический набор", Pyti = "",  Img="/ImgSourse/widg18dp.png"  },
-                new Data1 { Name = "Метод отбора", Pyti = "",  Img="/ImgSourse/tur18dp.png" }
+                new Data1 { Name = "Метод отбора", Pyti = "",  Img="/ImgSourse/tur18dp.png" },
+                   new Data1 { Name = "Визуализация", Pyti = "",  Img="/ImgSourse/tur18dp.png" }
             };
                 listView1.ItemsSource = _DataColec;
 
@@ -230,7 +232,17 @@ namespace URAN_2017
                     }
                  
                     break;
+                case 8:
+                    if (set.FlagMainRezim)
+                    {
+                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageOtbor.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
 
+                    }
+
+                    break;
             }
         }
 

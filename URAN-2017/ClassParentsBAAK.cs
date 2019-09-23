@@ -41,6 +41,7 @@ namespace URAN_2017
 
             }
         }
+     
         public NetworkStream ns;
        public NetworkStream nsData;
         private string статусБААК12 = "Ошибка";

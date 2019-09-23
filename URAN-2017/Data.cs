@@ -22,7 +22,7 @@ namespace URAN_2017
     {
 
         const string quote = "\"";
-
+        int timeSlepCol = 1;
         /// <summary>
         /// бескоечный цикл Читаем данные с платы и пишем в файл
         /// </summary>
@@ -30,7 +30,8 @@ namespace URAN_2017
         private void ZapicDataTasc(CancellationToken token1)
         {
             //Task myRe = Task.Run(() => Anime2());
-           
+            int tt = 20;
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { tt = tt / timeSlepCol; }));
             while (true)
             {
               //  if (myRe.IsCompleted)
@@ -43,7 +44,7 @@ namespace URAN_2017
                     
                     return;
                 }
-
+                Thread.Sleep(tt);
                 BAAK12T.ЗаписьвФайлDelegate?.Invoke();//Читаем данные с платы и пишем в файл
 
             }
@@ -53,7 +54,8 @@ namespace URAN_2017
         private void ZapicDataBDTasc(CancellationToken token2)
         {
             //Task myRe = Task.Run(() => Anime2());
-
+            int tt = 20;
+            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { tt = tt / timeSlepCol; }));
             while (true)
             {
                 //  if (myRe.IsCompleted)
@@ -61,11 +63,12 @@ namespace URAN_2017
                 //     myRe = Task.Run(() => Anime2());
 
                 // }
+                Thread.Sleep(tt);
                 if (token2.IsCancellationRequested)
                 {
                     return;
                 }
-
+                
                 BAAK12T.ЗаписьвФайлБДDelegate?.Invoke();//Читаем данные с платы и пишем в файл
 
             }
@@ -108,8 +111,9 @@ namespace URAN_2017
                 }
                 try
                 {
-
-
+                   
+                   // int tt =10;
+                    //Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { tt = tt / timeSlepCol; }));
                     while (true)
                     {
                         if (token.IsCancellationRequested)
@@ -117,15 +121,10 @@ namespace URAN_2017
                             
                             return;
                         }
-                    
-                        try
-                        {
-                            TempPacetov(temp, IntervalTemp);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("gffeeeeegfg" + ex.ToString());
-                        }
+                      
+                      
+                        TempPacetov(temp, IntervalTemp);
+                        Thread.Sleep(1);
                         BAAK12T.ReadDataURANDelegate?.Invoke();//Читаем данные с платы и пишем в файл
 
                     }
@@ -151,41 +150,50 @@ namespace URAN_2017
 
             if (DateTime.Compare(DateTime.UtcNow, alarm2) > 0)
             {
-                DateTime taimer2 = DateTime.UtcNow;
-                lock(MyGrafic.SeriesCollection)
+                try
                 {
-                    if (MyGrafic.SeriesCollection.Count > 72)
-                    {
-                        // Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.SeriesCollection.RemoveAt(0); }));
-                        MyGrafic.SeriesCollection.RemoveAt(0);
 
-                        // Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Labels.RemoveAt(0); }));
-                        MyGrafic.Labels.RemoveAt(0);
+
+                    DateTime taimer2 = DateTime.UtcNow;
+                    lock (MyGrafic.SeriesCollection)
+                    {
+                        if (MyGrafic.SeriesCollection.Count > 72)
+                        {
+                            // Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.SeriesCollection.RemoveAt(0); }));
+                            MyGrafic.SeriesCollection.RemoveAt(0);
+
+                            // Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Labels.RemoveAt(0); }));
+                            MyGrafic.Labels.RemoveAt(0);
+
+                        }
+                    }
+                    lock (MyGrafic.Labels)
+                    {
+                        // Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.Labels.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00")); }));
+                        MyGrafic.Labels.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00"));
 
                     }
-                }
-                lock (MyGrafic.Labels)
-                {
-                   // Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.Labels.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00")); }));
-                    MyGrafic.Labels.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00"));
+                    lock (MyGrafic.LabelsN)
+                    {
+                        // Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsN.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00")); }));
+                        MyGrafic.LabelsN.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00"));
 
-                }
-                lock (MyGrafic.LabelsN)
-                {
-                    // Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsN.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00")); }));
-                    MyGrafic.LabelsN.Add(taimer2.Hour.ToString("00") + ":" + taimer2.Minute.ToString("00") + " " + taimer2.Day.ToString("00") + "." + taimer2.Month.ToString("00"));
+                    }
 
+                    BAAK12T.TempURANDelegate?.Invoke();
+                    //temp = temp.AddMinutes(inter);
+                    if (setP.FlagMainRezim)
+                    {
+                        temp = temp.AddHours(IntervalTemp);
+                    }
+                    else
+                    {
+                        temp = temp.AddMinutes(IntervalTemp);
+                    }
                 }
-
-                BAAK12T.TempURANDelegate?.Invoke();
-                //temp = temp.AddMinutes(inter);
-                if (setP.FlagMainRezim)
+                catch (Exception ex)
                 {
-                    temp = temp.AddHours(IntervalTemp);
-                }
-                else
-                {
-                    temp = temp.AddMinutes(IntervalTemp);
+                    MessageBox.Show("gffeeeeegfg" + ex.ToString());
                 }
 
             }

@@ -74,10 +74,18 @@ namespace URAN_2017
             {
                 MyGrafic.MainWindow = window;
             }
-         
+            ChatMain.MouseDoubleClick += Auto;
         }
-      
-            ObservableCollection<ClassErrorStartAndIspravlenie> ListEr = new ObservableCollection<ClassErrorStartAndIspravlenie>();
+
+        private void Auto(object sender, MouseButtonEventArgs e)
+        {
+            ToggleAutoX.Toggled1 = false;
+            ToggleAutoY.Toggled1 = false;
+            ToggleButton_MouseLeftButtonDown_1(null, null);
+                ToggleButton_MouseLeftButtonDown_2(null, null);
+        }
+
+        ObservableCollection<ClassErrorStartAndIspravlenie> ListEr = new ObservableCollection<ClassErrorStartAndIspravlenie>();
         /// <summary>
         /// зупускает набор
         /// </summary>
@@ -125,7 +133,12 @@ namespace URAN_2017
 
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = true; }));
 
-                    ZapicDataBDTasc1(cancellationToken);
+                   // ZapicDataBDTasc1(cancellationToken);
+                   if(set.FlagSaveBD)
+                    {
+                        Task.Run(() => ZapicDataBDTasc(cancellationToken));
+                    }
+                  
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; }));
                     await ZapicDataTasc1(cancellationToken);
                 
@@ -239,7 +252,6 @@ namespace URAN_2017
                     BAAK12T.StopURANDelegate?.Invoke();
                  
                     cancellationTokenSource.Cancel();
-                   
 
                 }
 
@@ -291,13 +303,21 @@ namespace URAN_2017
             return res;
         }
         private SerialPort comport = new SerialPort();
+       public List<WindowChart> lstChart = new List<WindowChart>();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-     
 
+          //  NetworkManagement networkManagement = new NetworkManagement();
+         
 
 
         }
+
+
+      
+
+
+
 
         private double _toRaz=10;
         private double _fromRaz=0;
@@ -319,66 +339,24 @@ namespace URAN_2017
                 _toRaz = value;
                 OnPropertyChanged("ToRaz");
             }
-        }
-   
+        } 
 
         public async Task Xcxc()
         {
-
             int[,] dd = new int[12, 1024];
             dd[0, 2] = 100;
             dd[0, 2] = 90;
             dd[0, 2] = 105;
             dd[0, 2] = 80;
-            MyGrafic.AddPointRaz(dd);
-
-
-
-
-
-
-
-
-
+            MyGrafic.AddPointRaz(dd, "NameKl");
         }
-
-
-       
-  
-        
 
         private void Port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            // Read all the data waiting in the buffer
-          //  string data = comport.ReadExisting();
 
-            // Display the text to the user in the terminal
-          //  MessageBox.Show(data);
         }
 
-       
-        public async void Dd1()
-        {
-            try
-            {
-               
-               await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Add("hgdfdf"); }));
-
-               await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(0, 15, 2); }));
-
-               await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Labels.Add("120"); }));
-                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.LabelsN.Add("10"); }));
-
-                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.AddPoint(0, 12, 5); }));
-
-               await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.Labels.Add("110"); }));
-                await Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { MyGrafic.LabelsN.Add("110"); }));
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Ошибка");
-            }
-        }
+    
         private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
             GridStartInfoError.Visibility = Visibility.Hidden;
@@ -404,16 +382,7 @@ namespace URAN_2017
 
                 DeInitializeMS();
 
-              //  foreach (var v in _DataColecViev)
-             //   {
-             //       v.Dispose();
-              //      i2++;
-             //   }
-            //    foreach (var v in _DataColecVievList2)
-            //    {
-              //      v.Dispose();
-                //    i3++;
-                //}
+   
                 _DataColecViev.Clear();
                 _DataColecVievList2.Clear();
            
@@ -443,8 +412,6 @@ namespace URAN_2017
                 {
                     MessageBox.Show(ex.ToString()+" "+"MyGrafic.Labels.Clear();", "Ошибка");
                 }
-            
-          
 
                 await Запуск();
                 progres.IsIndeterminate = false;
@@ -465,8 +432,7 @@ namespace URAN_2017
         }
         private void Toggle_Unchecked(object sender, RoutedEventArgs e)
         {
-            ClassParentsBAAK.Синхронизация = false;
-            
+            ClassParentsBAAK.Синхронизация = false;    
         }
 
         private void OProg_Click(object sender, RoutedEventArgs e)
@@ -496,9 +462,7 @@ namespace URAN_2017
             {
 
             }
-
-
-            
+ 
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
@@ -584,8 +548,6 @@ namespace URAN_2017
                 }
                 else
                 {
-                   // MessageBox.Show(eh.ToString() + " очистка3" + List1.SelectedIndex.ToString());
-                   // MenuItem menuItem4;
                     context1.Items.Clear();
                     foreach (BAAK12T dd in _DataColecViev)
                     {
@@ -616,8 +578,7 @@ namespace URAN_2017
 
         private void List1_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-          //  MessageBox.Show(eh.ToString() + " " + List1.SelectedIndex.ToString());
-
+         
             if (List1.SelectedIndex == eh)
             {
                 eh = -1;
@@ -640,10 +601,6 @@ namespace URAN_2017
                 await Запуск();
               
                 ВремяОтобрTask();
-
-               
-
-
                 первая_активация = false;
                 try
                 {
@@ -684,10 +641,8 @@ namespace URAN_2017
         private void ChartMouseMove(object sender, MouseEventArgs e)
         {
             var point = Chart.ConvertToChartValues(e.GetPosition(Chart));
-
             X.Content = point.X.ToString("N");
             Y.Content = point.Y.ToString("N");
-
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -728,8 +683,6 @@ namespace URAN_2017
                     else
                     {try
                         {
-
-
                             if (BAAK12T.DiscConnnectURANDelegate != null)
                             {
                                 BAAK12T.DiscConnnectURANDelegate?.Invoke();
@@ -755,16 +708,11 @@ namespace URAN_2017
                             {
 
                             }
-                         
-                       
-
-                        
-
+                            ChatMain.MouseDoubleClick -= Auto;
                             DeInitializeMS();
                         }
                         catch
                         {
-
                             
                         }
                         try
@@ -780,11 +728,21 @@ namespace URAN_2017
                         }
                         try
                         {
-
-
                             foreach (var v in _DataColecVievList2)
                             {
                                 v.Dispose();
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                        try
+                        {
+                           foreach(var d in lstChart)
+                            {
+                                d.Close();
+
                             }
                         }
                         catch
@@ -799,20 +757,11 @@ namespace URAN_2017
         }
 
 
-     
-
-
-
-     
-
-
         // Запуск сервера и вспомогательного потока акцептирования клиентских подключений
         // т.е. назначения сокетов ответственных за обмен сообщениями 
         // с соответствующим клиентским приложением
        async void  StartServer()
         {
-           
-              
                 try
                 {
                 IPHostEntry iPHost = Dns.GetHostEntry("localhost");
@@ -825,7 +774,6 @@ namespace URAN_2017
                 {
                    
                     Socket socket = new Socket(iPAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                   
                     socket.Bind(iPEndPoint);
                     socket.Listen(10);
                     // Task task = Task.Run(() => fg(socket));
@@ -840,15 +788,11 @@ namespace URAN_2017
                     if (ss[0] == "Stop")
                     {
 
-
                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop_Click(null, null); }));
-                        
-                            
+                          
                     }
                     else
                     {
-
-
                         if (ss[0] == "BDB!")
                         {
                             Data = await Task<byte>.Run(() => BDselect112(ss[1]));
@@ -857,12 +801,9 @@ namespace URAN_2017
                         }
                         else
                         {
-                            //MessageBox.Show("Данные от клиента"+data);
-
                             rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { str = rezimYst.Content.ToString(); }));
                             if (_DataColecViev.Count != 0)
                             {
-
                                 str += " " + (_DataColecViev.Count+ _DataColecVievList2.Count) + "\n\t";
                                 foreach (BAAK12T bak in _DataColecViev)
                                 {
@@ -881,15 +822,11 @@ namespace URAN_2017
                     s.Close();
                     socket.Close();
                     socket.Dispose();
-
-                   // MessageBox.Show("Стоп");
-
                 }
                 }
                 catch
                 {
               
-                // MessageBox.Show("Ошибка1");
                 }
             
         }
@@ -900,11 +837,6 @@ namespace URAN_2017
             while (f)
             {
                 Socket s = socket.Accept();
-      
-             
-           
-              
-                //MessageBox.Show("Данные от клиента"+data);
                 string str;
                 if (_DataColecViev.Count!=0)
                 {
@@ -924,11 +856,6 @@ namespace URAN_2017
                 s.Close();
                 f = false;
             }
-        }
-
-        private void MyGif_MediaEnded(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -1018,6 +945,121 @@ namespace URAN_2017
             }
 
 
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+           
+            if(PanSet.Visibility==Visibility.Collapsed)
+            {
+                PanSet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PanSet.Visibility = Visibility.Collapsed;
+            }
+         
+        }
+        int XOt = 0;
+        int YOt = 0;
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int v = Convert.ToInt32(((TextBox)sender).Text);
+            ChatMain.PlotOriginX = v;
+            XOt = v;
+        }
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            int v = Convert.ToInt32(((TextBox)sender).Text);
+            ChatMain.PlotWidth = v - XOt;
+        }
+
+        private void TextBox_TextChanged_2(object sender, TextChangedEventArgs e)
+        {
+            int v = Convert.ToInt32(((TextBox)sender).Text);
+            ChatMain.PlotOriginY = v;
+            YOt = v;
+        }
+
+        private void TextBox_TextChanged_3(object sender, TextChangedEventArgs e)
+        {
+            int v = Convert.ToInt32(((TextBox)sender).Text);
+            ChatMain.PlotHeight= v - YOt;
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+          double x=  ChatMain.PlotOriginY;
+            double y = ChatMain.PlotHeight;
+          
+        }
+
+        private void ToggleButton_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        {          
+                TextFX.IsEnabled = !ToggleAutoX.On1;
+            TextEX.IsEnabled = !ToggleAutoX.On1;
+            if(ToggleAutoX.On1)
+            {
+                ChatMain.IsAutoFitEnabled = true;
+                if(!ToggleAutoY.On1)
+                {
+                    int v = Convert.ToInt32(TextFY.Text);
+                    ChatMain.PlotOriginY = v;
+                    YOt = v;
+                    v = Convert.ToInt32(TextEY.Text);
+                    ChatMain.PlotHeight = v - YOt;
+                }
+            }
+            else
+            {
+                int v = Convert.ToInt32(TextFX.Text);
+                ChatMain.PlotOriginX = v;
+                XOt = v;
+                v = Convert.ToInt32(TextEX.Text);
+                ChatMain.PlotWidth = v - XOt;
+            }
+
+        }
+        
+        private void ToggleButton_MouseLeftButtonDown_2(object sender, MouseButtonEventArgs e)
+        {
+            TextFY.IsEnabled = !ToggleAutoY.On1;
+            TextEY.IsEnabled = !ToggleAutoY.On1;
+            if (ToggleAutoY.On1)
+            {
+                ChatMain.IsAutoFitEnabled = true;
+                if (!ToggleAutoX.On1)
+                {
+                    int v = Convert.ToInt32(TextFX.Text);
+                    ChatMain.PlotOriginX = v;
+                    XOt = v;
+                    v = Convert.ToInt32(TextEX.Text);
+                    ChatMain.PlotWidth = v - XOt;
+                }
+            }
+            else
+            {
+                int v = Convert.ToInt32(TextFY.Text);
+                ChatMain.PlotOriginY = v;
+                YOt = v;
+                v = Convert.ToInt32(TextEY.Text);
+                ChatMain.PlotHeight = v - YOt;
+            }
+        }
+
+        private void ChartContex1_Click(object sender, RoutedEventArgs e)
+        {
+            BAAK12T dd = (BAAK12T)List1.SelectedItem;
+            var windowChart= dd.openWindowsChart();
+            lstChart.Add(windowChart);
+
+        }
+
+        private void ChartContex1_Click_1(object sender, RoutedEventArgs e)
+        {
+            BAAK12T dd = (BAAK12T)List1.SelectedItem;
+            var windowChart = dd.openWindowsChartTail();
+            lstChart.Add(windowChart);
         }
     }
     public class VisibilityToCheckedConverter : IValueConverter

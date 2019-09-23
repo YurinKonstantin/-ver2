@@ -23,16 +23,12 @@ namespace URAN_2017
             DateTime taimer = DateTime.UtcNow;
             return taimer.Day.ToString("00") + "." + taimer.Month.ToString("00") + "." + Convert.ToString(taimer.Year) + " " + taimer.Hour.ToString("00") + ":" + taimer.Minute.ToString("00") + ":" + taimer.Second.ToString("00") + ":" +taimer.Millisecond.ToString("000");
         }
-        private async void TimeTask()
+      
+        private async void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            while (true)
-            {
+            DateTime tmp = DateTime.UtcNow;
+            await NowTime.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => { NowTime.Text = "  " + tmp.Hour.ToString("00") + ":" + tmp.Minute.ToString("00") + ":" + tmp.Second.ToString("00") + "  " + tmp.Day.ToString("00") + "." + tmp.Month.ToString("00") + "." + tmp.Year.ToString(); }));
 
-                Thread.Sleep(1000);         
-                DateTime tmp = DateTime.UtcNow;
-                await NowTime.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { NowTime.Text = "  " + tmp.Hour.ToString("00") + ":" + tmp.Minute.ToString("00") + ":" + tmp.Second.ToString("00") + "  " + tmp.Day.ToString("00") + "." + tmp.Month.ToString("00") + "." + tmp.Year.ToString(); }));
-            
-            }
         }
     }
 }

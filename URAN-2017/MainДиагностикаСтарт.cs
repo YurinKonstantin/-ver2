@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -176,7 +177,25 @@ namespace URAN_2017
             {
                 GridStartInfoError.Visibility = Visibility.Hidden;
             }
-            
+            DateTime dateTime = new DateTime();
+            dateTime = DateTime.Now;
+            DateTime dateTime1 = new DateTime();
+            dateTime1 = DateTime.Now;
+
+            dateTime1 = dateTime1.AddHours(-71);
+           MyGrafic.Labels.Clear();
+            MyGrafic.LabelsN.Clear();
+            while (dateTime1.Subtract(dateTime).TotalHours != 0)
+            {
+                MyGrafic.Labels.Add(dateTime1.ToString());
+                MyGrafic.LabelsN.Add(dateTime1.ToString());
+                dateTime1 = dateTime1.AddHours(1);
+            }
+            foreach(BAAK12T bAAK12T in _DataColecViev)
+            {
+                MyGrafic.infoZaprocBD(bAAK12T.NamKl, bAAK12T.Nkl, BAAK12T.wayDataBD);
+            }
+
 
         }
         /// <summary>
@@ -406,6 +425,7 @@ namespace URAN_2017
             {
                 if (_DataColec1.Count != 0)
                 {
+                    timeSlepCol = _DataColec1.Count;
                     var ListBAAK12T = from BAAK_T in _DataColec1 where BAAK_T.BAAK12NoT ==false select BAAK_T;
                     foreach (Bak bak in ListBAAK12T)
                     {
@@ -433,16 +453,18 @@ namespace URAN_2017
                                 }
                                // else
                                 {
+                                    Debug.WriteLine(" MyGrasssfi");
                                     await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                     await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                     await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                    Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                    Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBD=set.FlagSaveBD, FlagSaveBin=set.FlagSaveBin };
                                     Кластер1.Inciliz = true;
                                     _DataColecViev.Add(Кластер1);
                                     //ViewSet(true, false);
 
                                     try
                                     {
+                                        
                                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
 
 
@@ -500,7 +522,7 @@ namespace URAN_2017
 
 
                                 
-                                        Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
+                                        Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBD=set.FlagSaveBD, FlagSaveBin=set.FlagSaveBin };
                                        Кластер1_2.Inciliz = true;
                                       _DataColecVievList2.Add(Кластер1_2);
                                        await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
@@ -543,6 +565,7 @@ namespace URAN_2017
                 ViewSet(false, true);
                 if (_DataColecBAAK12100.Count != 0)
                 {
+                    timeSlepCol = _DataColecBAAK12100.Count;
                     foreach (Bak bak in _DataColecBAAK12100)
                     {
                         k++;

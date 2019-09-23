@@ -24,7 +24,26 @@ namespace URAN_2017
         {
             throw new NotImplementedException();
         }
-        
+        WindowChart windowChart;
+        WindowChart windowChartTail;
+      static public  bool testFlag = false;
+
+        public WindowChart openWindowsChart()
+        {
+            windowChart = new WindowChart(NamKl);
+
+            windowChart.Show();
+            return windowChart;
+        }
+        public WindowChart openWindowsChartTail()
+        {
+            windowChartTail = new WindowChart(NamKl+" Хвост");
+
+
+            windowChartTail.Show();
+            return windowChartTail;
+        }
+
         private System.Windows.Media.Brush _myBrush;
 public System.Windows.Media.Brush Brushes
         {
@@ -633,12 +652,21 @@ public System.Windows.Media.Brush Brushes
                         if (BAAKTAIL)
                         {
                             Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out double[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
-                            КолПакетовN += coutN.Sum();
-                            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPointN(Nkl, Convert.ToInt32(КолПакетовN) - ПакетовN); }));
-                            OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
+                               
+
+
+                                    КолПакетовN += coutN.Sum();
+                                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPointN(Nkl, Convert.ToInt32(КолПакетовN) - ПакетовN); }));
+                                if (!dataYu.tipDataTest)
+                                {
+                                    OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
+
+                                }
                         }
                     }
-                    КолПакетовОчер++;
+                        
+                            КолПакетовОчер++;
+                      
                     DataBAAKList1 = null;
                     d = null;
                     }
@@ -680,26 +708,35 @@ public System.Windows.Media.Brush Brushes
                 //   sig = new Double[12];
                 try
                 {
-                   
-                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { 
+                    if (grafOtob)
+                    {
+                      //  Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                      //  {
+                        Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data, "Кластер" + namKl); });
+                      //  }));
+                    }
 
-                if (grafOtob==true && otobKl==(NamKl+BAAKTAIL.ToString()))
-                {
-                   
-
-
-                    // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.LabelsRaz.Clear(); }));
-                    // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.SeriesCollectionRaz.Clear(); }));
-                   // MessageBox.Show("Запись в график");
-                    //   Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Send, new Action(() => { MyGrafic.AddPointRaz(data); }));
-                    Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data); });
-                 //   MessageBox.Show("Записали");
-                   
-
-
+                    if (windowChart != null && !testT)
+                    {
+                       // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                       // {
+                            Application.Current.Dispatcher.Invoke((Action)delegate
+                            {
+                                windowChart.AddPointRaz(data);
+                            });
+                      //  }));
+                    }
+                    if (windowChartTail != null && !testT)
+                    {
+                        //Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                      //  {
+                        Application.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            windowChartTail.AddPointRaz(dataTail);
+                        });
+                       // }));
+                    }
                 }
-                }));
-            }
                 catch (NullReferenceException ee)
                 {
                     Debug.WriteLine("Error 708");
@@ -709,15 +746,20 @@ public System.Windows.Media.Brush Brushes
                     File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка графика" + ex.Message.ToString() + "\n" + "otobKl " + otobKl + "\t"+ "NamKl "+ NamKl); //допишет текст в конец файла
             }
                 bool bad = false;
-            ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, ref sig, ref Amp, ref Nul, ref bad, false, 1, 6);
-               // MaxAmpAndNul(data, out Amp, out Nul, out sig);
-                // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
-                // nn1 = new int[12];
-                Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT);
+                if(!testT)
+                {
+                    ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, ref sig, ref Amp, ref Nul, ref bad, false, 1, 6);
+                    // MaxAmpAndNul(data, out Amp, out Nul, out sig);
+                    // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
+                    // nn1 = new int[12];
+                    Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT);
+                }
+         
             }
             catch (NullReferenceException ee)
             {
-                Debug.WriteLine("Error 723");
+              
+                File.AppendAllText("D:\\Erroy_URAN_file.txt", "Error 723" + "\n"); //допишет текст в конец файла
             }
             catch (Exception ex)
             {
@@ -857,8 +899,13 @@ public System.Windows.Media.Brush Brushes
                             //MessageBox.Show(DataBAAKList.Count.ToString());
                             OcherediNaZapic.Enqueue(new DataYu {ListData= DataBAAKList, tipDataTest= Flagtest });
                             КолПакетов++;
-                                Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPoint(Nkl, ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов); }));
-                                DataBAAKList = new List<byte>();
+                                if (!Flagtest)
+                                {
+
+
+                                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPoint(Nkl, ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов); }));
+                                }
+                                    DataBAAKList = new List<byte>();
                             CountFlagEnd = 0;
                             CountFlagEndErroy = 0;
                         }
@@ -951,6 +998,7 @@ public System.Windows.Media.Brush Brushes
                 ЗаписьвФайлDelegate += WriteInFileIzOcheredi;
                 СтопТриггерDelegate += TriggerStopОго;
                 ЗаписьвФайлБДDelegate += WriteInFileIzOcherediBD;
+             
 
 
             }

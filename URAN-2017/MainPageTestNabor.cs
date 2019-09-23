@@ -76,7 +76,7 @@ namespace URAN_2017
                         {
                             return;
                         }
-
+                        Thread.Sleep(100);
                        
                         DateTime tmp = DateTime.UtcNow;
                         var ff = tmp.Subtract(tmpStart);

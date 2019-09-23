@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace URAN_2017
 {
@@ -28,10 +29,14 @@ namespace URAN_2017
              РежимСинхИлиНетТаскT = Task.Run(() => РежимСинхИлиНет(t));
             await РежимСинхИлиНетТаскT;
         }
+        public DispatcherTimer dispatcherTimer;
         private void ВремяОтобрTask()
         {
-           
-            Task myReadDateTask = Task.Run(() => TimeTask());
+            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+           // Task myReadDateTask = Task.Run(() => TimeTask());
         }
         public void ЗапускРеадТаск(CancellationToken cancellationToken)
         {

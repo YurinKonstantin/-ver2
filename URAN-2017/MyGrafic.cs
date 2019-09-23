@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.OleDb;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,25 +88,77 @@ namespace URAN_2017
             SeriesCollectionRaz = new SeriesCollection() { };
             LabelsRaz = new ObservableCollection<int>();
 
+
+
         }
        
         static public void Add(string nameKl1)
         {
+            
+         
             SeriesCollection.Add(new LineSeries
             {
                 Fill = Brushes.Transparent,
                 Title = "Кластер №"+nameKl1,
-                Values = new ChartValues<int> {}
-               
+                Values = new ChartValues<int> {},
+                LineSmoothness = 0
+
             });
+
+           
             SeriesCollectionN.Add(new LineSeries
             {
                 Fill = Brushes.Transparent,
                 Title = "Кластер №" + nameKl1,
-                Values = new ChartValues<int> { }
+                Values = new ChartValues<int> { },
+                LineSmoothness = 0
 
             });
-        
+           
+         
+
+               // infoZaprocBD(nameKl1, kl, connectionString);
+
+        }
+      static  public void infoZaprocBD( string kl, int d, string connectionString)
+        {
+
+            connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + connectionString;
+            var podg = new OleDbConnection(connectionString);
+            podg.Open();
+            DateTime dateTime =new DateTime();
+            dateTime = DateTime.Now;
+            DateTime dateTime1 = new DateTime();
+            dateTime1 = DateTime.Now;
+
+            dateTime1= dateTime1.AddHours(-71);
+          
+            while(dateTime1.Subtract(dateTime).TotalHours != 0)
+            {
+                   int x = 0;
+                    var camand = new OleDbCommand
+                    {
+                        Connection = podg,
+                         CommandText = "select темп from [Темп] where ( Кластер№ = '" + kl.ToString() + "' and год = " + dateTime1.Year.ToString() + " and месяц = " + dateTime1.Month.ToString() + " and день = " + dateTime1.Day.ToString() + " and час = " + dateTime1.Hour.ToString() + "  ) order by Код"
+
+                    };
+                try
+                {
+                    var chit = camand.ExecuteReader();
+                    while (chit.Read() == true)
+                    {
+                        x = Convert.ToInt32(chit.GetValue(0));
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+               SeriesCollection[d].Values.Add(x);
+               SeriesCollectionN[d].Values.Add(0);
+               dateTime1 = dateTime1.AddHours(1);
+            }
+            podg.Close();
         }
         static public void AddRaz()
         {
@@ -158,12 +212,12 @@ namespace URAN_2017
             }
 
         }
-        static public async void AddPointRaz(int[,] det)
+        static public async void AddPointRaz(int[,] det, string nameKl)
         {
             // Start_time = DateTime.Now;
             //ClassTextFile.CreatFileData(PathText.Text + Start_time.Year.ToString() + "_" + Start_time.Month.ToString() + "_" + Start_time.Day.ToString() + "_" + Start_time.Hour.ToString() + "_" + Start_time.Minute.ToString());
             await MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Clear(); }));
-            
+            await MainWindow.ChatMain.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.ChatMain.Title = nameKl; }));
             var x = new int[1024];
             // var y = x.Select(v => Math.Abs(v) < 1e-10 ? 1 : Math.Sin(v)/v).ToArray();
             var y = new double[x.Length];
@@ -171,20 +225,67 @@ namespace URAN_2017
             {
                 x[i] = i;
             }
+          
             for(int i = 0; i < 12; i++)
             {
                 var lg = new InteractiveDataDisplay.WPF.LineGraph();
-                await MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Add(lg); }));
-               
+            
 
-                lg.Stroke = new SolidColorBrush(Color.FromArgb(255, 36, 0, 255));
-                lg.Description = String.Format("Детектор №"+i.ToString());
+
+                // lg.Stroke = new SolidColorBrush(Color.FromArgb(255, Convert.ToByte(xx), Convert.ToByte(255 -xx), Convert.ToByte(0 +xx)));
+                switch(i)
+      {
+          case 1:
+                        lg.Stroke = new SolidColorBrush(Colors.Red);
+                        break;
+          case 2:
+                        lg.Stroke = new SolidColorBrush(Colors.Green);
+                        break;
+                    case 3:
+                        lg.Stroke = new SolidColorBrush(Colors.Black);
+                        break;
+                    case 4:
+                        lg.Stroke = new SolidColorBrush(Colors.Blue);
+                        break;
+                    case 5:
+                        lg.Stroke = new SolidColorBrush(Colors.Yellow);
+                        break;
+                    case 6:
+                        lg.Stroke = new SolidColorBrush(Colors.Aqua);
+                        break;
+                    case 7:
+                        lg.Stroke = new SolidColorBrush(Colors.Thistle);
+                        break;
+                    case 8:
+                        lg.Stroke = new SolidColorBrush(Colors.Azure);
+                        break;
+                    case 9:
+                        lg.Stroke = new SolidColorBrush(Colors.DarkOliveGreen);
+                        break;
+                    case 10:
+                        lg.Stroke = new SolidColorBrush(Colors.DarkBlue);
+                        break;
+                    case 11:
+                        lg.Stroke = new SolidColorBrush(Colors.Gray);
+                        break;
+                    case 12:
+                        lg.Stroke = new SolidColorBrush(Colors.DarkGoldenrod);
+                        break;
+                    default:
+              
+                    break;
+                }
+         
+                
+                lg.Description = String.Format("Детектор №"+(i+1).ToString());
                 lg.StrokeThickness = 2;
                 for(int j=0; j<1024; j++)
                 {
                     y[j] = det[i, j];
                 }
                 lg.Plot(x, y);
+                MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Add(lg); }));
+
             }
            
 
