@@ -307,10 +307,52 @@ namespace URAN_2017
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
 
-          //  NetworkManagement networkManagement = new NetworkManagement();
-         
+            try
+            {
+              string v ="{" + "name" +  ":" +  "reboot_arduino" +  "," +  "ip" +  ":" + "192.168.2.202" + "," +  "port" + ":" + 80 + "," +  "relay_number" + ":" + 1 + "}";
+                //   string v = "{" + quote + "name" + quote + ":" + quote + "reboot_arduino" + quote + "," + quote + "ip" + quote + ":" + quote + "192.168.2.202" + quote + "," + quote + "port" + quote + ":" + 80 + "," + quote + "relay_number" + quote + ":" + 1 + "}";
+                //  HttpWebRequest httpWebRequest = WebRequest.Create(@"https://api.vk.com/method/video.getAlbums?&access_token=5c38a232d7142501bfb227df273e6b96cffc6f05e263fcb237cd02bca72a0824d2275855bbfce1578acbd") as HttpWebRequest;
 
+                //string v = "{" + quote + "name" + quote + ":" + quote + "sync_device" + quote + "," + quote + "link_mask" + quote + ":" + set.LincClok + "," + quote + "delay" + quote + ":" + t + "}";
+                string iP = "192.168.1.78";
+                string port = "80";
+                HttpWebRequest httpWebRequest = WebRequest.Create(@"http://" + iP + ":" + 80 + "/api/v1/URAN_Temp_and_Pressure/" + v) as HttpWebRequest;
+                httpWebRequest.Accept = "application/json";
 
+                // httpWebRequest.BeginGetResponse((ar) =>
+                // {
+                try
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse();
+                        StreamReader reader = new StreamReader(response.GetResponseStream());
+                        StringBuilder output = new StringBuilder();
+
+                        output.Append(reader.ReadToEnd());
+                        Thread.Sleep(50);
+                        MessageBox.Show(output.ToString());
+                       // MS = JsonConvert.DeserializeObject<ClassMC>(output.ToString());
+                        //Dispatcher.BeginInvoke(new Action<string>(s => { Otvet.Items.Add(data.Microseconds.ToString()); }), data.Microseconds.ToString());
+                        //MessageBox.Show(data.text.ToString());
+                        response.Close();
+
+                    }
+                }
+                catch (WebException ez)
+                {
+                    //Dispatcher.BeginInvoke(new Action<string>(s => { labekSystemMessage.Items.Add(s); }), ez.Message);
+                    MessageBox.Show(ez.ToString());
+                }
+
+                //}, null);
+                //labekSystemMessage.Items.Add("Все Ок");
+            }
+            catch (Exception ex)
+            {
+                //labekSystemMessage.Items.Add("Ошибка: " + ex);
+                MessageBox.Show(ex.ToString());
+            }
         }
 
 
