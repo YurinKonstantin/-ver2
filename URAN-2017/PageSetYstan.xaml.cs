@@ -69,7 +69,7 @@ namespace URAN_2017
             using (Stream fs = new FileStream(md + "\\UranSetUp\\" + "setting.dat", FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 bf.Serialize(fs, set);
-                MessageBox.Show("Сохранено");
+                MessageBox.Show("Настройки удачно сохранены", "Сохранение");
                 fs.Close();
 
             }

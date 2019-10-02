@@ -46,6 +46,7 @@ namespace URAN_2017
         {
             ClassSerilization.SerialUserSetting200(set);
             UserSetting.Serial();
+            System.Windows.MessageBox.Show("Настройки удачно сохранены", "Сохранение");
 
         }
         private void DeSerial()

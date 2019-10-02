@@ -128,7 +128,7 @@
                 <StackPanel.Effect>
                     <DropShadowEffect BlurRadius="2" ShadowDepth="0"/>
                 </StackPanel.Effect>
-                <Button  x:Name="Start" HorizontalContentAlignment="Center"  Margin="1,1,0,0" Click="Start_Click" FontSize="18" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button  x:Name="Start" HorizontalContentAlignment="Center"  Margin="4" Click="Start_Click" FontSize="18" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
@@ -139,17 +139,17 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button x:Name="Stop" IsEnabled="False"  Content="Стоп" HorizontalContentAlignment="Center" Margin="1,1,0,0" FontSize="18" Click="Stop_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button x:Name="Stop" IsEnabled="False"  Content="Стоп" HorizontalContentAlignment="Center"  Margin="4" FontSize="18" Click="Stop_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Button Content="Графики" HorizontalContentAlignment="Center" Margin="1,1,0,0" FontSize="18" Click="Button_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button Content="Графики" HorizontalContentAlignment="Center"  Margin="4" FontSize="18" Click="Button_Click" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="dd" HorizontalContentAlignment="Center" FontSize="18" Margin="1,1,0,0" Click="Button_Click_1" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
+                <Button x:Name="dd" HorizontalContentAlignment="Center" FontSize="18"  Margin="4" Click="Button_Click_1" VerticalContentAlignment="Center" MinWidth="166" MinHeight="31">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
@@ -160,7 +160,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Button x:Name="Obnoviti" Margin="1,1,0,0" Click="Button_Click_3">
+                <Button x:Name="Obnoviti"  Margin="4" Click="Button_Click_3">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </Button.Background>
@@ -171,7 +171,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Border BorderBrush="Black"  Margin="16,1,0,0"  Background="White">
+                <Border BorderBrush="Black"  Margin="16,4,4,4"  Background="White">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="1" ShadowDepth="0"   x:Name="Bor"/>
                     </Border.Effect>
@@ -180,7 +180,7 @@
             </StackPanel>
             <Label Content="Основной режим" ToolBar.OverflowMode="Always"/>
             <ToggleSwitch:HorizontalToggleSwitch ToolBar.OverflowMode="Always" x:Name="ChecRez" Checked="HorizontalToggleSwitch_Checked" Unchecked="HorizontalToggleSwitch_Unchecked"/>
-            <Button ToolBar.OverflowMode="Always" x:Name="OProg" Content="О прогрмамме" Margin="1" Click="OProg_Click" >
+            <Button ToolBar.OverflowMode="Always" x:Name="OProg" Content="О прогрмамме" Margin="4" Click="OProg_Click" >
 
                 <Button.Background>
                     <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
@@ -377,9 +377,29 @@
                 </ListView>
 
                 <TextBlock Name="klP3" Grid.Column="0" Grid.Row="0" Margin="16,0,0,0" FontSize="14" Text="Плата БААК12-100" Visibility="Collapsed"/>
-                <ListView x:Name="List3" UseLayoutRounding="True" Grid.Row="1" Grid.Column="0" MouseRightButtonDown="List1_MouseRightButtonDown" MouseLeftButtonDown="List1_MouseLeftButtonDown" Visibility="Collapsed"
+                <ListView x:Name="List3" UseLayoutRounding="True" Grid.Row="1" Grid.Column="0" MouseRightButtonDown="List3_MouseRightButtonDown"  MouseLeftButtonDown="List1_MouseLeftButtonDown" Visibility="Collapsed"
           ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0" SelectionChanged="List1_SelectionChanged">
+                    <ListBox.ContextMenu >
+                        <ContextMenu>
+                            <MenuItem x:Name="contextTestRan3" Header="Старт Тестовый набор" IsEnabled="False" >
+                                <MenuItem Header="по длительности" Click="MenuItem_Click"></MenuItem>
+                                <MenuItem Header="по колличеству" Click="MenuItem_Click_1" ></MenuItem>
+                            </MenuItem>
+                            <MenuItem x:Name="context31" Header="Информация" IsEnabled="True" >
+                                <MenuItem x:Name="context13" Header="Порог" Tag="{Binding ElementName=List3}" IsEnabled="True" Click="PorogBAAK100"></MenuItem>
+                                <MenuItem x:Name="context23" Header="Триггер" IsEnabled="False" ></MenuItem>
+                                <MenuItem x:Name="context33" Header="Нулевая линия" IsEnabled="False" ></MenuItem>
+                                <MenuItem x:Name="context43" Header="Имя платы" IsEnabled="False" ></MenuItem>
+                            </MenuItem>
+                            <MenuItem x:Name="contextTestRanInfo3" Header="Тестовый набор инфо" IsEnabled="True" >
 
+                            </MenuItem>
+
+                            <MenuItem x:Name="ChartMy3" Header="Графики" IsEnabled="True" >
+                                <MenuItem x:Name="ChartContex13" Header="Основная разверка" IsEnabled="True" Click="ChartContex13_Click"></MenuItem>
+                           </MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                     <ListView.BorderBrush>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
                     </ListView.BorderBrush>
@@ -579,12 +599,9 @@
                         <Label Content="Визуализация"/>
                     </TabItem.Header>
                     <TabItem.Content>
-                        <Canvas Margin="24">
-
-                            <local:UserControlURAN />
-
-
-                        </Canvas>
+                        <Grid ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <local:UserControlURAN x:Name="userr" Height="600"/>
+                        </Grid>
                     </TabItem.Content>
                 </TabItem>
             </TabControl>

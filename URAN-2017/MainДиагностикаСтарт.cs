@@ -178,9 +178,9 @@ namespace URAN_2017
                 GridStartInfoError.Visibility = Visibility.Hidden;
             }
             DateTime dateTime = new DateTime();
-            dateTime = DateTime.Now;
+            dateTime = DateTime.UtcNow;
             DateTime dateTime1 = new DateTime();
-            dateTime1 = DateTime.Now;
+            dateTime1 = DateTime.UtcNow;
 
             dateTime1 = dateTime1.AddHours(-71);
            MyGrafic.Labels.Clear();
@@ -244,7 +244,7 @@ namespace URAN_2017
             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
             if (rez)
             {
-               await Tab1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { Tab1.Visibility = Visibility.Visible; }));
+              // await Tab1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { Tab1.Visibility = Visibility.Visible; }));
                 await klP3.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP3.Visibility = Visibility.Collapsed; }));
                 await List3.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => List3.Visibility = Visibility.Collapsed));
                 if(noT)
@@ -261,8 +261,8 @@ namespace URAN_2017
             }
             else
             {
-                await Tab1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { Tab1.Visibility = Visibility.Collapsed; }));
-                await Chart.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { Chart.Visibility = Visibility.Collapsed; }));
+               // await Tab1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { Tab1.Visibility = Visibility.Collapsed; }));
+              //  await Chart.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { Chart.Visibility = Visibility.Collapsed; }));
                 await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Collapsed; }));
                 await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Collapsed));
 

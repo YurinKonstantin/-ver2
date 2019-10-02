@@ -58,7 +58,7 @@ namespace URAN_2017
                 try
                 {
                     bf.Serialize(fs, set);
-                    System.Windows.MessageBox.Show("Сохранено");
+                    MessageBox.Show("Настройки удачно сохранены", "Сохранение");
                 }
                 catch
                 {

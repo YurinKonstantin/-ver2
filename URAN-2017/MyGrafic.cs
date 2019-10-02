@@ -127,9 +127,9 @@ namespace URAN_2017
             var podg = new OleDbConnection(connectionString);
             podg.Open();
             DateTime dateTime =new DateTime();
-            dateTime = DateTime.Now;
+            dateTime = DateTime.UtcNow;
             DateTime dateTime1 = new DateTime();
-            dateTime1 = DateTime.Now;
+            dateTime1 = DateTime.UtcNow;
 
             dateTime1= dateTime1.AddHours(-71);
           

@@ -31,7 +31,7 @@
     <ProductName>URAN</ProductName>
     <PublisherName>YuKO</PublisherName>
     <MinimumRequiredVersion>1.0.2.10</MinimumRequiredVersion>
-    <ApplicationRevision>38</ApplicationRevision>
+    <ApplicationRevision>42</ApplicationRevision>
     <ApplicationVersion>1.0.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -283,11 +283,17 @@
     <Compile Include="FolderSetUp\PageOtbor.xaml.cs">
       <DependentUpon>PageOtbor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControlDetector.xaml.cs">
+      <DependentUpon>UserControlDetector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControlURAN.xaml.cs">
       <DependentUpon>UserControlURAN.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowChart.xaml.cs">
       <DependentUpon>WindowChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowPorog.xaml.cs">
+      <DependentUpon>WindowPorog.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkBD\AddDataTablBAAK.xaml.cs">
       <DependentUpon>AddDataTablBAAK.xaml</DependentUpon>
@@ -400,11 +406,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControlDetector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControlURAN.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowPorog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

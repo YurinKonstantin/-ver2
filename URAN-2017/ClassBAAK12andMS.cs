@@ -385,7 +385,7 @@ public System.Windows.Media.Brush Brushes
             if (clientBAAK12T.Connected && ns != null)
             {
                 BlocAndPolarnost(9252);
-                Thread.Sleep(10);
+              //  Thread.Sleep(10);
                 WreadReg3000(0x200200, 0);
             }
             else

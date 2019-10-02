@@ -233,6 +233,14 @@ namespace URAN_2017
                 InDe(false);
             }
         }
+        WindowChart windowChart;
+        public WindowChart openWindowsChart()
+        {
+            windowChart = new WindowChart(NamKl);
+
+            windowChart.Show();
+            return windowChart;
+        }
         private void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out double[] Nul, out double[] sig, int dl, out int dn, out bool neutron)
         {
             int[,] data = new int[12, 1024*dl];
@@ -255,7 +263,24 @@ namespace URAN_2017
             {
                
                 ParserBAAK12.ParseBinFileBAAK12.ParseBinFileBAAK200(buf00.ToArray(), dl,  out data, out time);
-        // To Do
+                if (grafOtob)
+                {
+                    //  Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                    //  {
+                    Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data, "Кластер" + namKl); });
+                    //  }));
+                }
+                if (windowChart != null)
+                {
+                    // Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                    // {
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        windowChart.AddPointRaz(data);
+                    });
+                    //  }));
+                }
+                // To Do
                 ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, ref sig, ref Amp, ref Nul, ref bad, true, 1, 1);
                 if(!bad)
                 {
@@ -407,7 +432,15 @@ namespace URAN_2017
 
 
 
+        public void newPorog(int porog)
+        {
+            TriggerStop();
+           
+            AllSetPorogAll((uint)porog);
+          
+            TriggerStart();
 
+        }
 
         /// <summary>
         /// подготовка к тестовому набоу по длительности или количеству, если trigPorog=true, то по количеству

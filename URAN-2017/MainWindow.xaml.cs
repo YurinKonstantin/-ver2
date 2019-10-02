@@ -306,7 +306,8 @@ namespace URAN_2017
        public List<WindowChart> lstChart = new List<WindowChart>();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-
+            userr.TempBD(BAAK12T.wayDataBD);
+            /*
             try
             {
               string v ="{" + "name" +  ":" +  "reboot_arduino" +  "," +  "ip" +  ":" + "192.168.2.202" + "," +  "port" + ":" + 80 + "," +  "relay_number" + ":" + 1 + "}";
@@ -353,45 +354,11 @@ namespace URAN_2017
                 //labekSystemMessage.Items.Add("Ошибка: " + ex);
                 MessageBox.Show(ex.ToString());
             }
+            */
         }
 
 
-      
-
-
-
-
-        private double _toRaz=10;
-        private double _fromRaz=0;
-        public double FromRaz
-        {
-            get { return _fromRaz; }
-            set
-            {
-                _fromRaz = value;
-                OnPropertyChanged("FromRaz");
-            }
-        }
-
-        public double ToRaz
-        {
-            get { return _toRaz; }
-            set
-            {
-                _toRaz = value;
-                OnPropertyChanged("ToRaz");
-            }
-        } 
-
-        public async Task Xcxc()
-        {
-            int[,] dd = new int[12, 1024];
-            dd[0, 2] = 100;
-            dd[0, 2] = 90;
-            dd[0, 2] = 105;
-            dd[0, 2] = 80;
-            MyGrafic.AddPointRaz(dd, "NameKl");
-        }
+   
 
         private void Port_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
@@ -427,7 +394,9 @@ namespace URAN_2017
    
                 _DataColecViev.Clear();
                 _DataColecVievList2.Clear();
-           
+                _DataColecVievList3.Clear();
+
+
                 try
                 {
                     MyGrafic.SeriesCollection.Clear();
@@ -1101,6 +1070,78 @@ namespace URAN_2017
         {
             BAAK12T dd = (BAAK12T)List1.SelectedItem;
             var windowChart = dd.openWindowsChartTail();
+            lstChart.Add(windowChart);
+        }
+        private void PorogBAAK100(object sender, RoutedEventArgs e)
+        {
+            MenuItem dd = (MenuItem)sender;
+            if (List3.SelectedIndex > -1)
+            {
+                WindowPorog windowPorog = new WindowPorog();
+                windowPorog.classBAAK12_100 = (ClassBAAK12_100)List3.SelectedItem;
+                windowPorog.porog.Text = ClassBAAK12_100.PorogAll.ToString();
+                windowPorog.newporog.Text = ClassBAAK12_100.PorogAll.ToString();
+                windowPorog.Show();
+
+               // MessageBox.Show(((ClassBAAK12_100)List3.SelectedItem).NameBAAK12);
+            }
+        }
+        private void List3_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListView listView = (ListView)sender;
+            //if (_DataColecVievList3.Count > 0)
+            {
+                context3.IsEnabled = true;
+               // context13.Items.Clear();
+               // context23.Items.Clear();
+
+                //if (List3.SelectedIndex > -1)
+                {
+
+
+                   // context13.Items.Clear();
+                   // context23.Items.Clear();
+                  //  context33.Items.Clear();
+                    ClassBAAK12_100 dd = (ClassBAAK12_100)listView.SelectedItem;
+                    //  var menuItemporog = new MenuItem
+                    // {
+                    //    Header = dd.NamKl,
+                    // };
+                    // menuItemporog.Click += Jj;
+                    //context13.Tag = dd;
+                    //context13.Click += PorogBAAK100;
+                   
+                  //  context13.Items.Add(menuItemporog);
+                  //  var menuItNull = new MenuItem
+                   // {
+                     //   Header = dd.NamKl,
+                   // };
+                   // menuItNull.Click += Jj1;
+                   // context33.Items.Add(menuItNull);
+                    //var menuItTr = new MenuItem
+                  //  {
+                    //    Header = dd.NamKl,
+                  //  };
+                  //  menuItTr.Click += Jj2;
+                  //  context23.Items.Add(menuItTr);
+                }
+               // else
+                {
+                    //context13.Items.Clear();
+                   // foreach (ClassBAAK12_100 dd in _DataColecVievList3)
+                    {
+
+                    }
+
+
+                }
+            }
+        }
+
+        private void ChartContex13_Click(object sender, RoutedEventArgs e)
+        {
+            ClassBAAK12_100 dd = (ClassBAAK12_100)List3.SelectedItem;
+            var windowChart = dd.openWindowsChart();
             lstChart.Add(windowChart);
         }
     }
