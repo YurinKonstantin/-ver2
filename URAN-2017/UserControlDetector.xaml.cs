@@ -24,5 +24,32 @@ namespace URAN_2017
         {
             InitializeComponent();
         }
+        public SolidColorBrush _Dnet;
+        public SolidColorBrush Dnet
+        {
+            get
+            {
+                return _Dnet;
+            }
+            set
+            {
+                _Dnet = value;
+                Dneutron.Fill = value;
+            }
+        }
+        public SolidColorBrush _Dsig;
+        public SolidColorBrush Dsig
+        {
+            get
+            {
+                return _Dsig;
+            }
+            set
+            {
+                _Dsig = value;
+                DSig.Fill = value;
+            }
+        }
+
     }
 }

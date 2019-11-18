@@ -29,11 +29,20 @@ namespace URAN_2017.WorkBD
             //  db.ConnectionString = "Dataname=sqliteSample.db3";
 
             db.Open();
+            String tableCommand = String.Empty;
+            using (SQLiteCommand createTable = new SQLiteCommand(tableCommand, db))
+            {
 
 
-            String tableCommand = "CREATE TABLE IF NOT " +
-                "EXISTS ПлатыБААК (Primary_Key INTEGER PRIMARY KEY, " +
-                "ИмяПлаты NVARCHAR(16) NOT NULL, ТипПлаты char(100) NOT NULL, IP char(100) NOT NULL, Кластер int NOT NULL, Коментарии NVARCHAR(256) NULL)";
+
+                tableCommand = "CREATE TABLE IF NOT " +
+           "EXISTS ПлатыБААК (Primary_Key INTEGER PRIMARY KEY, " +
+           "ИмяПлаты NVARCHAR(16) NOT NULL, ТипПлаты char(100) NOT NULL, IP char(100) NOT NULL, Кластер int NOT NULL, Коментарии NVARCHAR(256) NULL)";
+                createTable.ExecuteReader();
+
+            }
+
+       
             //  tableCommand = @"CREATE TABLE [workers] (
             //     [id] integer PRIMARY KEY AUTOINCREMENT NOT NULL,
             //   [name] char(100) NOT NULL,
@@ -47,29 +56,29 @@ namespace URAN_2017.WorkBD
 
 
 
-                createTable.ExecuteReader();
+               
                 tableCommand = "CREATE TABLE IF NOT " +
                   "EXISTS НулевыеЛинии (Primary_Key INTEGER PRIMARY KEY, " +
                   "ИмяПлаты NVARCHAR(16) NOT NULL, Канал1 int NOT NULL, Канал2 int NOT NULL, Канал3 int NOT NULL, Канал4 int NOT NULL, Канал5 int NOT NULL, Канал6 int NOT NULL, Канал7 int NOT NULL," +
                   "Канал8 int NOT NULL, Канал9 int NOT NULL, Канал10 int NOT NULL, Канал11 int NOT NULL, Канал12 int NOT NULL)";
-               
+                createTable.ExecuteReader();
 
             }
             using (SQLiteCommand createTable = new SQLiteCommand(tableCommand, db))
             {
-                createTable.ExecuteReader();
+             
                 tableCommand = "CREATE TABLE IF NOT " +
                 "EXISTS Пороги (Primary_Key INTEGER PRIMARY KEY, " +
                 "ИмяПлаты NVARCHAR(16) NOT NULL, Канал1 int NOT NULL, Канал2 int NOT NULL, Канал3 int NOT NULL, Канал4 int NOT NULL, Канал5 int NOT NULL, Канал6 int NOT NULL, Канал7 int NOT NULL," +
                 "Канал8 int NOT NULL, Канал9 int NOT NULL, Канал10 int NOT NULL, Канал11 int NOT NULL, Канал12 int NOT NULL)";
-                
+                createTable.ExecuteReader();
             }
 
             using (SQLiteCommand createTable = new SQLiteCommand(tableCommand, db))
             {
 
 
-                createTable.ExecuteReader();
+              
 
                 tableCommand = "CREATE TABLE IF NOT " +
              "EXISTS Изминиения (Primary_Key INTEGER PRIMARY KEY, " +

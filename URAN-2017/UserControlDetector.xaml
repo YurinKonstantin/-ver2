@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:URAN_2017"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Canvas>
-        <Ellipse x:Name="k1d1n" Height="24" Width="24" StrokeThickness="2" Stroke="Red" Canvas.Left="108" Canvas.Top="23" />
-        <Ellipse x:Name="k1d2" Height="20" Width="20" StrokeThickness="3" Stroke="Red" Fill="Green" Canvas.Left="110" Canvas.Top="65"/>
-    </Canvas>
+             d:DesignHeight="50" d:DesignWidth="50">
+    <Grid>
+        <Ellipse x:Name="DSig" Height="40" Width="40" StrokeThickness="2" Stroke="Black" Fill="Green" />
+        <Ellipse x:Name="Dneutron" Height="25" Width="25" StrokeThickness="2" Stroke="Black" Fill="Green" />
+    </Grid>
 </UserControl>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:URAN_2017"
         xmlns:local1="clr-namespace:ToggleSwitch"
         mc:Ignorable="d"
-        Title="Настройка параметров" Height="807.272" Width="1061.86" MinWidth="966.776" MinHeight="679.359" Closing="Window_Closing" VerticalAlignment="Center" >
+        Title="Настройка параметров" Height="807.272" Width="1061.86"  Closing="Window_Closing" VerticalAlignment="Center" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240"/>

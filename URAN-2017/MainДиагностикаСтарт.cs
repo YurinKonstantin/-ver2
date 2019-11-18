@@ -177,23 +177,33 @@ namespace URAN_2017
             {
                 GridStartInfoError.Visibility = Visibility.Hidden;
             }
-            DateTime dateTime = new DateTime();
-            dateTime = DateTime.UtcNow;
-            DateTime dateTime1 = new DateTime();
-            dateTime1 = DateTime.UtcNow;
+            try
+            {
 
-            dateTime1 = dateTime1.AddHours(-71);
-           MyGrafic.Labels.Clear();
-            MyGrafic.LabelsN.Clear();
-            while (dateTime1.Subtract(dateTime).TotalHours != 0)
-            {
-                MyGrafic.Labels.Add(dateTime1.ToString());
-                MyGrafic.LabelsN.Add(dateTime1.ToString());
-                dateTime1 = dateTime1.AddHours(1);
+
+                DateTime dateTime = new DateTime();
+                dateTime = DateTime.UtcNow;
+                DateTime dateTime1 = new DateTime();
+                dateTime1 = DateTime.UtcNow;
+
+                dateTime1 = dateTime1.AddHours(-71);
+                MyGrafic.Labels.Clear();
+                MyGrafic.LabelsN.Clear();
+                while (dateTime1.Subtract(dateTime).TotalHours != 0)
+                {
+                    MyGrafic.Labels.Add(dateTime1.ToString());
+                    MyGrafic.LabelsN.Add(dateTime1.ToString());
+                    dateTime1 = dateTime1.AddHours(1);
+                }
+                foreach (BAAK12T bAAK12T in _DataColecViev)
+                {
+                    MyGrafic.infoZaprocBD(bAAK12T.NamKl, bAAK12T.Nkl, BAAK12T.wayDataBD);
+                }
             }
-            foreach(BAAK12T bAAK12T in _DataColecViev)
+            catch(Exception ex)
             {
-                MyGrafic.infoZaprocBD(bAAK12T.NamKl, bAAK12T.Nkl, BAAK12T.wayDataBD);
+                
+
             }
 
 

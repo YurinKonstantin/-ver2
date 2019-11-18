@@ -75,8 +75,9 @@ namespace URAN_2017
                 MyGrafic.MainWindow = window;
             }
             ChatMain.MouseDoubleClick += Auto;
+            
         }
-
+       
         private void Auto(object sender, MouseButtonEventArgs e)
         {
             ToggleAutoX.Toggled1 = false;
@@ -283,10 +284,11 @@ namespace URAN_2017
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Window1 Window11 = new Window1
+            WindowDetectorVizual Window11 = new WindowDetectorVizual(BAAK12T.wayDataBD)
             {
-                Owner = this
+               // Owner = this
             };
+            Window11.pathBD = BAAK12T.wayDataBD;
             Window11.Show();
         }
         private void Inz(BAAK12T dd, string hg)
@@ -306,7 +308,8 @@ namespace URAN_2017
        public List<WindowChart> lstChart = new List<WindowChart>();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            userr.TempBD(BAAK12T.wayDataBD);
+            userr.pathBD = BAAK12T.wayDataBD;
+            userr.TempBD();
             /*
             try
             {
@@ -621,6 +624,7 @@ namespace URAN_2017
                 {
                     MessageBox.Show(ex.ToString(), "Ошибка");
                 }
+                Button_ClickStartD(null, null);
             }
             
         }
@@ -804,28 +808,38 @@ namespace URAN_2017
                     }
                     else
                     {
-                        if (ss[0] == "BDB!")
+                        if (ss[0] == "Start")
                         {
-                            Data = await Task<byte>.Run(() => BDselect112(ss[1]));
 
-                            s.Send(Data);
+                            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start_Click(null, null); }));
+
                         }
                         else
                         {
-                            rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { str = rezimYst.Content.ToString(); }));
-                            if (_DataColecViev.Count != 0)
+
+                            if (ss[0] == "BDB!")
                             {
-                                str += " " + (_DataColecViev.Count+ _DataColecVievList2.Count) + "\n\t";
-                                foreach (BAAK12T bak in _DataColecViev)
-                                {
-                                    str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
-                                }
-                                foreach (ClassBAAK12NoTail bak in _DataColecVievList2)
-                                {
-                                    str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
-                                }
+                                Data = await Task<byte>.Run(() => BDselect112(ss[1]));
+
+                                s.Send(Data);
                             }
-                            s.Send(Encoding.UTF8.GetBytes(str));
+                            else
+                            {
+                                rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { str = rezimYst.Content.ToString(); }));
+                                if (_DataColecViev.Count != 0)
+                                {
+                                    str += " " + (_DataColecViev.Count + _DataColecVievList2.Count) + "\n\t";
+                                    foreach (BAAK12T bak in _DataColecViev)
+                                    {
+                                        str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
+                                    }
+                                    foreach (ClassBAAK12NoTail bak in _DataColecVievList2)
+                                    {
+                                        str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
+                                    }
+                                }
+                                s.Send(Encoding.UTF8.GetBytes(str));
+                            }
                         }
                     }
                    

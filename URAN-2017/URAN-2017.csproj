@@ -31,7 +31,7 @@
     <ProductName>URAN</ProductName>
     <PublisherName>YuKO</PublisherName>
     <MinimumRequiredVersion>1.0.2.10</MinimumRequiredVersion>
-    <ApplicationRevision>42</ApplicationRevision>
+    <ApplicationRevision>54</ApplicationRevision>
     <ApplicationVersion>1.0.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -267,6 +267,7 @@
     <Compile Include="Data.cs" />
     <Compile Include="InitializeBAAK.cs" />
     <Compile Include="MainPageTestNabor.cs" />
+    <Compile Include="MainPageVizualDetectors.cs" />
     <Compile Include="MainДиагностикаСтарт.cs" />
     <Compile Include="MainНовыйРанАвто.cs" />
     <Compile Include="MainСинхронихация.cs" />
@@ -292,6 +293,9 @@
     <Compile Include="WindowChart.xaml.cs">
       <DependentUpon>WindowChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowDetectorVizual.xaml.cs">
+      <DependentUpon>WindowDetectorVizual.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowPorog.xaml.cs">
       <DependentUpon>WindowPorog.xaml</DependentUpon>
     </Compile>
@@ -301,6 +305,7 @@
     <Compile Include="WorkBD\AddDataTablNullLine.xaml.cs">
       <DependentUpon>AddDataTablNullLine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkBD\DataAccesBDData.cs" />
     <Compile Include="WorkBD\PageParametersBAAK.xaml.cs">
       <DependentUpon>PageParametersBAAK.xaml</DependentUpon>
     </Compile>
@@ -415,6 +420,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowDetectorVizual.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

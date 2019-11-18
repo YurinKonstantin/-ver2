@@ -752,7 +752,7 @@ public System.Windows.Media.Brush Brushes
                     // MaxAmpAndNul(data, out Amp, out Nul, out sig);
                     // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
                     // nn1 = new int[12];
-                    Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT);
+                    Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT, Nul);
                 }
          
             }
@@ -767,7 +767,7 @@ public System.Windows.Media.Brush Brushes
             }
            
        }
-        private void Neutron(int [,] n, int AmpOtbora, int dlitOtb, out int [] nn, string timeSob, Boolean test)
+        private void Neutron(int [,] n, int AmpOtbora, int dlitOtb, out int [] nn, string timeSob, Boolean test, double[] masNullR )
         {
             
             nn = new int[12];
@@ -775,7 +775,7 @@ public System.Windows.Media.Brush Brushes
             {
                 int countnutron = 0;
                
-                int Nu = Convert.ToInt32(masnul[i]);
+                int Nu = Convert.ToInt32(masNullR[i]);
               int  AmpOtbora1 = AmpOtbora + Nu;
                 for (int j = 100; j < 20000; j++)
                 {

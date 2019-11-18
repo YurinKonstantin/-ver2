@@ -24,11 +24,34 @@ namespace URAN_2017
     /// </summary>
     public partial class UserControlURAN : UserControl, INotifyPropertyChanged
     {
+        public string pathBD = String.Empty;
         public UserControlURAN()
         {
             InitializeComponent();
             vizualDetectors();
            // vizualDetectorA(1, Colors.Red);
+        }
+        Point capturePoint { get; set; }
+
+        private void ScrollViewer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            scrollViewer.CaptureMouse();
+            capturePoint = e.MouseDevice.GetPosition(scrollViewer);
+        }
+
+        private void ScrollViewer_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            scrollViewer.ReleaseMouseCapture();
+        }
+
+        private void ScrollViewer_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!scrollViewer.IsMouseCaptured) return;
+            Point currentPoint = e.MouseDevice.GetPosition(scrollViewer);
+            var deltaX = capturePoint.X - currentPoint.X;
+            var deltaY = capturePoint.Y - currentPoint.Y;
+            scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset + deltaX);
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + deltaY);
         }
 
         public List<Detector> detectors = new List<Detector>();
@@ -41,16 +64,14 @@ namespace URAN_2017
 
         public void ShowDeteClea()
         {
-            canvas.Children.Clear();
-
-            if (detectors.Count>0)
+           
+            for(int i=0; i<72; i++)
             {
-                foreach(var d in detectors)
-                {
-                    d.ColorNFil = new SolidColorBrush(Colors.White);
-                    d.ColorSStroce = new SolidColorBrush(Colors.Gray);
-                }
+                vizualDetectorA(i+1, new SolidColorBrush(Colors.White));
+                vizualDetectorN(i+1, new SolidColorBrush(Colors.White));
             }
+       
+    
         }
         public void vizualDetectors()
         {
@@ -60,15 +81,31 @@ namespace URAN_2017
                 for (int j = 0; j < 4; j++)
                 {
 
-
-                    Ellipse ellipse = new Ellipse() { Width = 20, Height = 20, StrokeThickness = 3, Fill = new SolidColorBrush(Colors.White), Stroke = new SolidColorBrush(Colors.White) };
-                    ellipse.Tag = count + 1;
-                    ellipse.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
-                    canvas.Children.Add(ellipse);
-                    Canvas.SetLeft(ellipse, 110+(40*i));
-                    Canvas.SetTop(ellipse, 25+(40*j));
-                   detectors.Add(new Detector() { nomerDetectora=count+1, coordinate=new Coordinate() { x= 110 + (40 * i), y= 25 + (40 * j)},
-                       ColN =0, ColS=0, ColorNFil= new SolidColorBrush(Colors.White), ColorSStroce = new SolidColorBrush(Colors.White)});
+                    UserControlDetector userControlDetector = new UserControlDetector() { Dnet= new SolidColorBrush(Colors.White), Dsig= new SolidColorBrush(Colors.White) };
+                   // Ellipse ellipse = new Ellipse() { Width = 20, Height = 20, StrokeThickness = 3, Fill = new SolidColorBrush(Colors.White), Stroke = new SolidColorBrush(Colors.White) };
+                    //ellipse.Tag = count + 1;
+                    userControlDetector.Tag = count + 1;
+                    userControlDetector.Dneutron.Tag = count + 1;
+                    userControlDetector.DSig.Tag = count + 1;
+                    userControlDetector.DSig.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
+                    userControlDetector.Dneutron.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
+                    //ellipse.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
+                    userControlDetector.DSig.MouseEnter += Ellipse_MouseEnter;
+                    userControlDetector.Dneutron.MouseEnter += Ellipse_MouseEnter;
+                   // ellipse.MouseEnter += Ellipse_MouseEnter;
+                    canvas.Children.Add(userControlDetector);
+                    Canvas.SetLeft(userControlDetector, (120*1.5)+30+(40*2*i));
+                    Canvas.SetTop(userControlDetector, 30+(40*2*j));
+                   detectors.Add(new Detector() { nomerDetectora=count+1, coordinate=new Coordinate()
+                   {
+                       x = (int)(120 +30+ (40 * 2 * i)),
+                       y = (int)(30 + (40 * 2 * j))
+                   },
+                       ColN =0,
+                       ColS =0,
+                       ColorNFil = new SolidColorBrush(Colors.White),
+                       ColorSStroce = new SolidColorBrush(Colors.White)
+                   });
                
                     count++;
                 }
@@ -78,17 +115,27 @@ namespace URAN_2017
                 for (int j = 0; j < 4; j++)
                 {
 
+                    UserControlDetector userControlDetector = new UserControlDetector() { Dnet = new SolidColorBrush(Colors.White), Dsig = new SolidColorBrush(Colors.White) };
+                    //Ellipse ellipse = new Ellipse() { Width = 20, Height = 20, StrokeThickness = 3, Fill = new SolidColorBrush(Colors.White), Stroke = new SolidColorBrush(Colors.White) };
+                    canvas.Children.Add(userControlDetector);
+                    userControlDetector.Tag = count + 1;
+                    userControlDetector.Dneutron.Tag = count + 1;
+                    userControlDetector.DSig.Tag = count + 1;
+                    //ellipse.Tag = count + 1;
+                    userControlDetector.DSig.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
+                    userControlDetector.Dneutron.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
 
-                    Ellipse ellipse = new Ellipse() { Width = 20, Height = 20, StrokeThickness = 3, Fill = new SolidColorBrush(Colors.White), Stroke = new SolidColorBrush(Colors.White) };
-                    canvas.Children.Add(ellipse);
-                    ellipse.Tag = count + 1;
-                    ellipse.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
-                    Canvas.SetLeft(ellipse, 20 + (40 * i));
-                    Canvas.SetTop(ellipse, 255 + (40 * j));
+                    //  ellipse.MouseLeftButtonUp += Ellipse_MouseRightButtonDown;
+                    userControlDetector.DSig.MouseEnter += Ellipse_MouseEnter;
+                    userControlDetector.Dneutron.MouseEnter += Ellipse_MouseEnter;
+
+                   // ellipse.MouseEnter += Ellipse_MouseEnter;
+                    Canvas.SetLeft(userControlDetector, 25 + (40*2 * i));
+                    Canvas.SetTop(userControlDetector, (290*1.5)+25 + (40*2 * j));
                     detectors.Add(new Detector()
                     {
                         nomerDetectora = count + 1,
-                        coordinate = new Coordinate() { x = 110 + (40 * i), y = 25 + (40 * j) },
+                        coordinate = new Coordinate() { x = (int)(25 + (40 * 2 * i)), y = (int)((290 * 1.5)+25 + (40 * 2 * j)) },
                         ColN = 0,
                         ColS = 0,
                         ColorNFil = new SolidColorBrush(Colors.White),
@@ -106,17 +153,17 @@ namespace URAN_2017
        
 
       
-        public void vizualDetectorA(int nomerDetector, Color color)
+        public void vizualDetectorA(int nomerDetector, SolidColorBrush color)
         {
 
             //canvas.Children.RemoveAt(10+nomerDetector-1);
             int x = 0;
            foreach(var d in canvas.Children)
             {
-                if(x==10+ nomerDetector - 1)
+                if(x==22+ nomerDetector - 1)
                 {
-                    Ellipse ellipse1 = (Ellipse)d;
-                    ellipse1.Stroke = new SolidColorBrush(color);
+                    UserControlDetector detector = (UserControlDetector)d;
+                    detector.Dsig = color;
                 }
                 x++;
             }
@@ -124,70 +171,213 @@ namespace URAN_2017
             {
                 if(d.nomerDetectora==nomerDetector)
                 {
-                    d.ColorSStroce = new SolidColorBrush(color);
+                    d.ColorSStroce = color;
                 }
             }
         }
-        public void TempBD(string connectionString)
+        public void TempBD()
         {
-            connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + connectionString;
+            sobs.Clear();
+             string  connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + pathBD;
             var podg = new OleDbConnection(connectionString);
             podg.Open();
-            DateTime dateTime = new DateTime(2019, 09, 12);
-           // dateTime = DateTime.UtcNow;
+            int timenaz =Convert.ToInt32(textH.Text);
+         
+            DateTime dateTime = new DateTime();
+            dateTime = DateTime.UtcNow;
             DateTime dateTime1 = new DateTime();
             dateTime1 = DateTime.UtcNow;
 
-            dateTime1 = dateTime1.AddHours(-1);
+            dateTime1 = dateTime1.AddHours(-timenaz);
+            string uslovietime = String.Empty;
+            DateTime dateTime1Naz = new DateTime();
+           
+            int x3 = 0;
+            for (int i=timenaz; i>0; i--)
+            {
+                dateTime1Naz = DateTime.UtcNow;
+                dateTime1Naz = dateTime1Naz.AddHours(-i);
+                if (x3 > 0)
+                {
+                    uslovietime += "or Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
 
-                int x = 0;
+                }
+                else
+                {
+
+
+                    uslovietime += "Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
+                    // "(Время Like '" + dateTime1.Day.ToString("00") + "." + dateTime1.Hour.ToString("00") + "%' or Время Like '" + dateTime.Day.ToString("00") + "." + dateTime.Hour.ToString("00") + "%')";
+                }
+                x3++;
+            }
+             
            
             
                 var camand = new OleDbCommand
                 {
                     Connection = podg,
-                     CommandText = "select * from [Событие] where ИмяФайла Like '%_" + dateTime.Day.ToString("00")+"." 
-                     + dateTime.Month.ToString("00") +"."+ dateTime.Year.ToString() + "%' order by Код"
+                     CommandText = "select * from [Событие] where (ИмяФайла Like '%_" + dateTime.Day.ToString("00")+"." 
+                     + dateTime.Month.ToString("00") +"."+ dateTime.Year.ToString() + "%') and (" + uslovietime + "or Время Like '" + dateTime.Day.ToString("00") +
+                     "." + dateTime.Hour.ToString("00") + "%') order by Код"
                     // CommandText = "select * from [Событие] Where (ИмяФайла Like '%_" + dateTime.Day.ToString("00") + "."+ dateTime.Month.ToString("00")+".2019 %' ) order by Код desc"
-                     
+
 
                 };
-                try
-                {
+
+        
+            try
+            {
+
                     var chit = camand.ExecuteReader();
                     while (chit.Read() == true)
                     {
-                    if (x < 5)
+                    int[] masA = new int[12];
+                    int[] masN = new int[12];
+                   // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+
+                    masA[0] = Convert.ToInt32(chit.GetValue(5));
+                    masA[1] = Convert.ToInt32(chit.GetValue(6));
+                    masA[2] = Convert.ToInt32(chit.GetValue(7));
+                    masA[3] = Convert.ToInt32(chit.GetValue(8));
+                    masA[4] = Convert.ToInt32(chit.GetValue(9));
+                    masA[5] = Convert.ToInt32(chit.GetValue(10));
+                    masA[6] = Convert.ToInt32(chit.GetValue(11));
+                    masA[7] = Convert.ToInt32(chit.GetValue(12));
+                    masA[8] = Convert.ToInt32(chit.GetValue(13));
+                    masA[9] = Convert.ToInt32(chit.GetValue(14));
+                    masA[10] = Convert.ToInt32(chit.GetValue(15));
+                    masA[11] = Convert.ToInt32(chit.GetValue(16));
+
+                    masN[0] = Convert.ToInt32(chit.GetValue(18));
+                    masN[1] = Convert.ToInt32(chit.GetValue(19));
+                    masN[2] = Convert.ToInt32(chit.GetValue(20));
+                    masN[3] = Convert.ToInt32(chit.GetValue(21));
+                    masN[4] = Convert.ToInt32(chit.GetValue(22));
+                    masN[5] = Convert.ToInt32(chit.GetValue(23));
+                    masN[6] = Convert.ToInt32(chit.GetValue(24));
+                    masN[7] = Convert.ToInt32(chit.GetValue(25));
+                    masN[8] = Convert.ToInt32(chit.GetValue(26));
+                    masN[9] = Convert.ToInt32(chit.GetValue(27));
+                    masN[10] = Convert.ToInt32(chit.GetValue(28));
+                    masN[11] = Convert.ToInt32(chit.GetValue(29));
+
+                   // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                    // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                    // x = Convert.ToInt32(chit.GetValue(1));
+                    sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                    
+
+                    }
+           
+         
+            sobs = (from s in sobs where s.dataTime.CompareTo(dateTime1) >= 0 select s).ToList<Sob>();
+                int colS = (from s in sobs where s.kl == 1 select s).Count();
+                int colN = (from s in sobs where s.kl == 1 select s.masN.Sum()).Sum();
+                textSAllKl1.Text = " " + colS.ToString();
+                textnAllKl1.Text = " " + colN.ToString()+"("+ ((double)colN/(double)colS).ToString("0.00")+")";
+            
+                colS = (from s in sobs where s.kl == 2 select s).Count();
+                colN = (from s in sobs where s.kl == 2 select s.masN.Sum()).Sum();
+                textSAllKl2.Text = " " + colS.ToString();
+                textnAllKl2.Text = " "  + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                colS = (from s in sobs where s.kl == 3 select s).Count();
+                colN = (from s in sobs where s.kl == 3 select s.masN.Sum()).Sum();
+                textSAllKl3.Text = " " + colS.ToString();
+                textnAllKl3.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                colS = (from s in sobs where s.kl == 4 select s).Count();
+                colN = (from s in sobs where s.kl == 4 select s.masN.Sum()).Sum();
+                textSAllKl4.Text = " " + colS.ToString();
+                textnAllKl4.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                colS = (from s in sobs where s.kl == 5 select s).Count();
+                colN = (from s in sobs where s.kl == 5 select s.masN.Sum()).Sum();
+                textSAllKl5.Text = " " + colS.ToString();
+                textnAllKl5.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                colS = (from s in sobs where s.kl == 6 select s).Count();
+                colN = (from s in sobs where s.kl == 6 select s.masN.Sum()).Sum();
+                textSAllKl6.Text = " " + colS.ToString();
+                textnAllKl6.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+                //MessageBox.Show("Read" + "\n" + sobs.Count.ToString());
+
+                ShowDeteClea();
+               // MessageBox.Show("Clea" + "\n" + sobs.Count.ToString());
+                try
+                {
+
+
+                    foreach (var d in detectors)
                     {
+                        d.ColS = (from x in sobs where x.kl == d.Klaster() && x.masA[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 5 select x).Count();
+                        d.SumSobAll = (from s in sobs where s.kl == d.Klaster() select s).Count();
+                        
+                        vizualDetectorA(d.nomerDetectora, d.ColorTextSob);
+                        
+                        
+                        d.ColN = (from x in sobs where x.kl == d.Klaster() && x.masN[d.nomerDetectora - ((x.kl-1) * 12)-1] > 0 select x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1]).Sum();
+                       
+                       
+                        
+                        
+                       
+                            vizualDetectorN(d.nomerDetectora, d.ColorTextNeutron);
+                        
 
-
-                        // x = Convert.ToInt32(chit.GetValue(1));
-                        MessageBox.Show(chit.GetValue(2).ToString());
-                        x++;
                     }
-                    }
+                    // MessageBox.Show(chit.GetValue(2).ToString()+"\n"+ chit.GetValue(1).ToString()+"\n"+ dateTime1.ToString()+"\t"+s1.dataTime.ToString() +"\n"+ s1.dataTime.CompareTo(dateTime1).ToString());
                 }
                 catch (Exception ex)
                 {
-                MessageBox.Show("Error");
+                    MessageBox.Show("Error" + "\n" + ex.ToString());
+
+                }
+            }
+                catch (Exception ex)
+                {
+                MessageBox.Show("Error1"+ex.ToString());
                 }
                
                
             
             podg.Close();
-            MessageBox.Show("Конец");
+
+           // MessageBox.Show("Конец"+"\n"+sobs.Count.ToString());
         }
-        public void vizualDetectorN(int nomerDetector, Color color)
+        List<Sob> sobs = new List<Sob>();
+        public class Sob
+        {
+            public string namePSB { get; set; }
+            public int kl { get; set; }
+            public int[] masA = new int[12];
+            public int[] masN=new int[12];
+            public DateTime dataTime = new DateTime();
+            public int SobAll{ get; set; }
+            public int NeutronAll
+            {
+                get
+                {
+                    return masN.Sum();
+                }
+                set
+                {
+
+                }
+            }
+        }
+        public void vizualDetectorN(int nomerDetector, SolidColorBrush color)
         {
 
             //canvas.Children.RemoveAt(10+nomerDetector-1);
             int x = 0;
             foreach (var d in canvas.Children)
             {
-                if (x == 10 + nomerDetector - 1)
+                if (x == 22 + nomerDetector - 1)
                 {
-                    Ellipse ellipse1 = (Ellipse)d;
-                    ellipse1.Fill = new SolidColorBrush(color);
+                    UserControlDetector detector = (UserControlDetector)d;
+                    detector.Dnet = color;
                 }
                 x++;
             }
@@ -195,7 +385,7 @@ namespace URAN_2017
             {
                 if (d.nomerDetectora == nomerDetector)
                 {
-                    d.ColorNFil = new SolidColorBrush(color);
+                    d.ColorNFil = color;
                 }
             }
 
@@ -253,506 +443,156 @@ namespace URAN_2017
             MessageBox.Show("Кластер № "+nomerKl.ToString()+"\n"+"Детектор "+x.ToString()+"\n"+"Темп счета событий:"+tempS.ToString()+"\n"+"Темп счета нейтронов:"+tempN.ToString());
 
         }
-        /*  public async Task ShowDetecAsync(List<int> classSob, int Kl)
-{
-// ShowDeteClea();
-//int[] intmMax = new int[classSobL.Count];
-//int[] intmMin = new int[classSobL.Count];
 
-
-int i = 0;
-//   foreach (ClassSob classSob in classSobL)
-{
-//    intmMax[i] = classSob.mAmp.Max();
-// intmMin[i] = classSob.mAmp.Min();
-
-i++;
-
-
-}
-foreach (int x in classSob)
-{
-
-
-int max = intmMax.Max();
-int min = intmMin.Min();
-
-
-
-double step = max / 5;
-
-
-Text3.Text = step.ToString();
-Text2.Text = (2 * step).ToString();
-Text1.Text = (3 * step).ToString();
-Text0.Text = (4 * step).ToString();
-TextMax.Text = max.ToString();
-
-
-if (classSob.nameklaster == "1")
-{
-
-    k1d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k1d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-
-
-
-
-    k1d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[0])) / (double)(max - min))));
-    k1d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[1])) / (double)(max - min))));
-    k1d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[2])) / (double)(max - min))));
-    k1d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[3])) / (double)(max - min))));
-    k1d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[4])) / (double)(max - min))));
-    k1d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[5])) / (double)(max - min))));
-    k1d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[6])) / (double)(max - min))));
-    k1d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[7])) / (double)(max - min))));
-    k1d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[8])) / (double)(max - min))));
-    k1d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[9])) / (double)(max - min))));
-    k1d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[10])) / (double)(max - min))));
-    k1d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[11])) / (double)(max - min))));
-
-
-
-
-
-}
-if (classSob.nameklaster == "2")
-{
-    k2d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k2d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-
-    k2d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[0])) / (double)(max - min))));
-    k2d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[1])) / (double)(max - min))));
-    k2d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[2])) / (double)(max - min))));
-    k2d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[3])) / (double)(max - min))));
-    k2d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[4])) / (double)(max - min))));
-    k2d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[5])) / (double)(max - min))));
-    k2d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[6])) / (double)(max - min))));
-    k2d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[7])) / (double)(max - min))));
-    k2d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[8])) / (double)(max - min))));
-    k2d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[9])) / (double)(max - min))));
-    k2d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[10])) / (double)(max - min))));
-    k2d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[11])) / (double)(max - min))));
-
-}
-if (classSob.nameklaster == "3")
-{
-    k3d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k3d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-
-    k3d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[0])) / (double)(max - min))));
-    k3d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[1])) / (double)(max - min))));
-    k3d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[2])) / (double)(max - min))));
-    k3d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[3])) / (double)(max - min))));
-    k3d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[4])) / (double)(max - min))));
-    k3d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[5])) / (double)(max - min))));
-    k3d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[6])) / (double)(max - min))));
-    k3d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[7])) / (double)(max - min))));
-    k3d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[8])) / (double)(max - min))));
-    k3d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[9])) / (double)(max - min))));
-    k3d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[10])) / (double)(max - min))));
-    k3d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[11])) / (double)(max - min))));
-}
-
-if (classSob.nameklaster == "4")
-{
-    k4d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k4d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-    k4d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[0])) / (double)(max - min))));
-    k4d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[1])) / (double)(max - min))));
-    k4d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[2])) / (double)(max - min))));
-    k4d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[3])) / (double)(max - min))));
-    k4d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[4])) / (double)(max - min))));
-    k4d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[5])) / (double)(max - min))));
-    k4d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[6])) / (double)(max - min))));
-    k4d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[7])) / (double)(max - min))));
-    k4d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[8])) / (double)(max - min))));
-    k4d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[9])) / (double)(max - min))));
-    k4d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[10])) / (double)(max - min))));
-    k4d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[11])) / (double)(max - min))));
-}
-if (classSob.nameklaster == "5")
-{
-    k5d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k5d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[0])) / (double)(max - min))));
-    k5d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[1])) / (double)(max - min))));
-    k5d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[2])) / (double)(max - min))));
-    k5d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[3])) / (double)(max - min))));
-    k5d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[4])) / (double)(max - min))));
-    k5d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[5])) / (double)(max - min))));
-    k5d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[6])) / (double)(max - min))));
-    k5d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[7])) / (double)(max - min))));
-    k5d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[8])) / (double)(max - min))));
-    k5d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[9])) / (double)(max - min))));
-    k5d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[10])) / (double)(max - min))));
-    k5d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[11])) / (double)(max - min))));
-
-}
-if (classSob.nameklaster == "6")
-{
-    k6d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-    k6d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-    k6d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[0])) / (double)(max - min))));
-    k6d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[1])) / (double)(max - min))));
-    k6d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[2])) / (double)(max - min))));
-    k6d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[3])) / (double)(max - min))));
-    k6d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[4])) / (double)(max - min))));
-    k6d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[5])) / (double)(max - min))));
-    k6d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[6])) / (double)(max - min))));
-    k6d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[7])) / (double)(max - min))));
-    k6d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[8])) / (double)(max - min))));
-    k6d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[9])) / (double)(max - min))));
-    k6d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[10])) / (double)(max - min))));
-    k6d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(max - classSob.mAmp[11])) / (double)(max - min))));
-
-
-
-}
-}
-}
-public async Task ShowDetecТAsync(List<ClassSob> classSobL)
-{
-ShowDeteClea();
-
-
-
-int[] intmMaxn = new int[classSobL.Count];
-int[] intmMinn = new int[classSobL.Count];
-int i = 0;
-foreach (ClassSob classSob in classSobL)
-{
-
-intmMaxn[i] = classSob.mCountN.Max();
-intmMinn[i] = classSob.mCountN.Min();
-i++;
-
-
-}
-foreach (ClassSob classSob in classSobL)
-{
-
-if (intmMaxn.Sum() != 0)
-{
-
-
-    int maxn = intmMaxn.Max();
-    int minn = intmMinn.Min();
-
-
-
-    double stepn = maxn / 5;
-
-    Text3.Text = stepn.ToString();
-    Text2.Text = (2 * stepn).ToString();
-    Text1.Text = (3 * stepn).ToString();
-    Text0.Text = (4 * stepn).ToString();
-    TextMax.Text = maxn.ToString();
-
-
-    if (classSob.nameklaster == "1")
-    {
-
-        k1d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k1d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-
-
-
-
-
-
-        k1d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[0])) / (double)(maxn - minn))));
-        k1d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[1])) / (double)(maxn - minn))));
-        k1d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[2])) / (double)(maxn - minn))));
-        k1d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[3])) / (double)(maxn - minn))));
-        k1d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[4])) / (double)(maxn - minn))));
-        k1d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[5])) / (double)(maxn - minn))));
-        k1d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[6])) / (double)(maxn - minn))));
-        k1d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[7])) / (double)(maxn - minn))));
-        k1d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[8])) / (double)(maxn - minn))));
-        k1d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[9])) / (double)(maxn - minn))));
-        k1d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[10])) / (double)(maxn - minn))));
-        k1d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[11])) / (double)(maxn - minn))));
-
-
-
-
-    }
-    if (classSob.nameklaster == "2")
-    {
-        k2d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k2d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[0])) / (double)(maxn - minn))));
-        k2d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[1])) / (double)(maxn - minn))));
-        k2d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[2])) / (double)(maxn - minn))));
-        k2d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[3])) / (double)(maxn - minn))));
-        k2d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[4])) / (double)(maxn - minn))));
-        k2d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[5])) / (double)(maxn - minn))));
-        k2d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[6])) / (double)(maxn - minn))));
-        k2d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[7])) / (double)(maxn - minn))));
-        k2d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[8])) / (double)(maxn - minn))));
-        k2d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[9])) / (double)(maxn - minn))));
-        k2d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[10])) / (double)(maxn - minn))));
-        k2d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[11])) / (double)(maxn - minn))));
-
-
-
-
-    }
-    if (classSob.nameklaster == "3")
-    {
-        k3d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k3d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-
-        k3d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[0])) / (double)(maxn - minn))));
-        k3d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[1])) / (double)(maxn - minn))));
-        k3d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[2])) / (double)(maxn - minn))));
-        k3d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[3])) / (double)(maxn - minn))));
-        k3d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[4])) / (double)(maxn - minn))));
-        k3d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[5])) / (double)(maxn - minn))));
-        k3d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[6])) / (double)(maxn - minn))));
-        k3d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[7])) / (double)(maxn - minn))));
-        k3d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[8])) / (double)(maxn - minn))));
-        k3d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[9])) / (double)(maxn - minn))));
-        k3d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[10])) / (double)(maxn - minn))));
-        k3d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[11])) / (double)(maxn - minn))));
-    }
-
-    if (classSob.nameklaster == "4")
-    {
-        k4d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k4d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-        k4d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[0])) / (double)(maxn - minn))));
-        k4d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[1])) / (double)(maxn - minn))));
-        k4d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[2])) / (double)(maxn - minn))));
-        k4d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[3])) / (double)(maxn - minn))));
-        k4d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[4])) / (double)(maxn - minn))));
-        k4d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[5])) / (double)(maxn - minn))));
-        k4d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[6])) / (double)(maxn - minn))));
-        k4d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[7])) / (double)(maxn - minn))));
-        k4d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[8])) / (double)(maxn - minn))));
-        k4d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[9])) / (double)(maxn - minn))));
-        k4d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[10])) / (double)(maxn - minn))));
-        k4d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[11])) / (double)(maxn - minn))));
-    }
-    if (classSob.nameklaster == "5")
-    {
-        k5d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k5d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[0])) / (double)(maxn - minn))));
-        k5d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[1])) / (double)(maxn - minn))));
-        k5d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[2])) / (double)(maxn - minn))));
-        k5d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[3])) / (double)(maxn - minn))));
-        k5d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[4])) / (double)(maxn - minn))));
-        k5d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[5])) / (double)(maxn - minn))));
-        k5d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[6])) / (double)(maxn - minn))));
-        k5d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[7])) / (double)(maxn - minn))));
-        k5d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[8])) / (double)(maxn - minn))));
-        k5d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[9])) / (double)(maxn - minn))));
-        k5d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[10])) / (double)(maxn - minn))));
-        k5d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[11])) / (double)(maxn - minn))));
-
-    }
-    if (classSob.nameklaster == "6")
-    {
-        k6d1.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d2.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d3.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d4.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d5.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d6.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d7.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d8.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d9.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d10.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d11.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-        k6d12.Stroke = new SolidColorBrush(Windows.UI.Colors.Black);
-
-        k6d1.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[0])) / (double)(maxn - minn))));
-        k6d2.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[1])) / (double)(maxn - minn))));
-        k6d3.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[2])) / (double)(maxn - minn))));
-        k6d4.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[3])) / (double)(maxn - minn))));
-        k6d5.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[4])) / (double)(maxn - minn))));
-        k6d6.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[5])) / (double)(maxn - minn))));
-        k6d7.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[6])) / (double)(maxn - minn))));
-        k6d8.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[7])) / (double)(maxn - minn))));
-        k6d9.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[8])) / (double)(maxn - minn))));
-        k6d10.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[9])) / (double)(maxn - minn))));
-        k6d11.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[10])) / (double)(maxn - minn))));
-        k6d12.Fill = new SolidColorBrush(await GetColorByOffset(GrCol.GradientStops, (((double)(maxn - classSob.mCountN[11])) / (double)(maxn - minn))));
-
-
-
-    }
-}*/
-        //}
-        // }
-    }
-    public class Detector
-    {
-        bool activKl = false;
-        public int Klaster()
+        private void Ellipse_MouseEnter(object sender, MouseEventArgs e)
         {
+            int x = (int)((Ellipse)sender).Tag;
+            int tempS = 0;
+            int tempN = 0;
             int nomerKl = 0;
-            if(nomerDetectora>0&&nomerDetectora<13)
+            SolidColorBrush solidColorBrushN = new SolidColorBrush();
+            SolidColorBrush solidColorBrushS = new SolidColorBrush();
+            foreach (var d in detectors)
             {
-                return 1;
-            }
-         
-            if (nomerDetectora > 12 && nomerDetectora < 25)
-            {
-                return 2;
-            }
-            if (nomerDetectora >24 && nomerDetectora < 37)
-            {
-                return 3;
-            }
-            if (nomerDetectora > 36 && nomerDetectora < 49)
-            {
-                return 4;
-            }
-            if (nomerDetectora > 48 && nomerDetectora < 61)
-            {
-                return 5;
-            }
-            if (nomerDetectora > 60 && nomerDetectora < 73)
-            {
-                return 6;
-            }
-            return 0;
-        }
-        public int nomerDetectora { get; set; }
-        public Coordinate coordinate = new Coordinate();
-        
-        public SolidColorBrush ColorSStroce { get; set; }
-        public SolidColorBrush ColorNFil { get; set; }
-    
-        public int ColS { get; set; }
-        public int ColN { get; set; }
-   
+                if (d.nomerDetectora == x)
+                {
+                    tempN = d.ColN;
+                    tempS = d.ColS;
+                    nomerKl = d.Klaster();
+                    solidColorBrushN = d.ColorTextNeutron;
+                    solidColorBrushS = d.ColorTextSob;
 
-}
-    public class Coordinate
-    {
-        public int x { get; set; }
-        public int y { get; set; }
+
+                }
+            }
+            textKl.Text = "Кластер № " + nomerKl.ToString();
+            textDetec.Text = "Детектор№ " + x.ToString() + "(" + (x - (12 * (nomerKl - 1))).ToString() + ")";
+            textSob.Foreground = solidColorBrushS;
+            textSob.Text = " " + tempS.ToString();
+            try
+            {
+
+                textN.Foreground = solidColorBrushN;
+                textN.Text = " " + tempN.ToString() + "(" + ((double)((double)tempN / (double)(from s in sobs where s.kl == nomerKl select s).Count())).ToString("0.0000") + ")";
+            }
+            catch(Exception ex)
+            {
+                textN.Text = " " + tempN.ToString() + "(" + (0).ToString()+")";
+            }
+            SobAll.Text =" "+ ((from s in sobs where s.kl == nomerKl select s).Count()).ToString();
+            NeutronovAll.Text =" "+ ((from s in sobs where s.kl == nomerKl select s.NeutronAll).Sum()).ToString();
+        }
+        public class Detector
+        {
+            bool activKl = false;
+            public int Klaster()
+            {
+                int nomerKl = 0;
+                if (nomerDetectora > 0 && nomerDetectora < 13)
+                {
+                    return 1;
+                }
+
+                if (nomerDetectora > 12 && nomerDetectora < 25)
+                {
+                    return 2;
+                }
+                if (nomerDetectora > 24 && nomerDetectora < 37)
+                {
+                    return 3;
+                }
+                if (nomerDetectora > 36 && nomerDetectora < 49)
+                {
+                    return 4;
+                }
+                if (nomerDetectora > 48 && nomerDetectora < 61)
+                {
+                    return 5;
+                }
+                if (nomerDetectora > 60 && nomerDetectora < 73)
+                {
+                    return 6;
+                }
+                return 0;
+            }
+            public int nomerDetectora { get; set; }
+            public Coordinate coordinate = new Coordinate();
+            public int SumSobAll { get; set; }
+            public int SumNeutronAll { get; set; }
+            public SolidColorBrush ColorSStroce { get; set; }
+            public SolidColorBrush ColorNFil { get; set; }
+
+            public int ColS { get; set; }
+            public int ColN { get; set; }
+            public SolidColorBrush ColorTextSob
+            {
+                get
+                {
+                    SolidColorBrush solidColorBrush = new SolidColorBrush(Colors.White);
+                    if (ColS < (double)(SumSobAll * 0.1))
+                    {
+                        solidColorBrush = new SolidColorBrush(Colors.Yellow);
+                    }
+                    if (ColS >= (double)(SumSobAll * 0.1))
+                    {
+                        solidColorBrush = new SolidColorBrush(Colors.Green);
+                    }
+                    if (ColS >= (double)(SumSobAll * 0.7))
+                    {
+                        solidColorBrush = new SolidColorBrush(Colors.Red);
+                    }
+                    return solidColorBrush;
+                }
+            }
+            public SolidColorBrush ColorTextNeutron
+            {
+                get
+                {
+                    SolidColorBrush solidColorBrush = new SolidColorBrush(Colors.White);
+                   
+
+                    double t = 0.0000;
+                    if (SumSobAll == 0)
+                    {
+                        t = 0.0000;
+                    }
+                    else
+                    {
+                        t = ((double)((double)ColN / (double)SumSobAll));
+                    }
+                    if (t == 0.000)
+                    {
+                        solidColorBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x04, 0xC5, 0x04));
+
+                    }
+                    if (t >= 0.00001)
+                    {
+                        solidColorBrush = new SolidColorBrush(Colors.Green);
+
+                    }
+                    if (t >= 0.2)
+                    {
+
+                        solidColorBrush = new SolidColorBrush(Colors.Orange);
+                    }
+                    if (t >= 0.5)
+                    {
+
+                        solidColorBrush = new SolidColorBrush(Colors.Red);
+                    }
+
+                    return solidColorBrush;
+                }
+            }
+
+           
+        }
+        public class Coordinate
+        {
+            public int x { get; set; }
+            public int y { get; set; }
+        }
     }
+   
+ 
 }

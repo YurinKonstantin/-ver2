@@ -218,7 +218,7 @@ namespace URAN_2017
             //ClassTextFile.CreatFileData(PathText.Text + Start_time.Year.ToString() + "_" + Start_time.Month.ToString() + "_" + Start_time.Day.ToString() + "_" + Start_time.Hour.ToString() + "_" + Start_time.Minute.ToString());
             await MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Clear(); }));
             await MainWindow.ChatMain.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.ChatMain.Title = nameKl; }));
-            var x = new int[1024];
+            var x = new int[det.Length/12];
             // var y = x.Select(v => Math.Abs(v) < 1e-10 ? 1 : Math.Sin(v)/v).ToArray();
             var y = new double[x.Length];
             for (int i = 0; i < x.Length; i++)
