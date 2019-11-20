@@ -11,9 +11,13 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <local:UserControlURAN Margin="8" x:Name="controlDetector"/>
         <Button Width="40" Height="40" Content="reset" HorizontalAlignment="Left" Click="Button_Click"/>
-        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="8" x:Name="tecSos"/>
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Margin="8" x:Name="tecSos"/>
         <ProgressBar Width="600" Height="20" x:Name="prog" Visibility="Collapsed" IsIndeterminate="True"/>
     </Grid>
 </Window>

@@ -584,12 +584,12 @@ public System.Windows.Media.Brush Brushes
                    // OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
                     if(BDData.tipDataSob)
                     {
-                    BDReadСобытие(BDData.nameFileBD, BDData.nameBAAKBD, BDData.timeBD, BDData.AmpBD, BDData.nameklasterBD, BDData.NnutBD, BDData.NlBD, BDData.sigBDnew, BDData.tipDataTest);//пишем в бд
+                    BDReadСобытие(BDData.nameFileBD, BDData.nameBAAKBD, BDData.timeBD, BDData.AmpBD, BDData.nameklasterBD, BDData.NnutBD, BDData.NlBD, BDData.sigBDnew, BDData.tipDataTest, BDData.bad);//пишем в бд
                         КолПакетовОчер2++;
                     }
                     else
                     {
-                        BDReadNeutron(BDData.nameFileBD, BDData.DBD, BDData.AmpSobBD, BDData.TimeFirstBD, BDData.TimeEndBD, BDData.timeBD, BDData.TimeAmpBD, BDData.TimeFirst3BD, BDData.TimeEnd3BD, BDData.tipDataTest);
+                        BDReadNeutron(BDData.nameFileBD, BDData.DBD, BDData.AmpSobBD, BDData.TimeFirstBD, BDData.TimeEndBD, BDData.timeBD, BDData.TimeAmpBD, BDData.TimeFirst3BD, BDData.TimeEnd3BD, BDData.tipDataTest, BDData.bad);
                     }
                     
 
@@ -651,7 +651,7 @@ public System.Windows.Media.Brush Brushes
                         Double[] sigm = new double[12];
                         if (BAAKTAIL)
                         {
-                            Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out double[] NL, out sigm, dataYu.tipDataTest);//парсинг данных
+                            Obrabotka(dataYu.ListData, out int[] Ampl, out string time1, out coutN, out double[] NL, out sigm, dataYu.tipDataTest, out bool bad);//парсинг данных
                                
 
 
@@ -659,7 +659,7 @@ public System.Windows.Media.Brush Brushes
                                     Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPointN(Nkl, Convert.ToInt32(КолПакетовN) - ПакетовN); }));
                                 if (!dataYu.tipDataTest)
                                 {
-                                    OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm });
+                                    OcherediNaZapicBD.Enqueue(new ClassZapicBD() { tipDataTest = dataYu.tipDataTest, tipDataSob = true, nameFileBD = NameFileClose, nameBAAKBD = NameBAAK12, timeBD = time1, nameRanBD = BAAK12T.NameRan, AmpBD = Ampl, nameklasterBD = NamKl, NnutBD = coutN, NlBD = NL, sigBDnew = sigm, bad=bad });
 
                                 }
                         }
@@ -689,7 +689,7 @@ public System.Windows.Media.Brush Brushes
             }
         }
       
-        private  void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out int[] nn1, out double[] Nul, out double[] sig, bool testT)
+        private  void Obrabotka(List<Byte> buf00, out int[] Amp, out string time, out int[] nn1, out double[] Nul, out double[] sig, bool testT, out bool bad)
         {
             int[,] data = new int[12, 1024];
             int[,] dataTail = new int[12, 20000];
@@ -698,6 +698,7 @@ public System.Windows.Media.Brush Brushes
             time = "0";
             nn1 = new int[12];
             Amp =new int[12];
+            bad = false;
             try
             {
                // byte[] bb = new byte[buf00.Count];
@@ -745,14 +746,14 @@ public System.Windows.Media.Brush Brushes
             {
                     File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка графика" + ex.Message.ToString() + "\n" + "otobKl " + otobKl + "\t"+ "NamKl "+ NamKl); //допишет текст в конец файла
             }
-                bool bad = false;
+               
                 if(!testT)
                 {
-                    ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, ref sig, ref Amp, ref Nul, ref bad, false, 1, 6);
+                    ParserBAAK12.ParseBinFileBAAK12.MaxAmpAndNul(data, ref sig, ref Amp, ref Nul, ref bad, true, 1, 6);
                     // MaxAmpAndNul(data, out Amp, out Nul, out sig);
                     // MessageBox.Show(Nul.ToString()+" "+ dataTail[3, 100]+" " + dataTail[3, 101] + " " + dataTail[3, 102] + " " + dataTail[3, 103] + " " + dataTail[3, 104] + " " + dataTail[3, 105] + " " + dataTail[3, 106] + " ");
                     // nn1 = new int[12];
-                    Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT, Nul);
+                    Neutron(dataTail, BAAK12T.PorogNutron, BAAK12T.DlNutron, out nn1, time, testT, Nul, bad);
                 }
          
             }
@@ -767,7 +768,7 @@ public System.Windows.Media.Brush Brushes
             }
            
        }
-        private void Neutron(int [,] n, int AmpOtbora, int dlitOtb, out int [] nn, string timeSob, Boolean test, double[] masNullR )
+        private void Neutron(int [,] n, int AmpOtbora, int dlitOtb, out int [] nn, string timeSob, Boolean test, double[] masNullR, bool bad )
         {
             
             nn = new int[12];
@@ -830,7 +831,7 @@ public System.Windows.Media.Brush Brushes
                          if (countendtime3 - countfirsttime3 >= dlitOtb)
                           {
                                  Amp -= Nu;
-                                OcherediNaZapicBD.Enqueue(new ClassZapicBD() {tipDataTest=test, tipDataSob = false,nameFileBD=NameFileClose, DBD=i, AmpSobBD=Amp, TimeFirstBD= countfirsttime, TimeEndBD= countendtime, timeBD= timeSob, TimeAmpBD= countmaxtime, TimeFirst3BD= countfirsttime3, TimeEnd3BD= countendtime3 });
+                                OcherediNaZapicBD.Enqueue(new ClassZapicBD() {tipDataTest=test, tipDataSob = false,nameFileBD=NameFileClose, DBD=i, AmpSobBD=Amp, TimeFirstBD= countfirsttime, TimeEndBD= countendtime, timeBD= timeSob, TimeAmpBD= countmaxtime, TimeFirst3BD= countfirsttime3, TimeEnd3BD= countendtime3, bad=bad });
                                 countnutron++;
                           
                           }

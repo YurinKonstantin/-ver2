@@ -51,5 +51,27 @@ namespace URAN_2017
             }
         }
 
+        private void Dneutron_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var G = (Grid)sender;
+            G.Margin =new Thickness(-5, -5, 0,0);
+            DSig.Width += 10;
+            DSig.Height += 10;
+           
+            Dneutron.Width += 5;
+            Dneutron.Height += 5;
+        }
+
+     
+
+        private void DSig_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var G = (Grid)sender;
+            G.Margin = new Thickness(0, 0, 0, 0);
+            DSig.Width -= 10;
+            DSig.Height -= 10;
+            Dneutron.Width -= 5;
+            Dneutron.Height -= 5;
+        }
     }
 }

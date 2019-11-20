@@ -31,7 +31,7 @@
     <ProductName>URAN</ProductName>
     <PublisherName>YuKO</PublisherName>
     <MinimumRequiredVersion>1.0.2.10</MinimumRequiredVersion>
-    <ApplicationRevision>54</ApplicationRevision>
+    <ApplicationRevision>59</ApplicationRevision>
     <ApplicationVersion>1.0.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -271,6 +271,9 @@
     <Compile Include="MainДиагностикаСтарт.cs" />
     <Compile Include="MainНовыйРанАвто.cs" />
     <Compile Include="MainСинхронихация.cs" />
+    <Compile Include="MuControl\Bilds.xaml.cs">
+      <DependentUpon>Bilds.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyCommand.cs" />
     <Compile Include="MyGrafic.cs" />
     <Compile Include="MainSerilizacia.cs" />
@@ -400,6 +403,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="FolderSetUp\NastroikiAll.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MuControl\Bilds.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

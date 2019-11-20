@@ -42,5 +42,6 @@ namespace URAN_2017
         public int TimeAmpBD = 0;
         public int TimeFirst3BD = 0;
         public int TimeEnd3BD = 0;
+        public bool bad = false;
     }
 }

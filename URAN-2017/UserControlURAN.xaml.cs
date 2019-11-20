@@ -230,44 +230,96 @@ namespace URAN_2017
             {
 
                     var chit = camand.ExecuteReader();
+               
                     while (chit.Read() == true)
                     {
-                    int[] masA = new int[12];
-                    int[] masN = new int[12];
-                   // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                    if (chekNoise.IsChecked==true)
+                    {
+                        if(!String.IsNullOrEmpty(chit.GetValue(55).ToString()) && Convert.ToBoolean(chit.GetValue(55)))
+                        {
 
-                    masA[0] = Convert.ToInt32(chit.GetValue(5));
-                    masA[1] = Convert.ToInt32(chit.GetValue(6));
-                    masA[2] = Convert.ToInt32(chit.GetValue(7));
-                    masA[3] = Convert.ToInt32(chit.GetValue(8));
-                    masA[4] = Convert.ToInt32(chit.GetValue(9));
-                    masA[5] = Convert.ToInt32(chit.GetValue(10));
-                    masA[6] = Convert.ToInt32(chit.GetValue(11));
-                    masA[7] = Convert.ToInt32(chit.GetValue(12));
-                    masA[8] = Convert.ToInt32(chit.GetValue(13));
-                    masA[9] = Convert.ToInt32(chit.GetValue(14));
-                    masA[10] = Convert.ToInt32(chit.GetValue(15));
-                    masA[11] = Convert.ToInt32(chit.GetValue(16));
+                        }
+                        else
+                        {
 
-                    masN[0] = Convert.ToInt32(chit.GetValue(18));
-                    masN[1] = Convert.ToInt32(chit.GetValue(19));
-                    masN[2] = Convert.ToInt32(chit.GetValue(20));
-                    masN[3] = Convert.ToInt32(chit.GetValue(21));
-                    masN[4] = Convert.ToInt32(chit.GetValue(22));
-                    masN[5] = Convert.ToInt32(chit.GetValue(23));
-                    masN[6] = Convert.ToInt32(chit.GetValue(24));
-                    masN[7] = Convert.ToInt32(chit.GetValue(25));
-                    masN[8] = Convert.ToInt32(chit.GetValue(26));
-                    masN[9] = Convert.ToInt32(chit.GetValue(27));
-                    masN[10] = Convert.ToInt32(chit.GetValue(28));
-                    masN[11] = Convert.ToInt32(chit.GetValue(29));
+                            int[] masA = new int[12];
+                            int[] masN = new int[12];
+                            // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
 
-                   // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
-                    // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
-                    // x = Convert.ToInt32(chit.GetValue(1));
-                    sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                            masA[0] = Convert.ToInt32(chit.GetValue(5));
+                            masA[1] = Convert.ToInt32(chit.GetValue(6));
+                            masA[2] = Convert.ToInt32(chit.GetValue(7));
+                            masA[3] = Convert.ToInt32(chit.GetValue(8));
+                            masA[4] = Convert.ToInt32(chit.GetValue(9));
+                            masA[5] = Convert.ToInt32(chit.GetValue(10));
+                            masA[6] = Convert.ToInt32(chit.GetValue(11));
+                            masA[7] = Convert.ToInt32(chit.GetValue(12));
+                            masA[8] = Convert.ToInt32(chit.GetValue(13));
+                            masA[9] = Convert.ToInt32(chit.GetValue(14));
+                            masA[10] = Convert.ToInt32(chit.GetValue(15));
+                            masA[11] = Convert.ToInt32(chit.GetValue(16));
+
+                            masN[0] = Convert.ToInt32(chit.GetValue(18));
+                            masN[1] = Convert.ToInt32(chit.GetValue(19));
+                            masN[2] = Convert.ToInt32(chit.GetValue(20));
+                            masN[3] = Convert.ToInt32(chit.GetValue(21));
+                            masN[4] = Convert.ToInt32(chit.GetValue(22));
+                            masN[5] = Convert.ToInt32(chit.GetValue(23));
+                            masN[6] = Convert.ToInt32(chit.GetValue(24));
+                            masN[7] = Convert.ToInt32(chit.GetValue(25));
+                            masN[8] = Convert.ToInt32(chit.GetValue(26));
+                            masN[9] = Convert.ToInt32(chit.GetValue(27));
+                            masN[10] = Convert.ToInt32(chit.GetValue(28));
+                            masN[11] = Convert.ToInt32(chit.GetValue(29));
+
+                            // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                            // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                            // x = Convert.ToInt32(chit.GetValue(1));
+                            sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                        }
+
+                    }
+                    else
+                    {
+
+                        //Debug.WriteLine("dfgd"+chit.FieldCount.ToString());
+
+                        int[] masA = new int[12];
+                        int[] masN = new int[12];
+                        // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+
+                        masA[0] = Convert.ToInt32(chit.GetValue(5));
+                        masA[1] = Convert.ToInt32(chit.GetValue(6));
+                        masA[2] = Convert.ToInt32(chit.GetValue(7));
+                        masA[3] = Convert.ToInt32(chit.GetValue(8));
+                        masA[4] = Convert.ToInt32(chit.GetValue(9));
+                        masA[5] = Convert.ToInt32(chit.GetValue(10));
+                        masA[6] = Convert.ToInt32(chit.GetValue(11));
+                        masA[7] = Convert.ToInt32(chit.GetValue(12));
+                        masA[8] = Convert.ToInt32(chit.GetValue(13));
+                        masA[9] = Convert.ToInt32(chit.GetValue(14));
+                        masA[10] = Convert.ToInt32(chit.GetValue(15));
+                        masA[11] = Convert.ToInt32(chit.GetValue(16));
+
+                        masN[0] = Convert.ToInt32(chit.GetValue(18));
+                        masN[1] = Convert.ToInt32(chit.GetValue(19));
+                        masN[2] = Convert.ToInt32(chit.GetValue(20));
+                        masN[3] = Convert.ToInt32(chit.GetValue(21));
+                        masN[4] = Convert.ToInt32(chit.GetValue(22));
+                        masN[5] = Convert.ToInt32(chit.GetValue(23));
+                        masN[6] = Convert.ToInt32(chit.GetValue(24));
+                        masN[7] = Convert.ToInt32(chit.GetValue(25));
+                        masN[8] = Convert.ToInt32(chit.GetValue(26));
+                        masN[9] = Convert.ToInt32(chit.GetValue(27));
+                        masN[10] = Convert.ToInt32(chit.GetValue(28));
+                        masN[11] = Convert.ToInt32(chit.GetValue(29));
+
+                        // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                        // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                        // x = Convert.ToInt32(chit.GetValue(1));
+                        sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                    }
                     
-
                     }
            
          
@@ -592,6 +644,59 @@ namespace URAN_2017
             public int x { get; set; }
             public int y { get; set; }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            scaleCanvas.ScaleX = scaleCanvas.ScaleX - .1;
+            scaleCanvas.ScaleY = scaleCanvas.ScaleY - .1;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            scaleCanvas.ScaleX = scaleCanvas.ScaleX + .1;
+            scaleCanvas.ScaleY = scaleCanvas.ScaleY  +.1;
+
+        }
+
+        private void chekNoise_Checked(object sender, RoutedEventArgs e)
+        {
+            TempBD();
+        }
+
+        private void chekNoise_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TempBD();
+
+        }
+
+        private void Rectangle_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var re = (Rectangle)(sender);
+         
+                re.StrokeThickness = 2;
+            
+          
+            
+        }
+
+        private void Rectangle_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var re = (Rectangle)(sender);
+            if( re.IsMouseOver)
+            {
+
+            }
+            else
+            {
+                re.StrokeThickness = 1;
+            }
+                
+           
+
+
+        }
+
+      
     }
    
  

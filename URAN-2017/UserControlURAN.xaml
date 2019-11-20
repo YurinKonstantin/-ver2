@@ -5,21 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:URAN_2017"
              mc:Ignorable="d" 
-            d:DesignHeight="900" d:DesignWidth="1280" >
+             >
     <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="320"/>
         </Grid.ColumnDefinitions>
-
+       
         <ScrollViewer  Name="scrollViewer"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
           MouseUp="ScrollViewer_MouseUp" MouseMove="ScrollViewer_MouseMove"
           PreviewMouseLeftButtonDown="ScrollViewer_PreviewMouseLeftButtonDown" Background="White">
             
   
         <Canvas Background="White" UseLayoutRounding="True" x:Name="canvas"  Height="860" Width="940" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="8,8,0,8">
-       
-        <StackPanel Margin="60,0,0,0" Visibility="Collapsed">
+                <Canvas.RenderTransform>
+                    <ScaleTransform x:Name="scaleCanvas"></ScaleTransform>
+                </Canvas.RenderTransform>
+                <StackPanel Margin="60,0,0,0" Visibility="Collapsed">
                 <!-- This rectangle is painted with a vertical linear gradient. -->
                 <Rectangle Width="10" Height="200" Visibility="Collapsed">
                     <Rectangle.Fill>
@@ -44,7 +46,7 @@
             </Rectangle>
             <Rectangle Width="905" Height="320"  Fill="WhiteSmoke" Stroke="Black" StrokeThickness="2" Canvas.Left="5" Canvas.Top="440" >
             </Rectangle>
-            <Rectangle Width="224" Height="300" Canvas.Left="198" Canvas.Top="20" StrokeThickness="1" Stroke="Black" StrokeDashCap="Flat" StrokeDashArray="4 2"/>
+            <Rectangle Fill="Transparent"  Width="224" Height="300" Canvas.Left="198" Canvas.Top="20" StrokeThickness="1" Stroke="Black" StrokeDashCap="Flat" StrokeDashArray="4 2"  MouseEnter="Rectangle_MouseEnter" MouseLeave="Rectangle_MouseLeave"  />
             <Rectangle Width="224" Height="300" Canvas.Left="438" Canvas.Top="20" StrokeThickness="1" Stroke="Black" StrokeDashCap="Flat" StrokeDashArray="4 2"/>
             <Rectangle Width="224" Height="300" Canvas.Left="678" Canvas.Top="20" StrokeThickness="1" Stroke="Black" StrokeDashCap="Flat" StrokeDashArray="4 2"/>
 
@@ -123,7 +125,7 @@
         <Grid Grid.Column="1" Background="WhiteSmoke" Margin="4">
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Border BorderThickness="1">
                 <Border.Effect>
@@ -212,12 +214,20 @@
                         <TextBlock Text="Час" Margin="4" IsEnabled="False"/>
                         <TextBox  Margin="4" IsEnabled="False"/>
                         <TextBlock Text="минтуа" Margin="4" IsEnabled="False"/>
-                    <TextBox Margin="4"/>
-                </StackPanel>
+                    <TextBox Margin="4, 4, 4,24"/>
+                        <TextBlock Margin="4" Text="Учитывать шумовые события"/>
+                        <CheckBox x:Name="chekNoise" Content="Убрать шумовые события" IsChecked="False" Checked="chekNoise_Checked" Unchecked="chekNoise_Unchecked"/>
+                    </StackPanel>
                 </ScrollViewer>
             </Border>
         </Grid>
- 
-            
+        <Border BorderThickness="1" BorderBrush="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Background="Gray" Margin="4" CornerRadius="8,8,8,8">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Button Width="40" Height="30" Content="-" Click="Button_Click" Margin="2,2,0,2"/>
+                <Button  Width="40" Height="30" Content="+" Click="Button_Click_1" Margin="2"/>
+            </StackPanel>
+        </Border>
+      
+
     </Grid>
 </UserControl>
