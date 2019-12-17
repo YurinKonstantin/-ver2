@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using URAN_2017.WorkBD;
 
 namespace URAN_2017
 {
@@ -224,68 +225,77 @@ namespace URAN_2017
                 {
                     connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + BAAK12T.wayDataBD;
                 }
-
-
-                // Создание подключения
-                var podg = new OleDbConnection(connectionString);
-                try
+                DataAccesBDBAAK.Path = BAAK12T.wayDataBD;
+                if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
                 {
-
-                    // Открываем подключение
-                    podg.Open();
-                    // MessageBox.Show("Подключение открыто");
-                    new OleDbCommand
-                    {
-                        Connection = podg,
-                        CommandText = "INSERT INTO[Событие](" + "ИмяФайла, Кластер, Плата, Время, АмплитудаКанал1, АмплитудаКанал2, АмплитудаКанал3, АмплитудаКанал4, АмплитудаКанал5, АмплитудаКанал6, АмплитудаКанал7, АмплитудаКанал8, АмплитудаКанал9," +
-                                        "АмплитудаКанал10, АмплитудаКанал11, АмплитудаКанал12, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, Nul1, Nul2, Nul3, Nul4, Nul5, Nul6, Nul7, Nul8, Nul9, Nul10, Nul11, Nul12, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12) VALUES (" +
-                                        "'" + nameFile + "'" + "," + "'" + nameklaster + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + time + "'" + ", " + "'" + Amp[0] + "'" + ", " + "'" + Amp[1] + "'" + ", " + "'" + Amp[2] + "'" + ", " + "'" + Amp[3] + "'" + ", " + "'"
-                                        + Amp[4] + "'" + ", " + "'" + Amp[5] + "'" + ", " + "'" + Amp[6] + "'" + ", " + "'" + Amp[7] + "'" + ", " + "'" + Amp[8] + "'" + ", " + "'" + Amp[9] + "'" + ", " + "'" + Amp[10] + "'" + ", " + "'" + Amp[11] + "'" + ", " + "'" + Nnut[0] + "'"
-                                        + ", " + "'" + Nnut[1] + "'" + ", " + "'" + Nnut[2] + "'" + ", " + "'" + Nnut[3] + "'" + ", " + "'" + Nnut[4] + "'" + ", " + "'" + Nnut[5] + "'" + ", " + "'" + Nnut[6] + "'" + ", " + "'" + Nnut[7] + "'" + ", " + "'" + Nnut[8]
-                                        + "'" + ", " + "'" + Nnut[9] + "'" + ", " + "'" + Nnut[10] + "'" + ", " + "'" + Nnut[11] + "'" + ", " + "'" + Nl[0] + "'" + ", " + "'" + Nl[1] + "'" + ", " + "'" + Nl[2] + "'" + ", " + "'" + Nl[3] + "'" + ", " + "'" + Nl[4]
-                                        + "'" + ", " + "'" + Nl[5] + "'" + ", " + "'" + Nl[6] + "'" + ", " + "'" + Nl[7] + "'" + ", " + "'" + Nl[8] + "'" + ", " + "'" + Nl[9] + "'" + ", " + "'" + Nl[10] + "'" + ", " + "'" + Nl[11] + "'" + ", " + "'" + sig[0].ToString("0.000") + "'"
-                                        + ", " + "'" + sig[1].ToString("0.000") + "'" + ", " + "'" + sig[2].ToString("0.000") + "'" + ", " + "'" + sig[3].ToString("0.000") + "'" + ", " + "'" + sig[4].ToString("0.000") + "'" + ", " + "'" + sig[5].ToString("0.000") + "'" + ", " + "'" + sig[6].ToString("0.000") + "'" + ", " + "'" + sig[7].ToString("0.000") + "'" + ", " + "'" + sig[8].ToString("0.000") + "'"
-                                        + ", " + "'" + sig[9].ToString("0.000") + "'" + ", " + "'" + sig[10].ToString("0.000") + "'" + ", " + "'" + sig[11].ToString("0.000") + "'" + ")"
-                        // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                    }.Connection = podg;
-                    new OleDbCommand
-                    {
-                        Connection = podg,
-                        CommandText = "INSERT INTO[Событие](" + "ИмяФайла, Кластер, Плата, Время, АмплитудаКанал1, АмплитудаКанал2,АмплитудаКанал3,АмплитудаКанал4,АмплитудаКанал5,АмплитудаКанал6,АмплитудаКанал7,АмплитудаКанал8,АмплитудаКанал9," +
-                                        "АмплитудаКанал10,АмплитудаКанал11,АмплитудаКанал12, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, Nul1, Nul2, Nul3, Nul4, Nul5, Nul6, Nul7, Nul8, Nul9, Nul10, Nul11, Nul12, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12) VALUES (" +
-                                        "'" + nameFile + "'" + "," + "'" + nameklaster + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + time + "'" + ", " + "'" + Amp[0] + "'" + ", " + "'" + Amp[1] + "'" + ", " + "'" + Amp[2] + "'" + ", " + "'" + Amp[3] + "'" + ", " + "'"
-                                        + Amp[4] + "'" + ", " + "'" + Amp[5] + "'" + ", " + "'" + Amp[6] + "'" + ", " + "'" + Amp[7] + "'" + ", " + "'" + Amp[8] + "'" + ", " + "'" + Amp[9] + "'" + ", " + "'" + Amp[10] + "'" + ", " + "'" + Amp[11] + "'" + ", " + "'" + Nnut[0] + "'"
-                                        + ", " + "'" + Nnut[1] + "'" + ", " + "'" + Nnut[2] + "'" + ", " + "'" + Nnut[3] + "'" + ", " + "'" + Nnut[4] + "'" + ", " + "'" + Nnut[5] + "'" + ", " + "'" + Nnut[6] + "'" + ", " + "'" + Nnut[7] + "'" + ", " + "'" + Nnut[8]
-                                        + "'" + ", " + "'" + Nnut[9] + "'" + ", " + "'" + Nnut[10] + "'" + ", " + "'" + Nnut[11] + "'" + ", " + "'" + Nl[0] + "'" + ", " + "'" + Nl[1] + "'" + ", " + "'" + Nl[2] + "'" + ", " + "'" + Nl[3] + "'" + ", " + "'" + Nl[4]
-                                        + "'" + ", " + "'" + Nl[5] + "'" + ", " + "'" + Nl[6] + "'" + ", " + "'" + Nl[7] + "'" + ", " + "'" + Nl[8] + "'" + ", " + "'" + Nl[9] + "'" + ", " + "'" + Nl[10] + "'" + ", " + "'" + Nl[11] + "'" + ", " + "'" + sig[0].ToString("0.000") + "'"
-                                        + ", " + "'" + sig[1].ToString("0.000") + "'" + ", " + "'" + sig[2].ToString("0.000") + "'" + ", " + "'" + sig[3].ToString("0.000") + "'" + ", " + "'" + sig[4].ToString("0.000") + "'" + ", " + "'" + sig[5].ToString("0.000") + "'" + ", " + "'" + sig[6].ToString("0.000") + "'" + ", " + "'" + sig[7].ToString("0.000") + "'" + ", " + "'" + sig[8].ToString("0.000") + "'"
-                                        + ", " + "'" + sig[9].ToString("0.000") + "'" + ", " + "'" + sig[10].ToString("0.000") + "'" + ", " + "'" + sig[11].ToString("0.000") + "'" + ")"
-                        // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                    }.ExecuteNonQuery();
-                    new OleDbCommand
-                    {
-                        Connection = podg,
-                        CommandText = "INSERT INTO[Событие](" + "ИмяФайла, Кластер, Плата, Время, АмплитудаКанал1,АмплитудаКанал2,АмплитудаКанал3,АмплитудаКанал4,АмплитудаКанал5,АмплитудаКанал6,АмплитудаКанал7,АмплитудаКанал8,АмплитудаКанал9," +
-                                        "АмплитудаКанал10,АмплитудаКанал11,АмплитудаКанал12, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, Nul1, Nul2, Nul3, Nul4, Nul5, Nul6, Nul7, Nul8, Nul9, Nul10, Nul11, Nul12, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12) VALUES (" +
-                                        "'" + nameFile + "'" + "," + "'" + nameklaster + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + time + "'" + ", " + "'" + Amp[0] + "'" + ", " + "'" + Amp[1] + "'" + ", " + "'" + Amp[2] + "'" + ", " + "'" + Amp[3] + "'" + ", " + "'"
-                                        + Amp[4] + "'" + ", " + "'" + Amp[5] + "'" + ", " + "'" + Amp[6] + "'" + ", " + "'" + Amp[7] + "'" + ", " + "'" + Amp[8] + "'" + ", " + "'" + Amp[9] + "'" + ", " + "'" + Amp[10] + "'" + ", " + "'" + Amp[11] + "'" + ", " + "'" + Nnut[0] + "'"
-                                        + ", " + "'" + Nnut[1] + "'" + ", " + "'" + Nnut[2] + "'" + ", " + "'" + Nnut[3] + "'" + ", " + "'" + Nnut[4] + "'" + ", " + "'" + Nnut[5] + "'" + ", " + "'" + Nnut[6] + "'" + ", " + "'" + Nnut[7] + "'" + ", " + "'" + Nnut[8]
-                                        + "'" + ", " + "'" + Nnut[9] + "'" + ", " + "'" + Nnut[10] + "'" + ", " + "'" + Nnut[11] + "'" + ", " + "'" + Nl[0] + "'" + ", " + "'" + Nl[1] + "'" + ", " + "'" + Nl[2] + "'" + ", " + "'" + Nl[3] + "'" + ", " + "'" + Nl[4]
-                                        + "'" + ", " + "'" + Nl[5] + "'" + ", " + "'" + Nl[6] + "'" + ", " + "'" + Nl[7] + "'" + ", " + "'" + Nl[8] + "'" + ", " + "'" + Nl[9] + "'" + ", " + "'" + Nl[10] + "'" + ", " + "'" + Nl[11] + "'" + ", " + "'" + sig[0].ToString("0.000") + "'"
-                                        + ", " + "'" + sig[1].ToString("0.000") + "'" + ", " + "'" + sig[2].ToString("0.000") + "'" + ", " + "'" + sig[3].ToString("0.000") + "'" + ", " + "'" + sig[4].ToString("0.000") + "'" + ", " + "'" + sig[5].ToString("0.000") + "'" + ", " + "'" + sig[6].ToString("0.000") + "'" + ", " + "'" + sig[7].ToString("0.000") + "'" + ", " + "'" + sig[8].ToString("0.000") + "'"
-                                        + ", " + "'" + sig[9].ToString("0.000") + "'" + ", " + "'" + sig[10].ToString("0.000") + "'" + ", " + "'" + sig[11].ToString("0.000") + "'" + ")"
-                        // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                    }.Dispose();
-
+                    DataAccesBDData.AddDataTablSob(nameFile, nameBAAK, time, Amp, nameklaster, Nnut, Nl, sig);
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message + "BDReadСобытие");
-                }
-                finally
-                {
-                    // закрываем подключение
-                    podg.Close();
+
+
+
+                    // Создание подключения
+                    var podg = new OleDbConnection(connectionString);
+                    try
+                    {
+
+                        // Открываем подключение
+                        podg.Open();
+                        // MessageBox.Show("Подключение открыто");
+                        new OleDbCommand
+                        {
+                            Connection = podg,
+                            CommandText = "INSERT INTO[Событие](" + "ИмяФайла, Кластер, Плата, Время, АмплитудаКанал1, АмплитудаКанал2, АмплитудаКанал3, АмплитудаКанал4, АмплитудаКанал5, АмплитудаКанал6, АмплитудаКанал7, АмплитудаКанал8, АмплитудаКанал9," +
+                                            "АмплитудаКанал10, АмплитудаКанал11, АмплитудаКанал12, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, Nul1, Nul2, Nul3, Nul4, Nul5, Nul6, Nul7, Nul8, Nul9, Nul10, Nul11, Nul12, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12) VALUES (" +
+                                            "'" + nameFile + "'" + "," + "'" + nameklaster + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + time + "'" + ", " + "'" + Amp[0] + "'" + ", " + "'" + Amp[1] + "'" + ", " + "'" + Amp[2] + "'" + ", " + "'" + Amp[3] + "'" + ", " + "'"
+                                            + Amp[4] + "'" + ", " + "'" + Amp[5] + "'" + ", " + "'" + Amp[6] + "'" + ", " + "'" + Amp[7] + "'" + ", " + "'" + Amp[8] + "'" + ", " + "'" + Amp[9] + "'" + ", " + "'" + Amp[10] + "'" + ", " + "'" + Amp[11] + "'" + ", " + "'" + Nnut[0] + "'"
+                                            + ", " + "'" + Nnut[1] + "'" + ", " + "'" + Nnut[2] + "'" + ", " + "'" + Nnut[3] + "'" + ", " + "'" + Nnut[4] + "'" + ", " + "'" + Nnut[5] + "'" + ", " + "'" + Nnut[6] + "'" + ", " + "'" + Nnut[7] + "'" + ", " + "'" + Nnut[8]
+                                            + "'" + ", " + "'" + Nnut[9] + "'" + ", " + "'" + Nnut[10] + "'" + ", " + "'" + Nnut[11] + "'" + ", " + "'" + Nl[0] + "'" + ", " + "'" + Nl[1] + "'" + ", " + "'" + Nl[2] + "'" + ", " + "'" + Nl[3] + "'" + ", " + "'" + Nl[4]
+                                            + "'" + ", " + "'" + Nl[5] + "'" + ", " + "'" + Nl[6] + "'" + ", " + "'" + Nl[7] + "'" + ", " + "'" + Nl[8] + "'" + ", " + "'" + Nl[9] + "'" + ", " + "'" + Nl[10] + "'" + ", " + "'" + Nl[11] + "'" + ", " + "'" + sig[0].ToString("0.000") + "'"
+                                            + ", " + "'" + sig[1].ToString("0.000") + "'" + ", " + "'" + sig[2].ToString("0.000") + "'" + ", " + "'" + sig[3].ToString("0.000") + "'" + ", " + "'" + sig[4].ToString("0.000") + "'" + ", " + "'" + sig[5].ToString("0.000") + "'" + ", " + "'" + sig[6].ToString("0.000") + "'" + ", " + "'" + sig[7].ToString("0.000") + "'" + ", " + "'" + sig[8].ToString("0.000") + "'"
+                                            + ", " + "'" + sig[9].ToString("0.000") + "'" + ", " + "'" + sig[10].ToString("0.000") + "'" + ", " + "'" + sig[11].ToString("0.000") + "'" + ")"
+                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                        }.Connection = podg;
+                        new OleDbCommand
+                        {
+                            Connection = podg,
+                            CommandText = "INSERT INTO[Событие](" + "ИмяФайла, Кластер, Плата, Время, АмплитудаКанал1, АмплитудаКанал2,АмплитудаКанал3,АмплитудаКанал4,АмплитудаКанал5,АмплитудаКанал6,АмплитудаКанал7,АмплитудаКанал8,АмплитудаКанал9," +
+                                            "АмплитудаКанал10,АмплитудаКанал11,АмплитудаКанал12, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, Nul1, Nul2, Nul3, Nul4, Nul5, Nul6, Nul7, Nul8, Nul9, Nul10, Nul11, Nul12, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12) VALUES (" +
+                                            "'" + nameFile + "'" + "," + "'" + nameklaster + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + time + "'" + ", " + "'" + Amp[0] + "'" + ", " + "'" + Amp[1] + "'" + ", " + "'" + Amp[2] + "'" + ", " + "'" + Amp[3] + "'" + ", " + "'"
+                                            + Amp[4] + "'" + ", " + "'" + Amp[5] + "'" + ", " + "'" + Amp[6] + "'" + ", " + "'" + Amp[7] + "'" + ", " + "'" + Amp[8] + "'" + ", " + "'" + Amp[9] + "'" + ", " + "'" + Amp[10] + "'" + ", " + "'" + Amp[11] + "'" + ", " + "'" + Nnut[0] + "'"
+                                            + ", " + "'" + Nnut[1] + "'" + ", " + "'" + Nnut[2] + "'" + ", " + "'" + Nnut[3] + "'" + ", " + "'" + Nnut[4] + "'" + ", " + "'" + Nnut[5] + "'" + ", " + "'" + Nnut[6] + "'" + ", " + "'" + Nnut[7] + "'" + ", " + "'" + Nnut[8]
+                                            + "'" + ", " + "'" + Nnut[9] + "'" + ", " + "'" + Nnut[10] + "'" + ", " + "'" + Nnut[11] + "'" + ", " + "'" + Nl[0] + "'" + ", " + "'" + Nl[1] + "'" + ", " + "'" + Nl[2] + "'" + ", " + "'" + Nl[3] + "'" + ", " + "'" + Nl[4]
+                                            + "'" + ", " + "'" + Nl[5] + "'" + ", " + "'" + Nl[6] + "'" + ", " + "'" + Nl[7] + "'" + ", " + "'" + Nl[8] + "'" + ", " + "'" + Nl[9] + "'" + ", " + "'" + Nl[10] + "'" + ", " + "'" + Nl[11] + "'" + ", " + "'" + sig[0].ToString("0.000") + "'"
+                                            + ", " + "'" + sig[1].ToString("0.000") + "'" + ", " + "'" + sig[2].ToString("0.000") + "'" + ", " + "'" + sig[3].ToString("0.000") + "'" + ", " + "'" + sig[4].ToString("0.000") + "'" + ", " + "'" + sig[5].ToString("0.000") + "'" + ", " + "'" + sig[6].ToString("0.000") + "'" + ", " + "'" + sig[7].ToString("0.000") + "'" + ", " + "'" + sig[8].ToString("0.000") + "'"
+                                            + ", " + "'" + sig[9].ToString("0.000") + "'" + ", " + "'" + sig[10].ToString("0.000") + "'" + ", " + "'" + sig[11].ToString("0.000") + "'" + ")"
+                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                        }.ExecuteNonQuery();
+                        new OleDbCommand
+                        {
+                            Connection = podg,
+                            CommandText = "INSERT INTO[Событие](" + "ИмяФайла, Кластер, Плата, Время, АмплитудаКанал1,АмплитудаКанал2,АмплитудаКанал3,АмплитудаКанал4,АмплитудаКанал5,АмплитудаКанал6,АмплитудаКанал7,АмплитудаКанал8,АмплитудаКанал9," +
+                                            "АмплитудаКанал10,АмплитудаКанал11,АмплитудаКанал12, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, Nul1, Nul2, Nul3, Nul4, Nul5, Nul6, Nul7, Nul8, Nul9, Nul10, Nul11, Nul12, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12) VALUES (" +
+                                            "'" + nameFile + "'" + "," + "'" + nameklaster + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + time + "'" + ", " + "'" + Amp[0] + "'" + ", " + "'" + Amp[1] + "'" + ", " + "'" + Amp[2] + "'" + ", " + "'" + Amp[3] + "'" + ", " + "'"
+                                            + Amp[4] + "'" + ", " + "'" + Amp[5] + "'" + ", " + "'" + Amp[6] + "'" + ", " + "'" + Amp[7] + "'" + ", " + "'" + Amp[8] + "'" + ", " + "'" + Amp[9] + "'" + ", " + "'" + Amp[10] + "'" + ", " + "'" + Amp[11] + "'" + ", " + "'" + Nnut[0] + "'"
+                                            + ", " + "'" + Nnut[1] + "'" + ", " + "'" + Nnut[2] + "'" + ", " + "'" + Nnut[3] + "'" + ", " + "'" + Nnut[4] + "'" + ", " + "'" + Nnut[5] + "'" + ", " + "'" + Nnut[6] + "'" + ", " + "'" + Nnut[7] + "'" + ", " + "'" + Nnut[8]
+                                            + "'" + ", " + "'" + Nnut[9] + "'" + ", " + "'" + Nnut[10] + "'" + ", " + "'" + Nnut[11] + "'" + ", " + "'" + Nl[0] + "'" + ", " + "'" + Nl[1] + "'" + ", " + "'" + Nl[2] + "'" + ", " + "'" + Nl[3] + "'" + ", " + "'" + Nl[4]
+                                            + "'" + ", " + "'" + Nl[5] + "'" + ", " + "'" + Nl[6] + "'" + ", " + "'" + Nl[7] + "'" + ", " + "'" + Nl[8] + "'" + ", " + "'" + Nl[9] + "'" + ", " + "'" + Nl[10] + "'" + ", " + "'" + Nl[11] + "'" + ", " + "'" + sig[0].ToString("0.000") + "'"
+                                            + ", " + "'" + sig[1].ToString("0.000") + "'" + ", " + "'" + sig[2].ToString("0.000") + "'" + ", " + "'" + sig[3].ToString("0.000") + "'" + ", " + "'" + sig[4].ToString("0.000") + "'" + ", " + "'" + sig[5].ToString("0.000") + "'" + ", " + "'" + sig[6].ToString("0.000") + "'" + ", " + "'" + sig[7].ToString("0.000") + "'" + ", " + "'" + sig[8].ToString("0.000") + "'"
+                                            + ", " + "'" + sig[9].ToString("0.000") + "'" + ", " + "'" + sig[10].ToString("0.000") + "'" + ", " + "'" + sig[11].ToString("0.000") + "'" + ")"
+                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                        }.Dispose();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + "BDReadСобытие");
+                    }
+                    finally
+                    {
+                        // закрываем подключение
+                        podg.Close();
+                    }
                 }
             }
         }
@@ -343,41 +353,69 @@ namespace URAN_2017
         {
             if (set.FlagSaveBD)
             {
+                int pp = 0;
+                int ds = 0;
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-
-                // Создание подключения
-                var podg = new OleDbConnection(connectionString);
-                try
+               if(allPorog)
                 {
-
-                    // Открываем подключение
-                    podg.Open();
-                    // MessageBox.Show("Подключение открыто");
-                    new OleDbCommand
-                    {
-                        Connection = podg,
-                        CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                        // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                    }.Connection = podg;
-                    new OleDbCommand
-                    {
-                        Connection = podg,
-                        CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                        // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                    }.ExecuteNonQuery();
-
-
-
+                    pp = 1;
                 }
-                catch
+                if (sinx)
                 {
-                    // MessageBox.Show(ex.Message);
+                    ds = 1;
                 }
-                finally
+                DataAccesBDBAAK.Path = set.WayDATABd;
+                if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
                 {
-                    // закрываем подключение
-                    podg.Close();
+                    DataAccesBDData.AddDataTablRun(new WorkBD.ViewTaiblBDData.ClassTablRun()
+                    {
+                        НомерRun = nameRan,
+                      
+                        ЗначениеТаймер = time,
+                        ОбщийПорог = pp,
+                        Порог = (int)porog,
+                        Синхронизация = ds,
+                        Триггер = (int)trg
+                    });
+                }
+                else
+                {
 
+
+                    // Создание подключения
+                    var podg = new OleDbConnection(connectionString);
+                    try
+                    {
+
+                        // Открываем подключение
+                        podg.Open();
+                        // MessageBox.Show("Подключение открыто");
+                        new OleDbCommand
+                        {
+                            Connection = podg,
+                            CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                        }.Connection = podg;
+                        new OleDbCommand
+                        {
+                            Connection = podg,
+                            CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                        }.ExecuteNonQuery();
+
+
+
+                    }
+                    catch
+                    {
+                        // MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        // закрываем подключение
+                        podg.Close();
+
+                    }
                 }
             }
         }
@@ -391,40 +429,51 @@ namespace URAN_2017
             if (set.FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-
-                // Создание подключения
-                var podg = new OleDbConnection(connectionString);
-                try
+                
+               
+                DataAccesBDBAAK.Path = set.WayDATABd;
+                if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
                 {
-
-                    // Открываем подключение
-                    podg.Open();
-                    // MessageBox.Show("Подключение открыто");
-                    new OleDbCommand
-                    {
-                        Connection = podg,
-                        //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                        CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
-                    }.Connection = podg;
-                    new OleDbCommand
-                    {
-                        Connection = podg,
-                        //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                        CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
-                    }.ExecuteNonQuery();
-
-
-
+                    DataAccesBDData.updateTimeZapuskDataTablRun(time, nameRan);
                 }
-                catch
+                else
                 {
 
-                }
-                finally
-                {
-                    // закрываем подключение
-                    podg.Close();
 
+                    // Создание подключения
+                    var podg = new OleDbConnection(connectionString);
+                    try
+                    {
+
+                        // Открываем подключение
+                        podg.Open();
+                        // MessageBox.Show("Подключение открыто");
+                        new OleDbCommand
+                        {
+                            Connection = podg,
+                            //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                            CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
+                        }.Connection = podg;
+                        new OleDbCommand
+                        {
+                            Connection = podg,
+                            //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                            CommandText = "update [RAN] set ВремяЗапуска=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
+                        }.ExecuteNonQuery();
+
+
+
+                    }
+                    catch
+                    {
+
+                    }
+                    finally
+                    {
+                        // закрываем подключение
+                        podg.Close();
+
+                    }
                 }
 
 
@@ -440,36 +489,45 @@ namespace URAN_2017
             if (set.FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-
-                // Создание подключения
-                var podg = new OleDbConnection(connectionString);
-                try
+                DataAccesBDBAAK.Path = set.WayDATABd;
+                if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
+                {
+                    DataAccesBDData.updateTimeStopDataTablRun(time, nameRan);
+                }
+                else
                 {
 
-                    // Открываем подключение
-                    podg.Open();
-                    // MessageBox.Show("Подключение открыто");
-                    var camand = new OleDbCommand
+
+                    // Создание подключения
+                    var podg = new OleDbConnection(connectionString);
+                    try
                     {
-                        Connection = podg,
-                        //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
-                        CommandText = "update [RAN] set ВремяОстанова=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
-                    };
-                    camand.Connection = podg;
-                    camand.ExecuteNonQuery();
+
+                        // Открываем подключение
+                        podg.Open();
+                        // MessageBox.Show("Подключение открыто");
+                        var camand = new OleDbCommand
+                        {
+                            Connection = podg,
+                            //CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер, ЗначениеТаймера) VALUES (" + "'" + nameRan + "'" + "," + sinx + ", " + allPorog + "," + porog + ", " + trg + "," + "'" + time + "'" + ") "
+                            CommandText = "update [RAN] set ВремяОстанова=" + "'" + time + "'" + " where НомерRAN=" + "'" + nameRan + "'" + ""
+                        };
+                        camand.Connection = podg;
+                        camand.ExecuteNonQuery();
 
 
 
-                }
-                catch
-                {
-                    // MessageBox.Show(ex.Message);
-                }
-                finally
-                {
-                    // закрываем подключение
-                    podg.Close();
+                    }
+                    catch
+                    {
+                        // MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        // закрываем подключение
+                        podg.Close();
 
+                    }
                 }
             }
         }

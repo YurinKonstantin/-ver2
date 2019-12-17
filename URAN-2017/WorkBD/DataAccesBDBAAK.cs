@@ -101,7 +101,6 @@ namespace URAN_2017.WorkBD
             SQLiteCommand insertCommand = new SQLiteCommand();
             insertCommand.Connection = db;
 
-            // Use parameterized query to prevent SQL injection attacks
             insertCommand.CommandText = "INSERT INTO ПлатыБААК VALUES (NULL, @ИмяПлаты, @Tip, @IPB, @KL, @Коментарий);";
             insertCommand.Parameters.AddWithValue("@ИмяПлаты", classTablPSBBAAK.namePSB);
             insertCommand.Parameters.AddWithValue("@Tip", classTablPSBBAAK.tipPSB);
@@ -110,12 +109,32 @@ namespace URAN_2017.WorkBD
             insertCommand.Parameters.AddWithValue("@Коментарий", classTablPSBBAAK.Coment);
 
             insertCommand.ExecuteReader();
-
             db.Close();
 
+        }
+        public static void updateDataTablPlats(ClassTablPSBBAAK classTablPSBBAAK)
+        {
+            SQLiteConnection db =
+                 new SQLiteConnection("Data Source = " + Path);
+
+            db.Open();
+           
+
+            SQLiteCommand insertCommand = new SQLiteCommand();
+            insertCommand.Connection = db;
+
+            insertCommand.CommandText = "INSERT INTO ПлатыБААК VALUES (NULL, @ИмяПлаты, @Tip, @IPB, @KL, @Коментарий);";
+            insertCommand.Parameters.AddWithValue("@ИмяПлаты", classTablPSBBAAK.namePSB);
+            insertCommand.Parameters.AddWithValue("@Tip", classTablPSBBAAK.tipPSB);
+            insertCommand.Parameters.AddWithValue("@IPB", classTablPSBBAAK.IpPSB);
+            insertCommand.Parameters.AddWithValue("@KL", classTablPSBBAAK.nomerKlastera);
+            insertCommand.Parameters.AddWithValue("@Коментарий", classTablPSBBAAK.Coment);
+
+            insertCommand.ExecuteReader();
+            db.Close();
 
         }
-   
+
         public static List<ClassTablPSBBAAK> GetDataBAAK()
         {
             List<ClassTablPSBBAAK> entries = new List<ClassTablPSBBAAK>();
