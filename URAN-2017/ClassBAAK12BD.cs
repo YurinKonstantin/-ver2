@@ -19,63 +19,71 @@ namespace URAN_2017
     {
         public bool FlagSaveBD = true;
         public virtual void BDReadFile(string nameFile, string nameBAAK, string timeFile, string nameRan)
-        {
-            if (FlagSaveBD)
+        {try
             {
 
 
-                string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
-               
-                if (wayDataBD.Split('.')[1] == "db" || wayDataBD.Split('.')[1] == "db3")
-                {
-                    DataAccesBDBAAK.Path = wayDataBD;
-                    DataAccesBDData.AddDataTablФайлы(nameFile, nameBAAK, timeFile, nameRan);
-                }
-                else
+                if (FlagSaveBD)
                 {
 
 
-                    // Создание подключения
-                    var podg = new OleDbConnection(connectionString);
-                    try
+                    string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
+
+                    if (wayDataBD.Split('.')[1] == "db" || wayDataBD.Split('.')[1] == "db3")
                     {
-
-                        // Открываем подключение
-                        podg.Open();
-                        // MessageBox.Show("Подключение открыто");
-                        new OleDbCommand
-                        {
-                            Connection = podg,
-                            CommandText = "INSERT INTO[Файлы](" + "ИмяФайла, Плата, ВремяСоздания, НомерRAN) VALUES (" + "'" + nameFile + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + timeFile + "'" + ", " + "'" + nameRan + "'" + ") "
-                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                        }.Connection = podg;
-                        new OleDbCommand
-                        {
-                            Connection = podg,
-                            CommandText = "INSERT INTO[Файлы](" + "ИмяФайла, Плата, ВремяСоздания, НомерRAN) VALUES (" + "'" + nameFile + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + timeFile + "'" + ", " + "'" + nameRan + "'" + ") "
-                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                        }.ExecuteNonQuery();
-                        new OleDbCommand
-                        {
-                            Connection = podg,
-                            CommandText = "INSERT INTO[Файлы](" + "ИмяФайла, Плата, ВремяСоздания, НомерRAN) VALUES (" + "'" + nameFile + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + timeFile + "'" + ", " + "'" + nameRan + "'" + ") "
-                            // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
-                        }.Dispose();
-
+                        DataAccesBDData.Path = wayDataBD;
+                        DataAccesBDData.AddDataTablФайлы(nameFile, nameBAAK, timeFile, nameRan);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show(ex.Message + "BDReadFile");
-                    }
-                    finally
-                    {
-                        // закрываем подключение
-                        podg.Close();
-                        podg.Dispose();
 
 
+                        // Создание подключения
+                        var podg = new OleDbConnection(connectionString);
+                        try
+                        {
+
+                            // Открываем подключение
+                            podg.Open();
+                            // MessageBox.Show("Подключение открыто");
+                            new OleDbCommand
+                            {
+                                Connection = podg,
+                                CommandText = "INSERT INTO[Файлы](" + "ИмяФайла, Плата, ВремяСоздания, НомерRAN) VALUES (" + "'" + nameFile + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + timeFile + "'" + ", " + "'" + nameRan + "'" + ") "
+                                // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                            }.Connection = podg;
+                            new OleDbCommand
+                            {
+                                Connection = podg,
+                                CommandText = "INSERT INTO[Файлы](" + "ИмяФайла, Плата, ВремяСоздания, НомерRAN) VALUES (" + "'" + nameFile + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + timeFile + "'" + ", " + "'" + nameRan + "'" + ") "
+                                // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                            }.ExecuteNonQuery();
+                            new OleDbCommand
+                            {
+                                Connection = podg,
+                                CommandText = "INSERT INTO[Файлы](" + "ИмяФайла, Плата, ВремяСоздания, НомерRAN) VALUES (" + "'" + nameFile + "'" + "," + "'" + nameBAAK + "'" + ", " + "'" + timeFile + "'" + ", " + "'" + nameRan + "'" + ") "
+                                // CommandText = "INSERT INTO[RAN](" + "НомерRAN, Синхронизация, ОбщийПорог, Порог,Триггер,ЗначениеТаймера,ВремяЗапуска) VALUES (nameRan, sinx, allPorog, porog, trg, time, timeStart)"
+                            }.Dispose();
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message + "BDReadFile");
+                        }
+                        finally
+                        {
+                            // закрываем подключение
+                            podg.Close();
+                            podg.Dispose();
+
+
+                        }
                     }
                 }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
         private void BDReadNeutron(string nameFile, int D, int Amp, int TimeFirst, int TimeEnd, string time, int TimeAmp, int TimeFirst3, int TimeEnd3, bool test, bool bad)
@@ -88,7 +96,7 @@ namespace URAN_2017
                     {
 
 
-                        DataAccesBDBAAK.Path = wayDataBD;
+                        DataAccesBDData.Path = wayDataBD;
                         int x = 0;
                         if(bad)
                         {
@@ -160,9 +168,7 @@ namespace URAN_2017
                 {
                     if (!test)
                     {
-
-
-                        DataAccesBDBAAK.Path = wayDataBD;
+                        DataAccesBDData.Path = wayDataBD;
                         int x = 0;
                         if (bad)
                         {
@@ -173,7 +179,7 @@ namespace URAN_2017
                         {
                             nll[i] = Convert.ToInt32(Nl[i]);
                         }
-                        DataAccesBDData.AddDataTablSob(nameFile, nameBAAK, time, Amp, nameklaster, Nnut, nll, sig);
+                        DataAccesBDData.AddDataTablSob(nameFile, nameBAAK, time, Amp, nameklaster, Nnut, nll, sig, x);
                     }
                 }
                 else
@@ -187,13 +193,10 @@ namespace URAN_2017
                     {
                         connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
                     }
-
-
                     // Создание подключения
                     var podg = new OleDbConnection(connectionString);
                     try
                     {
-
                         // Открываем подключение
                         podg.Open();
                         // MessageBox.Show("Подключение открыто");
@@ -259,7 +262,7 @@ namespace URAN_2017
             if (FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
-                DataAccesBDBAAK.Path = wayDataBD;
+                DataAccesBDData.Path = wayDataBD;
                 if (wayDataBD.Split('.')[1] == "db" || wayDataBD.Split('.')[1] == "db3")
                 {
                     DataAccesBDData.updateTimeStopDataTablФайл(time, nameFile);
@@ -313,7 +316,7 @@ namespace URAN_2017
         }
         public virtual void BDReadTemP(string nameBAAK, int temp)
         {
-            if (FlagSaveBD)
+            if (false)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + wayDataBD;
 

@@ -228,7 +228,7 @@ namespace URAN_2017
                 DataAccesBDBAAK.Path = BAAK12T.wayDataBD;
                 if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
                 {
-                    DataAccesBDData.AddDataTablSob(nameFile, nameBAAK, time, Amp, nameklaster, Nnut, Nl, sig);
+                   // DataAccesBDData.AddDataTablSob(nameFile, nameBAAK, time, Amp, nameklaster, Nnut, Nl, sig);
                 }
                 else
                 {
@@ -356,7 +356,7 @@ namespace URAN_2017
                 int pp = 0;
                 int ds = 0;
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-               if(allPorog)
+                if(allPorog)
                 {
                     pp = 1;
                 }
@@ -364,13 +364,12 @@ namespace URAN_2017
                 {
                     ds = 1;
                 }
-                DataAccesBDBAAK.Path = set.WayDATABd;
+                DataAccesBDData.Path = set.WayDATABd;
                 if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
                 {
                     DataAccesBDData.AddDataTablRun(new WorkBD.ViewTaiblBDData.ClassTablRun()
                     {
                         НомерRun = nameRan,
-                      
                         ЗначениеТаймер = time,
                         ОбщийПорог = pp,
                         Порог = (int)porog,
@@ -429,9 +428,7 @@ namespace URAN_2017
             if (set.FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-                
-               
-                DataAccesBDBAAK.Path = set.WayDATABd;
+                DataAccesBDData.Path = set.WayDATABd;
                 if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
                 {
                     DataAccesBDData.updateTimeZapuskDataTablRun(time, nameRan);
@@ -475,8 +472,6 @@ namespace URAN_2017
 
                     }
                 }
-
-
             }
         }
         /// <summary>
@@ -489,7 +484,7 @@ namespace URAN_2017
             if (set.FlagSaveBD)
             {
                 string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + set.WayDATABd;
-                DataAccesBDBAAK.Path = set.WayDATABd;
+                DataAccesBDData.Path = set.WayDATABd;
                 if (set.WayDATABd.Split('.')[1] == "db" || set.WayDATABd.Split('.')[1] == "db3")
                 {
                     DataAccesBDData.updateTimeStopDataTablRun(time, nameRan);

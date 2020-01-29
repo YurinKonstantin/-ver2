@@ -42,10 +42,13 @@
             <TextBlock Text="{Binding Name}" Margin="8" FontSize="24"/>
         </StackPanel>
         <Frame x:Name="frameName" HorizontalContentAlignment="Left"  Grid.Column="1"  Grid.Row="1" Grid.RowSpan="2" VerticalContentAlignment="Top" NavigationUIVisibility="Hidden" />
-        <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" Margin="0,0,0,0" Grid.Row="2" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
-            <Label Content="Основной режим" VerticalAlignment="Center" FontSize="14" Foreground="Blue"/>
-            <local1:ToggleButton x:Name="BuFMR" HorizontalAlignment="Right"  Height="30"  Width="70" MouseLeftButtonDown="Bu_MouseLeftButtonDownFMR"/>
-            <Label x:Name="LabFlagMainR" Content="Выкл" Margin="-12,0,0,0" VerticalAlignment="Center"/>
+        <StackPanel  HorizontalAlignment="Stretch"  Margin="0,0,0,0" Grid.Row="2" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
+            <Label Content="Режим работы" VerticalAlignment="Center" FontSize="14" Foreground="Blue"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Основной" Foreground="Green" Margin="0,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+                <local:ToggleRezim x:Name="BuFMR" HorizontalAlignment="Right"  Height="30"  Width="70" MouseLeftButtonDown="Bu_MouseLeftButtonDownFMR"/>
+                <Label Foreground="Red" Content="Вариационный" Margin="0,0,0,0" VerticalAlignment="Center" FontSize="12"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 

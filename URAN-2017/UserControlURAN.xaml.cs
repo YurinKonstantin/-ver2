@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using URAN_2017.WorkBD;
 
 namespace URAN_2017
 {
@@ -178,69 +179,237 @@ namespace URAN_2017
         public void TempBD()
         {
             sobs.Clear();
-             string  connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + pathBD;
-            var podg = new OleDbConnection(connectionString);
-            podg.Open();
-            int timenaz =Convert.ToInt32(textH.Text);
-         
-            DateTime dateTime = new DateTime();
-            dateTime = DateTime.UtcNow;
-            DateTime dateTime1 = new DateTime();
-            dateTime1 = DateTime.UtcNow;
-
-            dateTime1 = dateTime1.AddHours(-timenaz);
-            string uslovietime = String.Empty;
-            DateTime dateTime1Naz = new DateTime();
-           
-            int x3 = 0;
-            for (int i=timenaz; i>0; i--)
+            if (pathBD.Split('.')[1] == "db" || pathBD.Split('.')[1] == "db3")
             {
-                dateTime1Naz = DateTime.UtcNow;
-                dateTime1Naz = dateTime1Naz.AddHours(-i);
-                if (x3 > 0)
+                DataAccesBDData.Path = pathBD;
+                int timenaz = Convert.ToInt32(textH.Text);
+
+                DateTime dateTime = new DateTime();
+                dateTime = DateTime.UtcNow;
+                DateTime dateTime1 = new DateTime();
+                dateTime1 = DateTime.UtcNow;
+
+                dateTime1 = dateTime1.AddHours(-timenaz);
+                string uslovietime = String.Empty;
+                DateTime dateTime1Naz = new DateTime();
+
+                int x3 = 0;
+                for (int i = timenaz; i > 0; i--)
                 {
-                    uslovietime += "or Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
+                    dateTime1Naz = DateTime.UtcNow;
+                    dateTime1Naz = dateTime1Naz.AddHours(-i);
+                    if (x3 > 0)
+                    {
+                        uslovietime += "or Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
 
+                    }
+                    else
+                    {
+
+
+                        uslovietime += "Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
+                        // "(Время Like '" + dateTime1.Day.ToString("00") + "." + dateTime1.Hour.ToString("00") + "%' or Время Like '" + dateTime.Day.ToString("00") + "." + dateTime.Hour.ToString("00") + "%')";
+                    }
+                    x3++;
                 }
-                else
+
+
+
+
+
+                string sz = " (ИмяФайла Like '%_" + dateTime.Day.ToString("00") + "."
+                  + dateTime.Month.ToString("00") + "." + dateTime.Year.ToString() + "%') and (" + uslovietime + "or Время Like '" + dateTime.Day.ToString("00") +
+                  "." + dateTime.Hour.ToString("00") + "%') order by Primary_Key";
+                    // CommandText = "select * from [Событие] Where (ИмяФайла Like '%_" + dateTime.Day.ToString("00") + "."+ dateTime.Month.ToString("00")+".2019 %' ) order by Код desc"
+
+                var ListSob = DataAccesBDData.GetDataSob(sz);
+
+                try
                 {
 
+                    
 
-                    uslovietime += "Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
-                    // "(Время Like '" + dateTime1.Day.ToString("00") + "." + dateTime1.Hour.ToString("00") + "%' or Время Like '" + dateTime.Day.ToString("00") + "." + dateTime.Hour.ToString("00") + "%')";
+                  
+                        if (chekNoise.IsChecked == true)
+                        {
+
+                          foreach(var d in (from ssob in ListSob where ssob.bad == false select ssob))
+                          {
+                            sobs.Add(new Sob() { namePSB = d.Плата, kl =Convert.ToInt32(d.Кластер), masA = d.АмпCh, masN = d.NCh, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(d.Time.ToString().Split('.')[1]), Convert.ToInt32(d.Time.ToString().Split('.')[2]), 0, 0) });
+
+                          }
+
+                        }
+                        else
+                        {
+                             foreach (var d in  ListSob)
+                             {
+                                 sobs.Add(new Sob() { namePSB = d.Плата, kl = Convert.ToInt32(d.Кластер), masA = d.АмпCh, masN = d.NCh, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(d.Time.ToString().Split('.')[1]), Convert.ToInt32(d.Time.ToString().Split('.')[2]), 0, 0) });
+
+                             }
+                        }
+
+                    sobs = (from s in sobs where s.dataTime.CompareTo(dateTime1) >= 0 select s).ToList<Sob>();
+                    int colS = (from s in sobs where s.kl == 1 select s).Count();
+                    int colN = (from s in sobs where s.kl == 1 select s.masN.Sum()).Sum();
+                    textSAllKl1.Text = " " + colS.ToString();
+                    textnAllKl1.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 2 select s).Count();
+                    colN = (from s in sobs where s.kl == 2 select s.masN.Sum()).Sum();
+                    textSAllKl2.Text = " " + colS.ToString();
+                    textnAllKl2.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 3 select s).Count();
+                    colN = (from s in sobs where s.kl == 3 select s.masN.Sum()).Sum();
+                    textSAllKl3.Text = " " + colS.ToString();
+                    textnAllKl3.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 4 select s).Count();
+                    colN = (from s in sobs where s.kl == 4 select s.masN.Sum()).Sum();
+                    textSAllKl4.Text = " " + colS.ToString();
+                    textnAllKl4.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 5 select s).Count();
+                    colN = (from s in sobs where s.kl == 5 select s.masN.Sum()).Sum();
+                    textSAllKl5.Text = " " + colS.ToString();
+                    textnAllKl5.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 6 select s).Count();
+                    colN = (from s in sobs where s.kl == 6 select s.masN.Sum()).Sum();
+                    textSAllKl6.Text = " " + colS.ToString();
+                    textnAllKl6.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+     
+
+                    ShowDeteClea();
+              
+                    try
+                    {
+                        foreach (var d in detectors)
+                        {
+                            d.ColS = (from x in sobs where x.kl == d.Klaster() && x.masA[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 5 select x).Count();
+                            d.SumSobAll = (from s in sobs where s.kl == d.Klaster() select s).Count();
+                            vizualDetectorA(d.nomerDetectora, d.ColorTextSob);
+                            d.ColN = (from x in sobs where x.kl == d.Klaster() && x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 0 select x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1]).Sum();
+                            vizualDetectorN(d.nomerDetectora, d.ColorTextNeutron);
+                        }
+                        // MessageBox.Show(chit.GetValue(2).ToString()+"\n"+ chit.GetValue(1).ToString()+"\n"+ dateTime1.ToString()+"\t"+s1.dataTime.ToString() +"\n"+ s1.dataTime.CompareTo(dateTime1).ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error" + "\n" + ex.ToString());
+                    }
                 }
-                x3++;
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error1" + ex.ToString());
+                }
             }
-             
-           
-            
+            else
+            {
+                string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + pathBD;
+                var podg = new OleDbConnection(connectionString);
+                podg.Open();
+                int timenaz = Convert.ToInt32(textH.Text);
+                DateTime dateTime = new DateTime();
+                dateTime = DateTime.UtcNow;
+                DateTime dateTime1 = new DateTime();
+                dateTime1 = DateTime.UtcNow;
+                dateTime1 = dateTime1.AddHours(-timenaz);
+                string uslovietime = String.Empty;
+                DateTime dateTime1Naz = new DateTime();
+
+                int x3 = 0;
+                for (int i = timenaz; i > 0; i--)
+                {
+                    dateTime1Naz = DateTime.UtcNow;
+                    dateTime1Naz = dateTime1Naz.AddHours(-i);
+                    if (x3 > 0)
+                    {
+                        uslovietime += "or Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
+
+                    }
+                    else
+                    {
+
+
+                        uslovietime += "Время Like '" + dateTime1Naz.Day.ToString("00") + "." + dateTime1Naz.Hour.ToString("00") + "%' ";
+                        // "(Время Like '" + dateTime1.Day.ToString("00") + "." + dateTime1.Hour.ToString("00") + "%' or Время Like '" + dateTime.Day.ToString("00") + "." + dateTime.Hour.ToString("00") + "%')";
+                    }
+                    x3++;
+                }
+
+
+
                 var camand = new OleDbCommand
                 {
                     Connection = podg,
-                     CommandText = "select * from [Событие] where (ИмяФайла Like '%_" + dateTime.Day.ToString("00")+"." 
-                     + dateTime.Month.ToString("00") +"."+ dateTime.Year.ToString() + "%') and (" + uslovietime + "or Время Like '" + dateTime.Day.ToString("00") +
+                    CommandText = "select * from [Событие] where (ИмяФайла Like '%_" + dateTime.Day.ToString("00") + "."
+                     + dateTime.Month.ToString("00") + "." + dateTime.Year.ToString() + "%') and (" + uslovietime + "or Время Like '" + dateTime.Day.ToString("00") +
                      "." + dateTime.Hour.ToString("00") + "%') order by Код"
                     // CommandText = "select * from [Событие] Where (ИмяФайла Like '%_" + dateTime.Day.ToString("00") + "."+ dateTime.Month.ToString("00")+".2019 %' ) order by Код desc"
 
 
                 };
 
-        
-            try
-            {
+
+                try
+                {
 
                     var chit = camand.ExecuteReader();
-               
+
                     while (chit.Read() == true)
                     {
-                    if (chekNoise.IsChecked==true)
-                    {
-                        if(!String.IsNullOrEmpty(chit.GetValue(55).ToString()) && Convert.ToBoolean(chit.GetValue(55)))
+                        if (chekNoise.IsChecked == true)
                         {
+                            if (!String.IsNullOrEmpty(chit.GetValue(55).ToString()) && Convert.ToBoolean(chit.GetValue(55)))
+                            {
+
+                            }
+                            else
+                            {
+
+                                int[] masA = new int[12];
+                                int[] masN = new int[12];
+                                // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+
+                                masA[0] = Convert.ToInt32(chit.GetValue(5));
+                                masA[1] = Convert.ToInt32(chit.GetValue(6));
+                                masA[2] = Convert.ToInt32(chit.GetValue(7));
+                                masA[3] = Convert.ToInt32(chit.GetValue(8));
+                                masA[4] = Convert.ToInt32(chit.GetValue(9));
+                                masA[5] = Convert.ToInt32(chit.GetValue(10));
+                                masA[6] = Convert.ToInt32(chit.GetValue(11));
+                                masA[7] = Convert.ToInt32(chit.GetValue(12));
+                                masA[8] = Convert.ToInt32(chit.GetValue(13));
+                                masA[9] = Convert.ToInt32(chit.GetValue(14));
+                                masA[10] = Convert.ToInt32(chit.GetValue(15));
+                                masA[11] = Convert.ToInt32(chit.GetValue(16));
+
+                                masN[0] = Convert.ToInt32(chit.GetValue(18));
+                                masN[1] = Convert.ToInt32(chit.GetValue(19));
+                                masN[2] = Convert.ToInt32(chit.GetValue(20));
+                                masN[3] = Convert.ToInt32(chit.GetValue(21));
+                                masN[4] = Convert.ToInt32(chit.GetValue(22));
+                                masN[5] = Convert.ToInt32(chit.GetValue(23));
+                                masN[6] = Convert.ToInt32(chit.GetValue(24));
+                                masN[7] = Convert.ToInt32(chit.GetValue(25));
+                                masN[8] = Convert.ToInt32(chit.GetValue(26));
+                                masN[9] = Convert.ToInt32(chit.GetValue(27));
+                                masN[10] = Convert.ToInt32(chit.GetValue(28));
+                                masN[11] = Convert.ToInt32(chit.GetValue(29));
+
+                                // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                                // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                                // x = Convert.ToInt32(chit.GetValue(1));
+                                sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                            }
 
                         }
                         else
                         {
+
+                            //Debug.WriteLine("dfgd"+chit.FieldCount.ToString());
 
                             int[] masA = new int[12];
                             int[] masN = new int[12];
@@ -279,124 +448,82 @@ namespace URAN_2017
                         }
 
                     }
-                    else
+
+
+                    sobs = (from s in sobs where s.dataTime.CompareTo(dateTime1) >= 0 select s).ToList<Sob>();
+                    int colS = (from s in sobs where s.kl == 1 select s).Count();
+                    int colN = (from s in sobs where s.kl == 1 select s.masN.Sum()).Sum();
+                    textSAllKl1.Text = " " + colS.ToString();
+                    textnAllKl1.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 2 select s).Count();
+                    colN = (from s in sobs where s.kl == 2 select s.masN.Sum()).Sum();
+                    textSAllKl2.Text = " " + colS.ToString();
+                    textnAllKl2.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 3 select s).Count();
+                    colN = (from s in sobs where s.kl == 3 select s.masN.Sum()).Sum();
+                    textSAllKl3.Text = " " + colS.ToString();
+                    textnAllKl3.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 4 select s).Count();
+                    colN = (from s in sobs where s.kl == 4 select s.masN.Sum()).Sum();
+                    textSAllKl4.Text = " " + colS.ToString();
+                    textnAllKl4.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 5 select s).Count();
+                    colN = (from s in sobs where s.kl == 5 select s.masN.Sum()).Sum();
+                    textSAllKl5.Text = " " + colS.ToString();
+                    textnAllKl5.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+
+                    colS = (from s in sobs where s.kl == 6 select s).Count();
+                    colN = (from s in sobs where s.kl == 6 select s.masN.Sum()).Sum();
+                    textSAllKl6.Text = " " + colS.ToString();
+                    textnAllKl6.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
+                    //MessageBox.Show("Read" + "\n" + sobs.Count.ToString());
+
+                    ShowDeteClea();
+                    // MessageBox.Show("Clea" + "\n" + sobs.Count.ToString());
+                    try
                     {
 
-                        //Debug.WriteLine("dfgd"+chit.FieldCount.ToString());
 
-                        int[] masA = new int[12];
-                        int[] masN = new int[12];
-                        // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                        foreach (var d in detectors)
+                        {
+                            d.ColS = (from x in sobs where x.kl == d.Klaster() && x.masA[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 5 select x).Count();
+                            d.SumSobAll = (from s in sobs where s.kl == d.Klaster() select s).Count();
 
-                        masA[0] = Convert.ToInt32(chit.GetValue(5));
-                        masA[1] = Convert.ToInt32(chit.GetValue(6));
-                        masA[2] = Convert.ToInt32(chit.GetValue(7));
-                        masA[3] = Convert.ToInt32(chit.GetValue(8));
-                        masA[4] = Convert.ToInt32(chit.GetValue(9));
-                        masA[5] = Convert.ToInt32(chit.GetValue(10));
-                        masA[6] = Convert.ToInt32(chit.GetValue(11));
-                        masA[7] = Convert.ToInt32(chit.GetValue(12));
-                        masA[8] = Convert.ToInt32(chit.GetValue(13));
-                        masA[9] = Convert.ToInt32(chit.GetValue(14));
-                        masA[10] = Convert.ToInt32(chit.GetValue(15));
-                        masA[11] = Convert.ToInt32(chit.GetValue(16));
-
-                        masN[0] = Convert.ToInt32(chit.GetValue(18));
-                        masN[1] = Convert.ToInt32(chit.GetValue(19));
-                        masN[2] = Convert.ToInt32(chit.GetValue(20));
-                        masN[3] = Convert.ToInt32(chit.GetValue(21));
-                        masN[4] = Convert.ToInt32(chit.GetValue(22));
-                        masN[5] = Convert.ToInt32(chit.GetValue(23));
-                        masN[6] = Convert.ToInt32(chit.GetValue(24));
-                        masN[7] = Convert.ToInt32(chit.GetValue(25));
-                        masN[8] = Convert.ToInt32(chit.GetValue(26));
-                        masN[9] = Convert.ToInt32(chit.GetValue(27));
-                        masN[10] = Convert.ToInt32(chit.GetValue(28));
-                        masN[11] = Convert.ToInt32(chit.GetValue(29));
-
-                        // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
-                        // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
-                        // x = Convert.ToInt32(chit.GetValue(1));
-                        sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
-                    }
-                    
-                    }
-           
-         
-            sobs = (from s in sobs where s.dataTime.CompareTo(dateTime1) >= 0 select s).ToList<Sob>();
-                int colS = (from s in sobs where s.kl == 1 select s).Count();
-                int colN = (from s in sobs where s.kl == 1 select s.masN.Sum()).Sum();
-                textSAllKl1.Text = " " + colS.ToString();
-                textnAllKl1.Text = " " + colN.ToString()+"("+ ((double)colN/(double)colS).ToString("0.00")+")";
-            
-                colS = (from s in sobs where s.kl == 2 select s).Count();
-                colN = (from s in sobs where s.kl == 2 select s.masN.Sum()).Sum();
-                textSAllKl2.Text = " " + colS.ToString();
-                textnAllKl2.Text = " "  + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
-
-                colS = (from s in sobs where s.kl == 3 select s).Count();
-                colN = (from s in sobs where s.kl == 3 select s.masN.Sum()).Sum();
-                textSAllKl3.Text = " " + colS.ToString();
-                textnAllKl3.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
-
-                colS = (from s in sobs where s.kl == 4 select s).Count();
-                colN = (from s in sobs where s.kl == 4 select s.masN.Sum()).Sum();
-                textSAllKl4.Text = " " + colS.ToString();
-                textnAllKl4.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
-
-                colS = (from s in sobs where s.kl == 5 select s).Count();
-                colN = (from s in sobs where s.kl == 5 select s.masN.Sum()).Sum();
-                textSAllKl5.Text = " " + colS.ToString();
-                textnAllKl5.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
-
-                colS = (from s in sobs where s.kl == 6 select s).Count();
-                colN = (from s in sobs where s.kl == 6 select s.masN.Sum()).Sum();
-                textSAllKl6.Text = " " + colS.ToString();
-                textnAllKl6.Text = " " + colN.ToString() + "(" + ((double)colN / (double)colS).ToString("0.00") + ")";
-                //MessageBox.Show("Read" + "\n" + sobs.Count.ToString());
-
-                ShowDeteClea();
-               // MessageBox.Show("Clea" + "\n" + sobs.Count.ToString());
-                try
-                {
+                            vizualDetectorA(d.nomerDetectora, d.ColorTextSob);
 
 
-                    foreach (var d in detectors)
-                    {
-                        d.ColS = (from x in sobs where x.kl == d.Klaster() && x.masA[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 5 select x).Count();
-                        d.SumSobAll = (from s in sobs where s.kl == d.Klaster() select s).Count();
-                        
-                        vizualDetectorA(d.nomerDetectora, d.ColorTextSob);
-                        
-                        
-                        d.ColN = (from x in sobs where x.kl == d.Klaster() && x.masN[d.nomerDetectora - ((x.kl-1) * 12)-1] > 0 select x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1]).Sum();
-                       
-                       
-                        
-                        
-                       
+                            d.ColN = (from x in sobs where x.kl == d.Klaster() && x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 0 select x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1]).Sum();
+
+
+
+
+
                             vizualDetectorN(d.nomerDetectora, d.ColorTextNeutron);
-                        
+
+
+                        }
+                        // MessageBox.Show(chit.GetValue(2).ToString()+"\n"+ chit.GetValue(1).ToString()+"\n"+ dateTime1.ToString()+"\t"+s1.dataTime.ToString() +"\n"+ s1.dataTime.CompareTo(dateTime1).ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error" + "\n" + ex.ToString());
 
                     }
-                    // MessageBox.Show(chit.GetValue(2).ToString()+"\n"+ chit.GetValue(1).ToString()+"\n"+ dateTime1.ToString()+"\t"+s1.dataTime.ToString() +"\n"+ s1.dataTime.CompareTo(dateTime1).ToString());
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error" + "\n" + ex.ToString());
-
+                    MessageBox.Show("Error1" + ex.ToString());
                 }
+
+
+
+                podg.Close();
             }
-                catch (Exception ex)
-                {
-                MessageBox.Show("Error1"+ex.ToString());
-                }
-               
-               
-            
-            podg.Close();
-
-           // MessageBox.Show("Конец"+"\n"+sobs.Count.ToString());
+      
         }
         List<Sob> sobs = new List<Sob>();
         public class Sob

@@ -22,7 +22,7 @@ using System.Windows.Shapes;
 using System.Xml.Serialization;
 using URAN_2017.FolderSetUp;
 
-namespace URAN_2017
+namespace URAN_2017.FolderSetUp
 {
     /// <summary>
     /// Логика взаимодействия для PageSetBAAK.xaml

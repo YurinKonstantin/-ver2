@@ -49,9 +49,7 @@ namespace URAN_2017
             if (BuFMR.Toggled1 == true)
             {
 
-             //   ClassSetUpProgram.FlagMainRezim = true;
-                LabFlagMainR.Content = "Вкл";
-                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Green;
+             
 
                 _DataColec = new ObservableCollection<Data1>
             {
@@ -63,8 +61,8 @@ namespace URAN_2017
                 new Data1 { Name = "Параметры плат", Pyti = "",  Img="/ImgSourse/list18dp.png"  },
                 new Data1 { Name = "Методический набор", Pyti = "",  Img="/ImgSourse/widg18dp.png"  },
                 new Data1 { Name = "Метод отбора", Pyti = "",  Img="/ImgSourse/tur18dp.png" },
-                    new Data1 { Name = "Визуализация", Pyti = "",  Img="/ImgSourse/tur18dp.png" },
-                    new Data1 { Name = "BD_Data", Pyti = "",  Img="/ImgSourse/list18dp.png" }
+                new Data1 { Name = "Визуализация", Pyti = "",  Img="/ImgSourse/tur18dp.png" },
+                new Data1 { Name = "BD_Data", Pyti = "",  Img="/ImgSourse/list18dp.png" }
             };
                 listView1.ItemsSource = _DataColec;
 
@@ -72,8 +70,8 @@ namespace URAN_2017
             else
             {
               //  ClassSetUpProgram.FlagMainRezim = false;
-                LabFlagMainR.Content = "Выкл";
-                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Red;
+               
+                
                 _DataColec = new ObservableCollection<Data1>
             {
                 new Data1 { Name = "Установка", Pyti = "", Img="/ImgSourse/stars18dp.png" },
@@ -99,8 +97,7 @@ namespace URAN_2017
             {
 
                 set.FlagMainRezim = true;
-                LabFlagMainR.Content = "Вкл";
-                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Green;
+           
                 _DataColec = new ObservableCollection<Data1>
             {
                 new Data1 { Name = "Установка", Pyti = "", Img="/ImgSourse/stars18dp.png" },
@@ -120,8 +117,7 @@ namespace URAN_2017
             else
             {
                 set.FlagMainRezim = false;
-                LabFlagMainR.Content = "Выкл";
-                LabFlagMainR.Foreground = System.Windows.Media.Brushes.Red;
+              
                 _DataColec = new ObservableCollection<Data1>
             {
                 new Data1 { Name = "Установка", Pyti = "", Img="/ImgSourse/stars18dp.png" },
@@ -178,11 +174,11 @@ namespace URAN_2017
                 case 2:
                     if (set.FlagMainRezim)
                     {
-                        frameName.NavigationService.Navigate(new Uri("PageSetBAAK.xaml", UriKind.Relative));
+                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageSetBAAK.xaml", UriKind.Relative));
                     }
                     else
                     {
-                        frameName.NavigationService.Navigate(new Uri("PageSetBAAK100.xaml", UriKind.Relative));
+                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageSetBAAK100.xaml", UriKind.Relative));
                     }
                 
                     break;
@@ -236,7 +232,7 @@ namespace URAN_2017
                 case 8:
                     if (set.FlagMainRezim)
                     {
-                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageOtbor.xaml", UriKind.Relative));
+                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageVizyal.xaml", UriKind.Relative));
                     }
                     else
                     {

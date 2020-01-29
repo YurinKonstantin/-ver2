@@ -30,7 +30,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts;
 using LiveCharts.Wpf;
-
 using LiveCharts.Events;
 using System.ComponentModel;
 using System.Net;
@@ -55,7 +54,6 @@ namespace URAN_2017
         {
             InitializeComponent();
         
-
             _DataColec1 = new ObservableCollection<Bak>();
             _DataColecBAAK12100 = new ObservableCollection<Bak>();
             _DataColecViev = new ObservableCollection<BAAK12T>();
@@ -74,8 +72,7 @@ namespace URAN_2017
             {
                 MyGrafic.MainWindow = window;
             }
-            ChatMain.MouseDoubleClick += Auto;
-            
+            ChatMain.MouseDoubleClick += Auto;         
         }
        
         private void Auto(object sender, MouseButtonEventArgs e)
@@ -83,7 +80,7 @@ namespace URAN_2017
             ToggleAutoX.Toggled1 = false;
             ToggleAutoY.Toggled1 = false;
             ToggleButton_MouseLeftButtonDown_1(null, null);
-                ToggleButton_MouseLeftButtonDown_2(null, null);
+            ToggleButton_MouseLeftButtonDown_2(null, null);
         }
 
         ObservableCollection<ClassErrorStartAndIspravlenie> ListEr = new ObservableCollection<ClassErrorStartAndIspravlenie>();
@@ -91,63 +88,46 @@ namespace URAN_2017
         /// зупускает набор
         /// </summary>
         /// 
-
-
         private async void StartRun()
         {
             if (BAAK12T.ConnnectURANDelegate != null)
             {
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { progres.IsIndeterminate = true; }));
-                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
-               
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));          
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Obnoviti.IsEnabled = false; }));
-
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
-
                 try
                 {
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Подготовка к запуску"; }));
-
                     cancellationTokenSource = new CancellationTokenSource();
                     CancellationToken cancellationToken = cancellationTokenSource.Token;
                     RanName();
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Загрузка регистров плат"; }));
-
                     await ЗапускНастройкиТаск();
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
-                
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка режима синхронизации"; }));
-
                     await РежимСинхИлиНетТаск(set.DelayClok);
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Разрешаем работу"; }));
-
                     await ПускURANDТаск();
-
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Запись в БД"; }));
                     BDReadRAN(BAAK12T.NameRan, ClassParentsBAAK.Синхронизация, true, BAAK12T.PorogAll, BAAK12T.TrgAll, TimeTaimer1);
                     BdAddRANTimeПуск(BAAK12T.NameRan, TimeПуск());
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Black; }));
                     Task.Run(() => MainYpravlenia(IntervalNewFile, set.КолТригТест, set.ИнтервалТригТест, set.TimeRanHors, set.TimeRanMin, cancellationToken));
                     ЗапускРеадТаск(cancellationToken);
-                
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = true; }));
-
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = true; }));
-
                    // ZapicDataBDTasc1(cancellationToken);
-                   if(set.FlagSaveBD)
+                    if(set.FlagSaveBD)
                     {
                         Task.Run(() => ZapicDataBDTasc(cancellationToken));
                     }
-                  
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; }));
-                    await ZapicDataTasc1(cancellationToken);
-                
+                    await ZapicDataTasc1(cancellationToken);              
                 }
                 catch (NullReferenceException e)
                 {
                     MessageBox.Show("Нет доступных плат" + e.ToString(), "Ошибка");
-
                 }
                 catch (Exception ex)
                 {
@@ -155,15 +135,10 @@ namespace URAN_2017
                 }
                 finally
                 {
-                    Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));//To Do
-             
+                    Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));//To Do             
                     Start.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = true; }));
-
-
-                   
                     Obnoviti.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Obnoviti.IsEnabled = true; }));
-                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
-                    
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));                   
                 }
                 try
                 {
@@ -172,15 +147,13 @@ namespace URAN_2017
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
                     try
                     {
-
-
                         if (ClassParentsBAAK.Синхронизация)
                         {
                             try
                             {
                                 MS.АвтономныйКлокРазрешен(0);
                             }
-                            catch
+                            catch(Exception ex)
                             {
                                 MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки", "Ошибка");
                             }
@@ -188,39 +161,32 @@ namespace URAN_2017
                             {
                                 MS1.АвтономныйКлокРазрешен(0);
                             }
-                            catch
+                            catch(Exception ex)
                             {
                                 MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки", "Ошибка");
                             }
 
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("Произошла ошибка при Остановке MS" + "  " + "Имя ошибки", "Ошибка");
-                    }
-                    
+                    } 
                     BdAddRANTimeСтоп(BAAK12T.NameRan, TimeПуск());
-                    Start.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = true; }));
-                  
+                    Start.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = true; }));                  
                     Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));
-
-                  
                     contextTestRan.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = false; }));
                     Obnoviti.IsEnabled = true;
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН Завершила работу"; }));
-
                 }
-
                 catch (Exception ex)
                 {
                     MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
                 }
                 finally
                 {
-                   Stop.IsEnabled = false;
+                    Stop.IsEnabled = false;
                     Start.IsEnabled = true;
-                 
                     contextTestRan.IsEnabled = false;
                     Obnoviti.IsEnabled = true;
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Остановка УРАН"; }));
@@ -236,40 +202,30 @@ namespace URAN_2017
         }
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(set.DelayClok.ToString());
             StartRun();
         }
         private async void Stop_Click(object sender, RoutedEventArgs e)
         {
             Stop.IsEnabled = false;
-        
             contextTestRan.IsEnabled = false;
             rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
-   
             try
             {
-                if (cancellationTokenSource != null)
+                if(cancellationTokenSource != null)
                 {
                     BAAK12T.StopURANDelegate?.Invoke();
-                 
                     cancellationTokenSource.Cancel();
-
                 }
-
             }
 
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
-
-
             }
             finally
             {
                 Stop.IsEnabled = false;
-               Start.IsEnabled = true;
-      
-
+                Start.IsEnabled = true;
             }
         }
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -385,21 +341,15 @@ namespace URAN_2017
                     BAAK12T.DiscConnnectURANDelegate?.Invoke();
                     i++;
                 }
-
                 if (BAAK12T.ДеИнсталяцияDelegate != null)
                 {
                     BAAK12T.ДеИнсталяцияDelegate?.Invoke();
                     i1++;
                 }
-
                 DeInitializeMS();
-
-   
                 _DataColecViev.Clear();
                 _DataColecVievList2.Clear();
                 _DataColecVievList3.Clear();
-
-
                 try
                 {
                     MyGrafic.SeriesCollection.Clear();
@@ -426,10 +376,8 @@ namespace URAN_2017
                 {
                     MessageBox.Show(ex.ToString()+" "+"MyGrafic.Labels.Clear();", "Ошибка");
                 }
-
                 await Запуск();
                 progres.IsIndeterminate = false;
-           
                 GridStartInfo.Visibility = Visibility.Hidden;
                 //MessageBox.Show("обновленно");
             }
@@ -465,7 +413,6 @@ namespace URAN_2017
             if (winTestDl.ShowDialog() == true)
             {
                 rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => {  rezimYst.Content = "Идет подготовка к методическуму набору по длительности"; }));
-               
                 int p = winTestDl.Porog;
                 int t = winTestDl.Trig;
                 int d = winTestDl.DlitTestRan;
@@ -482,14 +429,11 @@ namespace URAN_2017
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             Window2РучнойТестКол winTestKol = new Window2РучнойТестКол();
-
             if (winTestKol.ShowDialog() == true)
             {
-                rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => {rezimYst.Content = "Идет подготовка к методическуму набору по количеству событий(программный триггер)"; }));
-                
+                rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => {rezimYst.Content = "Идет подготовка к методическуму набору по количеству событий(программный триггер)"; })); 
                 int k = winTestKol.KolSobTestRan;
                 int i = winTestKol.Interval;
-                
                 BAAK12T.TestRanSetUpDelegate?.Invoke(10, 10, true);
                 Task myTestRanMan = Task.Run(() => TestRanTask1(k, i));
             }
@@ -500,8 +444,7 @@ namespace URAN_2017
         }
         private void Jj(object sender, RoutedEventArgs e)
         {
- 
-                    MessageBox.Show(BAAK12T.PorogAll.ToString());         
+         MessageBox.Show(BAAK12T.PorogAll.ToString());         
         }
         private void Jj1(object sender, RoutedEventArgs e)
         {
@@ -531,11 +474,8 @@ namespace URAN_2017
                 context.IsEnabled = true;
                 context1.Items.Clear();
                 context2.Items.Clear();
-                
                 if (List1.SelectedIndex > -1)
                 {
-                    
-                   
                     context1.Items.Clear();
                     context2.Items.Clear();
                     context3.Items.Clear();
@@ -544,8 +484,7 @@ namespace URAN_2017
                     {
                         Header = dd.NamKl,
                     };
-                    menuItemporog.Click += Jj;
-                    
+                    menuItemporog.Click += Jj;  
                     context1.Items.Add(menuItemporog);
                     var menuItNull = new MenuItem
                     {
@@ -582,7 +521,6 @@ namespace URAN_2017
             if (ff.SelectedIndex >= 0)
             {
 
-
                 BAAK12T bAAK12T = (BAAK12T)ff.SelectedItem;
                 BAAK12T.otobKl = bAAK12T.NamKl + bAAK12T.BAAKTAIL.ToString();
               
@@ -613,7 +551,6 @@ namespace URAN_2017
             {
                 первая_активация = false;
                 await Запуск();
-              
                 ВремяОтобрTask();
                 первая_активация = false;
                 try
@@ -662,7 +599,6 @@ namespace URAN_2017
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-           
             X1.MinValue = double.NaN;
             X1.MaxValue = double.NaN;
             Y1.MinValue = double.NaN;
@@ -923,19 +859,14 @@ namespace URAN_2017
         {
             if (Chart1 != null)
             {
-
-
                 var vv = (TabControl)sender;
                 if (vv.SelectedIndex == 1)
                 {
-
                     BAAK12T.grafOtob = true;
-                   
                 }
                 else
                 {
                     BAAK12T.grafOtob = false;
-                  
                 }
             }
         }
@@ -953,28 +884,20 @@ namespace URAN_2017
         {
             if (BuMC.Toggled1 == true)
             {
-
                 ClassParentsBAAK.Синхронизация = true;
                 LabFlagMC.Content = "Вкл";
                 LabFlagMC.Foreground = System.Windows.Media.Brushes.Green;
-
-
-
             }
             else
             {
                 ClassParentsBAAK.Синхронизация = false;
                 LabFlagMC.Content = "Выкл";
                 LabFlagMC.Foreground = System.Windows.Media.Brushes.Red;
-
             }
-
-
         }
 
         private void Button_Click_8(object sender, RoutedEventArgs e)
-        {
-           
+        {          
             if(PanSet.Visibility==Visibility.Collapsed)
             {
                 PanSet.Visibility = Visibility.Visible;
@@ -983,7 +906,6 @@ namespace URAN_2017
             {
                 PanSet.Visibility = Visibility.Collapsed;
             }
-         
         }
         int XOt = 0;
         int YOt = 0;
@@ -1015,13 +937,13 @@ namespace URAN_2017
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
           double x=  ChatMain.PlotOriginY;
-            double y = ChatMain.PlotHeight;
+          double y = ChatMain.PlotHeight;
           
         }
 
         private void ToggleButton_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
         {          
-                TextFX.IsEnabled = !ToggleAutoX.On1;
+            TextFX.IsEnabled = !ToggleAutoX.On1;
             TextEX.IsEnabled = !ToggleAutoX.On1;
             if(ToggleAutoX.On1)
             {
@@ -1077,7 +999,6 @@ namespace URAN_2017
             BAAK12T dd = (BAAK12T)List1.SelectedItem;
             var windowChart= dd.openWindowsChart();
             lstChart.Add(windowChart);
-
         }
 
         private void ChartContex1_Click_1(object sender, RoutedEventArgs e)
@@ -1096,60 +1017,13 @@ namespace URAN_2017
                 windowPorog.porog.Text = ClassBAAK12_100.PorogAll.ToString();
                 windowPorog.newporog.Text = ClassBAAK12_100.PorogAll.ToString();
                 windowPorog.Show();
-
-               // MessageBox.Show(((ClassBAAK12_100)List3.SelectedItem).NameBAAK12);
             }
         }
         private void List3_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             ListView listView = (ListView)sender;
-            //if (_DataColecVievList3.Count > 0)
-            {
-                context3.IsEnabled = true;
-               // context13.Items.Clear();
-               // context23.Items.Clear();
-
-                //if (List3.SelectedIndex > -1)
-                {
-
-
-                   // context13.Items.Clear();
-                   // context23.Items.Clear();
-                  //  context33.Items.Clear();
-                    ClassBAAK12_100 dd = (ClassBAAK12_100)listView.SelectedItem;
-                    //  var menuItemporog = new MenuItem
-                    // {
-                    //    Header = dd.NamKl,
-                    // };
-                    // menuItemporog.Click += Jj;
-                    //context13.Tag = dd;
-                    //context13.Click += PorogBAAK100;
-                   
-                  //  context13.Items.Add(menuItemporog);
-                  //  var menuItNull = new MenuItem
-                   // {
-                     //   Header = dd.NamKl,
-                   // };
-                   // menuItNull.Click += Jj1;
-                   // context33.Items.Add(menuItNull);
-                    //var menuItTr = new MenuItem
-                  //  {
-                    //    Header = dd.NamKl,
-                  //  };
-                  //  menuItTr.Click += Jj2;
-                  //  context23.Items.Add(menuItTr);
-                }
-               // else
-                {
-                    //context13.Items.Clear();
-                   // foreach (ClassBAAK12_100 dd in _DataColecVievList3)
-                    {
-
-                    }
-
-
-                }
-            }
+            context3.IsEnabled = true;
+            ClassBAAK12_100 dd = (ClassBAAK12_100)listView.SelectedItem;
         }
 
         private void ChartContex13_Click(object sender, RoutedEventArgs e)

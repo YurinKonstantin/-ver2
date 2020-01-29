@@ -87,6 +87,44 @@
                     </Grid>
                 </TabItem.Content>
             </TabItem>
+            <TabItem Header="События">
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <DataGrid Grid.Row="1" AutoGenerateColumns="False" x:Name="SobGrid1" Margin="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Time}" Header="Время" />
+                                <DataGridTextColumn Binding="{Binding ИмяФайла}" Header="ИмяФайла" />
+                                <DataGridTextColumn Binding="{Binding Плата}" Header="Плата" />
+                                <DataGridTextColumn Binding="{Binding Кластер}" Header="Кластер" />
+                                <DataGridTextColumn Binding="{Binding СумАмп}" Header="СумАмп" />
+                                <DataGridTextColumn Binding="{Binding СумN}" Header="СумN" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[0]}" Header="АмпCh 1" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[1]}" Header="АмпCh 2" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[2]}" Header="АмпCh 3" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[3]}" Header="АмпCh 4" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[4]}" Header="АмпCh 5" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[5]}" Header="АмпCh 6" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[6]}" Header="АмпCh 7" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[7]}" Header="АмпCh 8" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[8]}" Header="АмпCh 9" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[9]}" Header="АмпCh 10" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[10]}" Header="АмпCh 11" />
+                                <DataGridTextColumn Binding="{Binding АмпCh[11]}" Header="АмпCh 12" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel HorizontalAlignment="Center" Grid.Row="2" Orientation="Horizontal">
+                            <!-- <Button Content="Добавить" Click="Button_Click_2"  />
+                            <Button Content="Удалить"  Click="Button_Click_3"/>-->
+                        </StackPanel>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

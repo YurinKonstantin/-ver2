@@ -78,9 +78,9 @@ namespace URAN_2017
         {
             try
             {
-            clientBAAK12T = new TcpClient();
-           await clientBAAK12T.ConnectAsync(Host, Int32.Parse(Port));
-            ns = clientBAAK12T.GetStream();
+               clientBAAK12T = new TcpClient();
+               await clientBAAK12T.ConnectAsync(Host, Int32.Parse(Port));
+               ns = clientBAAK12T.GetStream();
             }
             catch(Exception ex)
             {
@@ -100,7 +100,7 @@ namespace URAN_2017
             }
             catch
             {
-                CтатусБААК12 = "Произошла ОШИБКА подключения порт 3007";
+               // CтатусБААК12 = "Произошла ОШИБКА подключения порт 3007";
                 Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { CтатусБААК12 = "Произошла ОШИБКА подключения порт 3007"; }));
                 Conect307Statys = false;
             }
@@ -122,7 +122,7 @@ namespace URAN_2017
                 }
                 else
                 {
-                    CтатусБААК12 = "Произошла ОШИБКА";
+                    CтатусБААК12 = "Произошла ОШИБКА Connect";
                     Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { CтатусБААК12 = "Произошла ОШИБКА"; }));
                     Conect300Statys = false;
                 }
@@ -193,7 +193,7 @@ namespace URAN_2017
                     if (r < 0)
                     {
                         Conect300Statys = false;
-                        статусБААК12 = "Ошибка";
+                        статусБААК12 = "Ошибка Read13000";
                     }
                     int i = Проверка(Rbuffer, 10);
                     if (i != 1)
@@ -378,7 +378,12 @@ namespace URAN_2017
 
 
         }
-        
+
+        /// <summary>
+        /// Для чтения данных плат БААК12
+        /// </summary>
+        /// <param name="buf">возвращает содержимое потока данных</param>
+        /// <returns></returns>
         public int Read13007(out byte[] buf)//Для чтения данных
         {
             buf = new byte[4096];

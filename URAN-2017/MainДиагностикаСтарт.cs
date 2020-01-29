@@ -38,7 +38,7 @@ namespace URAN_2017
 
 
                 Ping pingSender = new Ping();
-                PingReply reply = await pingSender.SendPingAsync(ip, 200);
+                PingReply reply = await pingSender.SendPingAsync(ip, 300);
                 if (reply.Status == IPStatus.Success)
                 {
                     return true;

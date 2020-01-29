@@ -865,25 +865,25 @@ public System.Windows.Media.Brush Brushes
                     if (res > 0)
                     {
                          for (int i = 0; i < res; i++)
-                    {
-                        if (buf[i] == 0xFF)
-                        {
+                         {
+                            if (buf[i] == 0xFF)
+                            {
                             CountFlagEnd++;
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
                             CountFlagEnd = 0;
-                        }
+                            }
 
-                        if (buf[i] == 0xFE)
-                        {
+                            if (buf[i] == 0xFE)
+                            {
                             CountFlagEndErroy++;
-                        }
-                        else
-                        {
+                            }
+                            else
+                            {
                             CountFlagEndErroy = 0;
-                        }
-                        DataBAAKList.Add(buf[i]);
+                            }
+                            DataBAAKList.Add(buf[i]);
                             if (CountFlagEndErroy == 4)
                             {
                                 //MessageBox.Show(DataBAAKList.Count.ToString());
@@ -896,20 +896,18 @@ public System.Windows.Media.Brush Brushes
                                 CountFlagEndErroy = 0;
                             }
                             if ((data_w != null) & (data_fs != null) & CountFlagEnd == 4)
-                        {
+                            {
                             //MessageBox.Show(DataBAAKList.Count.ToString());
-                            OcherediNaZapic.Enqueue(new DataYu {ListData= DataBAAKList, tipDataTest= Flagtest });
-                            КолПакетов++;
+                               OcherediNaZapic.Enqueue(new DataYu {ListData= DataBAAKList, tipDataTest= Flagtest });
+                                КолПакетов++;
                                 if (!Flagtest)
                                 {
-
-
                                     Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPoint(Nkl, ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов); }));
                                 }
                                     DataBAAKList = new List<byte>();
-                            CountFlagEnd = 0;
-                            CountFlagEndErroy = 0;
-                        }
+                                  CountFlagEnd = 0;
+                                  CountFlagEndErroy = 0;
+                            }
                     }
 
                     }

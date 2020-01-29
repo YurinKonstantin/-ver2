@@ -129,7 +129,7 @@ namespace URAN_2017
         {
             OpenFileDialog myDialog = new OpenFileDialog
             {
-                Filter = "База данных(*.MDB;*.MDB;*.accdb)|*.MDB;*.MDB;*.ACCDB" + "|Все файлы (*.*)|*.* ",
+                Filter = "База данных(*.MDB;*.MDB;*.accdb; *.db)|*.MDB;*.MDB;*.ACCDB; *.DB" + "|Все файлы (*.*)|*.* ",
                 CheckFileExists = true,
                 Multiselect = true
             };
@@ -148,7 +148,7 @@ namespace URAN_2017
         {
             OpenFileDialog myDialog = new OpenFileDialog
             {
-                Filter = "База данных(*.MDB;*.MDB;*.accdb)|*.MDB;*.MDB;*.ACCDB" + "|Все файлы (*.*)|*.* ",
+                Filter = "База данных(*.MDB;*.MDB;*.accdb; *.db)|*.MDB;*.MDB;*.ACCDB; *.DB" + "|Все файлы (*.*)|*.* ",
                 CheckFileExists = true,
                 Multiselect = true
             };

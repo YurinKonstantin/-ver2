@@ -534,10 +534,30 @@
                                                 <lvc:Axis.Separator>
                                                     <lvc:Separator  IsEnabled="True" ></lvc:Separator>
                                                 </lvc:Axis.Separator>
+                                              
                                             </lvc:Axis>
                                         </lvc:CartesianChart.AxisX>
                                         <lvc:CartesianChart.AxisY>
-                                            <lvc:Axis Name="Y1" Title="Темп счета"></lvc:Axis>
+                                            <lvc:Axis Name="Y1" Title="Темп счета">
+                                                <lvc:Axis.Sections>
+                                                    <lvc:AxisSection Value="30" SectionWidth="100" Label="Bad">
+                                                        <lvc:AxisSection.Fill>
+                                                            <SolidColorBrush Color="#FF8585" Opacity=".4"></SolidColorBrush>
+                                                        </lvc:AxisSection.Fill>
+                                                    </lvc:AxisSection>
+                                                    <lvc:AxisSection Value="6" SectionWidth="30" Label="Good">
+                                                        <lvc:AxisSection.Fill>
+                                                            <SolidColorBrush Color="#CDCDCD" Opacity=".4"></SolidColorBrush>
+                                                        </lvc:AxisSection.Fill>
+                                                    </lvc:AxisSection>
+                                                    <lvc:AxisSection Value="0" SectionWidth="6" Label="Bad">
+                                                        <lvc:AxisSection.Fill>
+                                                            <SolidColorBrush Color="#FF8585" Opacity=".4"></SolidColorBrush>
+                                                        </lvc:AxisSection.Fill>
+                                                    </lvc:AxisSection>
+                                                </lvc:Axis.Sections>
+                                            </lvc:Axis>
+                                            
                                         </lvc:CartesianChart.AxisY>
                                     </lvc:CartesianChart>
                                     <StackPanel Orientation="Horizontal"  Margin="24,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
