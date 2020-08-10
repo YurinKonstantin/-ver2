@@ -150,10 +150,12 @@ namespace URAN_2017
            
        await  rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
             
-         await rezimYst1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Начальные настройки из файла"; }));
+         await rezimYst1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Загрузка начальных настроек ПО"; }));
           
            
           await  НачальныеНастройки();//загрузаем настройки
+            await rezimYst1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Проверка плат"; }));
+            Thread.Sleep(1000);
             if (diag)
             {
                 //Thread.Sleep(1000);
@@ -167,6 +169,7 @@ namespace URAN_2017
                
                // Thread.Sleep(4000);
                await Conect();//Конектимся к доступным кластерам
+                Thread.Sleep(1000);
             }
             GridStartInfo.Visibility = Visibility.Hidden;
             if(ListEr.Count!=0)
@@ -283,6 +286,7 @@ namespace URAN_2017
 
             }
         }
+        List<ClassArduino> classArduinos = new List<ClassArduino>();
         public async void ViewClose(bool rez, bool noT)
         {
             await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Collapsed; }));
@@ -305,6 +309,14 @@ namespace URAN_2017
         public async Task FirstDiagnosticaSistem()//Определяем к каким кластерам можно подключиться и модулю синхронизации
         {
             ListEr.Clear();
+            classArduinos.Clear();
+            classArduinos.Add(new ClassArduino("Arduino 1", "Кластер 1", "192.168.2.201", 80, "192.168.2.161", "192.168.2.171", "192.168.2.181"));
+            classArduinos.Add(new ClassArduino("Arduino 2", "Кластер 2", "192.168.2.203", 80, "192.168.2.162", "192.168.2.172", "192.168.2.182"));
+            classArduinos.Add(new ClassArduino("Arduino 3", "Кластер 3", "192.168.2.202", 80, "192.168.2.163", "192.168.2.173", "192.168.2.183"));
+            classArduinos.Add(new ClassArduino("Arduino 4", "Кластер 4", "192.168.2.205", 80, "192.168.2.164", "192.168.2.174", "192.168.2.184"));
+            classArduinos.Add(new ClassArduino("Arduino 5", "Кластер 5", "192.168.2.204", 80, "192.168.2.165", "192.168.2.175", "192.168.2.185"));
+            classArduinos.Add(new ClassArduino("Arduino 6", "Кластер 6", "192.168.2.206", 80, "192.168.2.166", "192.168.2.176", "192.168.2.186"));
+            await rezimYst1.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { rezimYst1.Content = "Проверка МС"; }));
             if (setP.FlagMainRezim)
             {
                 if (await LocalPing(set.MS))
@@ -321,20 +333,15 @@ namespace URAN_2017
                     await stMS.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { stMS.Content = "МС не обнаружен, запуск с синхронизации не возможен"; }));
 
 
-                    ClassParentsBAAK.Синхронизация = false;
+                    //ClassParentsBAAK.Синхронизация = false;
                     //toggle.IsChecked = false;
                    // toggle.IsEnabled = false;
-                    BuMC.IsEnabled = false;
-                    BuMC.Toggled1 = true;
+                   // BuMC.IsEnabled = false;
+                    //BuMC.Toggled1 = true;
                     if (BuMC.Toggled1 == true)
                     {
-
-
                         LabFlagMC.Content = "Вкл";
                         LabFlagMC.Foreground = System.Windows.Media.Brushes.Green;
-
-
-
                     }
                     else
                     {
@@ -349,7 +356,7 @@ namespace URAN_2017
                 {
                     InitializeMS1(set.MS1);
                    // toggle.IsEnabled = true;
-                    BuMC.IsEnabled = false;
+                   // BuMC.IsEnabled = false;
                     MS2View.Visibility = Visibility.Visible;
                     MS1.text = "Ip " + set.MS1.ToString();
 
@@ -439,70 +446,45 @@ namespace URAN_2017
                     var ListBAAK12T = from BAAK_T in _DataColec1 where BAAK_T.BAAK12NoT ==false select BAAK_T;
                     foreach (Bak bak in ListBAAK12T)
                     {
-
-                       
-
-
                         k++;
+                        Debug.WriteLine(bak.Klname);
                         if (bak.FkagNameBAAK)
                         {
 
                             if (await LocalPing(bak.KLIP))
                             {
-
-
-                               // if (bak.BAAK12NoT)
-                                {
-                                //    Кластер1_2 = new ClassBAAK12NoTail() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK };
-                                 //   Кластер1_2.Inciliz = true;
-                                  //  _DataColecVievList2.Add(Кластер1_2);
-                                 //   await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
-                                  //  await klP2.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP2.Visibility = Visibility.Visible; }));
-                                  //  await List2.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List2.Visibility = Visibility.Visible));
-                                    //ViewSet(true, true);
-                                }
-                               // else
-                                {
-                                    Debug.WriteLine(" MyGrasssfi");
-                                    await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
+                              
+                                await rezimYst1.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() => { rezimYst1.Content = "Проверка кластера" + bak.Klname; }));
+                                await BorderT.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { BorderT.Visibility = Visibility.Visible; }));
                                     await klP1.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { klP1.Visibility = Visibility.Visible; }));
                                     await List1.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => List1.Visibility = Visibility.Visible));
-                                    Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBD=set.FlagSaveBD, FlagSaveBin=set.FlagSaveBin };
+                                  
+                                Кластер1 = new BAAK12T() { Host = bak.KLIP, NamKl = bak.Klname, NameBAAK12 = bak.NameBAAK, CтатусБААК12 = "Ожидает СТАРТ", Brushes = Brushes.Black, ИнтервалТемпаСчета = IntervalTemp, Nkl = h, BAAKTAIL = !bak.BAAK12NoT, trigOtBAAK = bak.TrigOtBAAK, FlagSaveBD=set.FlagSaveBD, FlagSaveBin=set.FlagSaveBin };
                                     Кластер1.Inciliz = true;
                                     _DataColecViev.Add(Кластер1);
-                                    //ViewSet(true, false);
-
                                     try
                                     {
-                                        
+
                                         Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { MyGrafic.Add(bak.Klname); }));
-
-
                                         h++;
                                     }
                                     catch (Exception ex)
                                     {
                                         MessageBox.Show(ex.ToString());
                                     }
-                                }
-
-
-                                //InitializeKlaster1(Кластер1);
+                                
                             }
                             else
                             {
                                 string ss = null;
-                             //   if (bak.BAAK12NoT)
-                                {
-                                //    ss = "БААК12-200";
-                                }
-                             //   else
-                                {
-                                    ss = "БААК12-200N";
-                                }
+                               
+                                ss = "БААК12-200N";
                                 ListEr.Add(new ClassErrorStartAndIspravlenie()
                                 {
+                                    IP=bak.KLIP,
                                     Name = "Кластер " + bak.Klname.ToString(),
+                                    chenel=1,
+                                    kl= bak.Klname,
                                     ArduinoIP = "1",
                                     Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
                                     ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
@@ -548,14 +530,14 @@ namespace URAN_2017
                             else
                             {
                                 string ss = "БААК12-200";
-                             
-                                        
-                                
-                              
+
                                 ListEr.Add(new ClassErrorStartAndIspravlenie()
                                 {
                                     Name = "Кластер " + bak.Klname.ToString(),
-                                    ArduinoIP = "1",
+                                    ArduinoIP = "2",
+                                   chenel=2,
+                                   kl = bak.Klname,
+                                    IP = bak.KLIP,
                                     Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
                                     ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
                                     "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +
@@ -604,11 +586,14 @@ namespace URAN_2017
 
 
                                        ss = "БААК12-100";
-
-                                           ListEr.Add(new ClassErrorStartAndIspravlenie()
+                               
+                                ListEr.Add(new ClassErrorStartAndIspravlenie()
                                            {
                                               Name = "Кластер " + bak.Klname.ToString(),
-                                               ArduinoIP = "1",
+                                               ArduinoIP = "3",
+                                               chenel=3,
+                                    IP = bak.KLIP,
+                                    kl = bak.Klname,
                                                Error = "Не обнаружена плата " + ss + " кластера" + bak.Klname.ToString(),
                                                ErrorIsprav = "1. Откройте программу Relya Control и выберите вкладку " + bak.Klname.ToString() +
                                             "\n" + "2. В программе Relay Control нажмите кнопку 'Set'" + "\n" +

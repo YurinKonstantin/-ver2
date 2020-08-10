@@ -21,7 +21,7 @@ namespace URAN_2017
             {
                 xTime = 0;
        
-                controlDetector.TempBD();
+                controlDetector11.TempBD();
          
             }
 
@@ -31,8 +31,12 @@ namespace URAN_2017
             try
             {
 
-                controlDetector.pathBD = BAAK12T.wayDataBD;
+                controlDetector11.pathBD = BAAK12T.wayDataBD;
+                controlDetector11._DataColecViev = _DataColecViev;
                 Button_ClickResetDetectors(null, null);
+                controlDetector11.chekNoise.IsChecked = true;
+                controlDetector11.Button_Click(null, null);
+                controlDetector11.Button_Click(null, null);
                 dispatcherTimer1.Tick += new EventHandler(DoReset);
                 dispatcherTimer1.Interval = new TimeSpan(0, 0, 1);
                 dispatcherTimer1.Start();
@@ -44,8 +48,8 @@ namespace URAN_2017
         }
         private void Button_ClickResetDetectors(object sender, RoutedEventArgs e)
         {
-            controlDetector.pathBD = BAAK12T.wayDataBD;
-            controlDetector.TempBD();
+            controlDetector11.pathBD = BAAK12T.wayDataBD;
+            controlDetector11.TempBD();
            
         }
     }

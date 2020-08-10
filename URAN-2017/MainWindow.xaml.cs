@@ -53,7 +53,7 @@ namespace URAN_2017
         public MainWindow()
         {
             InitializeComponent();
-        
+           
             _DataColec1 = new ObservableCollection<Bak>();
             _DataColecBAAK12100 = new ObservableCollection<Bak>();
             _DataColecViev = new ObservableCollection<BAAK12T>();
@@ -103,27 +103,39 @@ namespace URAN_2017
                     CancellationToken cancellationToken = cancellationTokenSource.Token;
                     RanName();
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Загрузка регистров плат"; }));
-                    await ЗапускНастройкиТаск();
+                    // await ЗапускНастройкиТаск();
+                    await Task.Run(() => BAAK12T.НастройкаURANDelegate?.Invoke());//устанавливает начальные значения регистров всех плат, создает файлы и тд
+                    
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка режима синхронизации"; }));
-                    await РежимСинхИлиНетТаск(set.DelayClok);
+
+                    await РежимСинхИлиНетТаск(set.DelayClok);//Подготавливает МС к запуску и МГВС если нужно
+
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Разрешаем работу"; }));
-                    await ПускURANDТаск();
+
+                    //  await ПускURANDТаск();
+                    await Task.Run(() => BAAK12T.ПускURANDelegate?.Invoke());//разрешаем тригер платы, после этого плата начинает работать
+                    
+
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Запись в БД"; }));
-                    BDReadRAN(BAAK12T.NameRan, ClassParentsBAAK.Синхронизация, true, BAAK12T.PorogAll, BAAK12T.TrgAll, TimeTaimer1);
-                    BdAddRANTimeПуск(BAAK12T.NameRan, TimeПуск());
+
+                    BDReadRAN(BAAK12T.NameRan, ClassParentsBAAK.Синхронизация, true, BAAK12T.PorogAll, BAAK12T.TrgAll, TimeTaimer1);//Записываем в БД информацию о РАН (о старте)
+                    BdAddRANTimeПуск(BAAK12T.NameRan, TimeПуск());//Добавляем в БД информацию о времени пуска
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Black; }));
                     Task.Run(() => MainYpravlenia(IntervalNewFile, set.КолТригТест, set.ИнтервалТригТест, set.TimeRanHors, set.TimeRanMin, cancellationToken));
-                    ЗапускРеадТаск(cancellationToken);
+                    ЗапускРеадТаск(cancellationToken);//pfgecrftn xntybt данные с плат
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = true; }));
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = true; }));
                    // ZapicDataBDTasc1(cancellationToken);
                     if(set.FlagSaveBD)
                     {
-                        Task.Run(() => ZapicDataBDTasc(cancellationToken));
+                        Task.Run(() => ZapicDataBDTasc(cancellationToken));//запускает запись данных в бд.
                     }
-                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; }));
-                    await ZapicDataTasc1(cancellationToken);              
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; rezimYst.Foreground = System.Windows.Media.Brushes.Green; }));
+                    // await ZapicDataTasc1(cancellationToken);    
+                    await Task.Run(() => ZapicDataTasc(cancellationToken));
+                    
+
                 }
                 catch (NullReferenceException e)
                 {
@@ -177,7 +189,7 @@ namespace URAN_2017
                     Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));
                     contextTestRan.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = false; }));
                     Obnoviti.IsEnabled = true;
-                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН Завершила работу"; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН Завершила работу"; rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
                 }
                 catch (Exception ex)
                 {
@@ -189,7 +201,7 @@ namespace URAN_2017
                     Start.IsEnabled = true;
                     contextTestRan.IsEnabled = false;
                     Obnoviti.IsEnabled = true;
-                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Остановка УРАН"; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Остановка УРАН"; rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
                 }
                 rezimYst.Content = "Установка УРАН остановлена";
                 progres.IsIndeterminate = false;
@@ -206,26 +218,43 @@ namespace URAN_2017
         }
         private async void Stop_Click(object sender, RoutedEventArgs e)
         {
-            Stop.IsEnabled = false;
-            contextTestRan.IsEnabled = false;
-            rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
-            try
+            string msg = "Набор данных будет остановлен. Остановить набор?";
+            MessageBoxResult result =
+              MessageBox.Show(
+                msg,
+                "Data App",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (result == MessageBoxResult.No)
             {
-                if(cancellationTokenSource != null)
-                {
-                    BAAK12T.StopURANDelegate?.Invoke();
-                    cancellationTokenSource.Cancel();
-                }
-            }
+                // If user doesn't want to close, cancel closure
 
-            catch (Exception ex)
-            {
-                MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
             }
-            finally
+            else
             {
+
+
                 Stop.IsEnabled = false;
-                Start.IsEnabled = true;
+                contextTestRan.IsEnabled = false;
+                rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
+                try
+                {
+                    if (cancellationTokenSource != null)
+                    {
+                        BAAK12T.StopURANDelegate?.Invoke();
+                        cancellationTokenSource.Cancel();
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
+                }
+                finally
+                {
+                    Stop.IsEnabled = false;
+                    Start.IsEnabled = true;
+                }
             }
         }
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -240,12 +269,13 @@ namespace URAN_2017
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            WindowDetectorVizual Window11 = new WindowDetectorVizual(BAAK12T.wayDataBD)
+            WindowDetectorVizual Window11 = new WindowDetectorVizual(BAAK12T.wayDataBD, _DataColecViev)
             {
                // Owner = this
             };
             Window11.pathBD = BAAK12T.wayDataBD;
             Window11.Show();
+            
         }
         private void Inz(BAAK12T dd, string hg)
         {
@@ -264,8 +294,47 @@ namespace URAN_2017
        public List<WindowChart> lstChart = new List<WindowChart>();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            userr.pathBD = BAAK12T.wayDataBD;
-            userr.TempBD();
+            // List3
+            string s = String.Empty;
+            s += "Используемая полярность сигнала стала:" + "\n";
+           if(List3.Items.Count>0)
+            {
+                foreach (ClassBAAK12_100 ss in List3.Items)
+                {
+                    ss.signalPozitif = !ss.signalPozitif;
+                    if(ss.signalPozitif)
+                    {
+                        s += "Кластер:"+ss.NamKl +"\t"+"положителен"+ "\n";
+                    }
+                    else
+                    {
+                        s += "Кластер:" + ss.NamKl + "\t" + "отрицателен" + "\n";
+                    }
+                   
+                }
+            }
+           else
+            {
+                s = "Плат БААК12-100 для настройки не обноружено";
+            }
+            MessageBox.Show(s);
+            uint[] mas = new uint[12];
+            mas[0] = 50;
+            mas[1] = 50;
+            int[,] raz = new int[12, 1024];
+            raz[0, 1] = 100;
+            raz[1, 1] = 98;
+            raz[2, 1] = 102;
+            raz[3, 1] = 103;
+            raz[4, 1] = 107;
+            raz[5, 1] = 108;
+            raz[6, 1] = 104;
+            raz[7, 1] = 105;
+            raz[8, 1] = 106;
+            raz[9, 1] = 101;
+            raz[10, 1] = 110;
+            raz[11, 1] = 111;
+            MyGrafic.AddPointRaz(raz, "rkf", mas);
             /*
             try
             {
@@ -406,12 +475,13 @@ namespace URAN_2017
             WindowoPr.Show();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Window2РучнойТестДлительность winTestDl = new Window2РучнойТестДлительность();
 
             if (winTestDl.ShowDialog() == true)
             {
+                await rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Идет подготовка к методическуму набору по длительности"; }));
                 rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => {  rezimYst.Content = "Идет подготовка к методическуму набору по длительности"; }));
                 int p = winTestDl.Porog;
                 int t = winTestDl.Trig;
@@ -426,11 +496,13 @@ namespace URAN_2017
  
         }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        private async void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
             Window2РучнойТестКол winTestKol = new Window2РучнойТестКол();
             if (winTestKol.ShowDialog() == true)
             {
+                await rezimYst.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() => { rezimYst.Content = "Идет подготовка к методическуму набору по длительности"; }));
+
                 rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => {rezimYst.Content = "Идет подготовка к методическуму набору по количеству событий(программный триггер)"; })); 
                 int k = winTestKol.KolSobTestRan;
                 int i = winTestKol.Interval;
@@ -831,7 +903,42 @@ namespace URAN_2017
         {
             GridStartInfoError.Visibility = Visibility.Hidden;
         }
+         public bool Peregruzka(List<ClassErrorStartAndIspravlenie> classErrorStartAndIspravlenie)
+        {
+       
+                foreach(var s in classErrorStartAndIspravlenie)
+                {
+                var d = from dd in classArduinos where dd.Klaster == s.Name select dd;
 
+                if (d.Count() >= 1)
+                {
+
+
+                    if (d.ElementAt(0).zaprosStatus() == true)
+                    {
+                        bool v = d.ElementAt(0).restartBAAK(s.IP);
+                        if (v)
+                        {
+                            MessageBox.Show("Питание перегружено");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ардуина не доступна, перезагрузка питания не возможна!");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ардуина не доступна, перезагрузка питания не возможна!");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("информация УУП для платы " + s.Name + " не обноружено" + "\n" + "Перейдите в менеджер Ардуино", "Управление питанием");
+                }
+            }
+
+            return false;
+        }
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -850,7 +957,43 @@ namespace URAN_2017
             }
             else
             {
-                MessageBox.Show("Извините, на данный момент эта функция находится в разработке", "Управление питанием");
+                if (button.Tag.ToString() == "1")
+                {
+                    var selectAr = ListEror.SelectedItem as ClassErrorStartAndIspravlenie;
+                    MessageBox.Show(selectAr.kl);
+                    var d = from dd in classArduinos where dd.Klaster == selectAr.Name select dd;
+                    if(d.Count() >= 1)
+                    {
+
+
+                        if (d.ElementAt(0).zaprosStatus() == true)
+                        {
+                            bool v = d.ElementAt(0).restartBAAK(selectAr.IP);
+                            if(v)
+                            {
+                                MessageBox.Show("Питание перегружено");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Ардуина не доступна, перезагрузка питания не возможна!");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ардуина не доступна, перезагрузка питания не возможна!");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("информация УУП для платы "+selectAr.Name+" не обноружено"+"\n"+"Перейдите в менеджер Ардуино", "Управление питанием");
+                    }
+                   
+
+                        
+                 
+                }
+
+                
             }
            
         }
@@ -1032,8 +1175,39 @@ namespace URAN_2017
             var windowChart = dd.openWindowsChart();
             lstChart.Add(windowChart);
         }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            WindowArduinoMenedger windowArduinoMenedger = new WindowArduinoMenedger();
+            windowArduinoMenedger.Show();
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            WindowArduinoMenedger windowArduinoMenedger = new WindowArduinoMenedger();
+            windowArduinoMenedger.Show();
+        }
+
+        private void context0_Click(object sender, RoutedEventArgs e)
+        {
+            ListView listView = (ListView)sender;
+            BAAK12T bAAK12T = (BAAK12T)listView.SelectedItem;
+            String gs = String.Empty;
+            gs += "Кластер №" + bAAK12T.NamKl + "\n";
+            gs += "Имя платы : " + bAAK12T.NameBAAK12 + "\n";
+            gs += "Номер РАНА" + BAAK12T.NameRan+ "\n";
+            gs += "Порог" + BAAK12T.PorogAll.ToString() + "\n";
+            gs += "Тригер" + BAAK12T.TrgAll.ToString() + "\n";
+
+        }
+
+        private void ToggleNull_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show(ToggleNull.On1.ToString());
+            MyGrafic.nullMinus = ToggleNull.On1;
+        }
     }
-    public class VisibilityToCheckedConverter : IValueConverter
+    public class VisibilityToCheckedConverter1 : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
 using LiveCharts;
@@ -212,12 +213,14 @@ namespace URAN_2017
             }
 
         }
-        static public async void AddPointRaz(int[,] det, string nameKl)
+        public static bool nullMinus { get; set; } = false; 
+        static public async void AddPointRaz(int[,] det, string nameKl, uint[] masN)
         {
             // Start_time = DateTime.Now;
             //ClassTextFile.CreatFileData(PathText.Text + Start_time.Year.ToString() + "_" + Start_time.Month.ToString() + "_" + Start_time.Day.ToString() + "_" + Start_time.Hour.ToString() + "_" + Start_time.Minute.ToString());
             await MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Clear(); }));
             await MainWindow.ChatMain.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.ChatMain.Title = nameKl; }));
+            
             var x = new int[det.Length/12];
             // var y = x.Select(v => Math.Abs(v) < 1e-10 ? 1 : Math.Sin(v)/v).ToArray();
             var y = new double[x.Length];
@@ -229,16 +232,16 @@ namespace URAN_2017
             for(int i = 0; i < 12; i++)
             {
                 var lg = new InteractiveDataDisplay.WPF.LineGraph();
-            
 
 
+                
                 // lg.Stroke = new SolidColorBrush(Color.FromArgb(255, Convert.ToByte(xx), Convert.ToByte(255 -xx), Convert.ToByte(0 +xx)));
-                switch(i)
-      {
-          case 1:
+                switch (i)
+                {
+                      case 1:
                         lg.Stroke = new SolidColorBrush(Colors.Red);
                         break;
-          case 2:
+                    case 2:
                         lg.Stroke = new SolidColorBrush(Colors.Green);
                         break;
                     case 3:
@@ -281,7 +284,12 @@ namespace URAN_2017
                 lg.StrokeThickness = 2;
                 for(int j=0; j<1024; j++)
                 {
+                    
                     y[j] = det[i, j];
+                    if(nullMinus)
+                    {
+                        y[j] -= Convert.ToDouble(masN[i]);
+                    }
                 }
                 lg.Plot(x, y);
                 MainWindow.linegraph.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { MainWindow.linegraph.Children.Add(lg); }));
@@ -329,5 +337,17 @@ namespace URAN_2017
             }
         }
         
+    }
+    public class VisibilityToCheckedConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return ((Visibility)value) == Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return ((bool)value) ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }

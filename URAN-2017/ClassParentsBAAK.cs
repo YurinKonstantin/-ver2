@@ -27,6 +27,9 @@ namespace URAN_2017
       public  Byte[] Rbuffer;//Буффер для Чтения
      // public List<byte> DataBAAKList = new List<byte>();
         private static bool синхронизация = false;
+        /// <summary>
+        /// Использовать МС
+        /// </summary>
         public static bool Синхронизация
         {
             get
@@ -393,14 +396,11 @@ namespace URAN_2017
                 
                     try
                     {
-
-                    return nsData.Read(buf, 0, 4096);
-                    
+                      return nsData.Read(buf, 0, 4096);
                     }
                     catch (Exception ex)
                     {
-                  
-                    return -2;
+                      return -2;
                     }
             }
             else

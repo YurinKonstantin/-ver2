@@ -25,12 +25,21 @@ namespace URAN_2017
     /// </summary>
     public partial class PageSetBAAK100 : Page
     {
-        UserSetting set = new UserSetting();
+        UserSetting set;
         public PageSetBAAK100()
         {
             InitializeComponent();
-            DeSerial();
-            WaySet.Text = set.WaySetup;
+            
+            try
+            {
+                set = new UserSetting();
+                DeSerial();
+                WaySet.Text = set.WaySetup;
+            }
+            catch(Exception ex)
+            {
+
+            }
             list.ItemsSource = Bak._DataColecBAAK100;
         }
         private void Serial()

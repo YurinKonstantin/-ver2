@@ -11,6 +11,15 @@ namespace URAN_2017
 {
     public partial class MainWindow
     {
+        /// <summary>
+        /// Создает новый ран, новый файл, запускает тестовый набор
+        /// </summary>
+        /// <param name="IntervalNewFile1">переодичность создания нового файла</param>
+        /// <param name="kolTestRan"></param>
+        /// <param name="intTestRan"></param>
+        /// <param name="timeRanHors"></param>
+        /// <param name="timeRanMin"></param>
+        /// <param name="token"></param>
         public async void MainYpravlenia(int IntervalNewFile1, int kolTestRan, int intTestRan, int timeRanHors, int timeRanMin, CancellationToken token)
         {
             DateTime tmpStart = DateTime.UtcNow;
@@ -106,9 +115,9 @@ namespace URAN_2017
                     MessageBox.Show("g1" + ex.ToString());
                 }
             }
-            catch(Exception )
+            catch(Exception ex)
             {
-
+                MessageBox.Show("g11" + ex.ToString());
             }
      
         }

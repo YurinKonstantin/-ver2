@@ -50,6 +50,24 @@ namespace URAN_2017
                 DSig.Fill = value;
             }
         }
+        public bool Activ 
+        {
+            set
+            {
+                bool ss = value;
+                if(ss == false)
+                {
+                    gridViz.Visibility = Visibility.Visible;
+
+                }
+                else
+                {
+                    gridViz.Visibility = Visibility.Hidden;
+
+                }
+                
+            }
+        }
 
         private void Dneutron_MouseEnter(object sender, MouseEventArgs e)
         {

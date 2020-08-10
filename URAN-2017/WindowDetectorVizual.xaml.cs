@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,16 +22,14 @@ namespace URAN_2017
     public partial class WindowDetectorVizual : Window
     {
         public string pathBD=String.Empty;
-        public WindowDetectorVizual(string pp)
+        public WindowDetectorVizual(string pp, ObservableCollection<BAAK12T> _DataColecViev1)
         {
             InitializeComponent();
             pathBD = pp;
+            controlDetector._DataColecViev = _DataColecViev1;
             controlDetector.pathBD = pathBD;
             Button_Click(null, null);
        
-        
-       
-
             dispatcherTimer1.Tick += new EventHandler(DoReset);
             dispatcherTimer1.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer1.Start();

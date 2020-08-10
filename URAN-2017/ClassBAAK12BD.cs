@@ -414,7 +414,7 @@ namespace URAN_2017
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("BDselect 428"+ex.Message);
                 }
                 finally
                 {

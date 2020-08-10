@@ -51,6 +51,10 @@ namespace URAN_2017
         }
 
 
+        /// <summary>
+        /// Читаем данные из очереди и пишем в БД
+        /// </summary>
+        /// <param name="token2"></param>
         private void ZapicDataBDTasc(CancellationToken token2)
         {
             //Task myRe = Task.Run(() => Anime2());
@@ -69,7 +73,7 @@ namespace URAN_2017
                     return;
                 }
                 
-                BAAK12T.ЗаписьвФайлБДDelegate?.Invoke();//Читаем данные с платы и пишем в файл
+                BAAK12T.ЗаписьвФайлБДDelegate?.Invoke();//Читаем данные из очереди и пишем в БД
 
             }
         }
@@ -181,6 +185,30 @@ namespace URAN_2017
                     }
 
                     BAAK12T.TempURANDelegate?.Invoke();
+                    try
+                    {
+                        DateTime taimer = DateTime.UtcNow;
+                        string str = String.Empty;
+                        rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { str = rezimYst.Content.ToString(); }));
+                        if (_DataColecViev.Count != 0)
+                        {
+                            str += " " + (_DataColecViev.Count + _DataColecVievList2.Count) + "\n\t";
+                            foreach (BAAK12T bak in _DataColecViev)
+                            {
+                                str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
+                            }
+                            foreach (ClassBAAK12NoTail bak in _DataColecVievList2)
+                            {
+                                str += bak.NamKl + "\t" + bak.CтатусБААК12 + "\t" + bak.КолПакетов + "\t" + bak.ТемпПакетов + "\n\t";
+                            }
+                        }
+                        File.WriteAllText(@"C:\\Users\yurin\OneDrive\Monitoring.txt", "Time" + taimer.ToLongTimeString() + "\n" + str); //допишет текст в конец файла
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                     //temp = temp.AddMinutes(inter);
                     if (setP.FlagMainRezim)
                     {
@@ -193,7 +221,7 @@ namespace URAN_2017
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("gffeeeeegfg" + ex.ToString());
+                   // MessageBox.Show("gffeeeeegfg" + ex.ToString());
                 }
 
             }

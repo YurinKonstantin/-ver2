@@ -140,7 +140,7 @@ namespace URAN_2017.WorkBD
             List<ClassTablPSBBAAK> entries = new List<ClassTablPSBBAAK>();
 
             SQLiteConnection db =
-                new SQLiteConnection("Data Source = " + Path);
+                new SQLiteConnection("Data Source = " + Path, true);
 
             db.Open();
 

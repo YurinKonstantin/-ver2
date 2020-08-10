@@ -130,7 +130,40 @@ namespace URAN_2017
             }
             // }
         }
-   
+        public override void CloseFile()//закрытие файла
+        {
+            // if(Conect300Statys)
+            //{
+            if (data_w != null)
+            {
+                try
+                {
+                    data_w.Close();
+                    data_w.Dispose();
+                    BDReadCloseFile(NameFileClose, Time());
+                }
+                catch (Exception)
+                {
+                    InDe(false);
+                    Brushes = System.Windows.Media.Brushes.Red;
+                    CтатусБААК12 = "Ошибка при закрытии потока файла";
+                }
+                // }
+                if (data_fs != null)
+                {
+                    try
+                    {
+                        data_fs.Close();
+                        data_fs.Dispose();
+                    }
+                    catch (Exception)
+                    {
+                        Brushes = System.Windows.Media.Brushes.Red;
+                        CтатусБААК12 = "Ошибка при закрытии файла";
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// записываем данных о событии из очереди в в бд
@@ -267,7 +300,7 @@ namespace URAN_2017
                 {
                     //  Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                     //  {
-                    Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data, "Кластер" + namKl); });
+                    Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data, "Кластер" + namKl, masnul); });
                     //  }));
                 }
                 if (windowChart != null)
@@ -388,7 +421,14 @@ namespace URAN_2017
     
         public override void SettingAll()
         {
-            BlocAndPolarnost(9252);
+            if (signalPozitif)
+            {
+                BlocAndPolarnost(9252);
+            }
+            else
+           {
+                BlocAndPolarnost(9220);
+            }
             TriggerStop();
             WreadReg3000(0x200004 + 8, 0xfff);//маска каналов  
             WreadReg3000(0x200202, 0xfa);
@@ -450,89 +490,105 @@ namespace URAN_2017
         /// <param name="trigProg">если =true, то по количеству</param>
         public override void TestRanПодготовка(int porog, int trig, Boolean trigProg)
         {
-
-            CтатусБААК12 = "Подготовка к тестовому набору";
-            Thread.Sleep(500);
-
-            TriggerStopОго();
-            CтатусБААК12 = "Вычитываем данные";
-            Thread.Sleep(500);
-            // ВычитываемДанныеНужные();
-            ВычитываемДанныеНенужные();
-
-            //TriggerStop();
-            CтатусБААК12 = "вычитываем очередь";
-
-            Thread.Sleep(500);
-            int koloch = 0;
-            while (OcherediNaZapic.Count != 0 | koloch < 50)
-            {
-                koloch++;
-                //Thread.Sleep(500);
-                CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
-            }
-            CтатусБААК12 = "Закрытие файла";
-            Thread.Sleep(1000);
-            CloseFile();
-            Flagtest = true;
-            CтатусБААК12 = "Открытие тестового файла";
-            Thread.Sleep(500);
-            //if (Conect300Statys)
-            // {
-            string tipPl="V";
-      
             try
             {
-                string path = NameFileWay;
-                string subpath = @"TestV";
-                DirectoryInfo dirInfo = new DirectoryInfo(path);
-                if (!dirInfo.Exists)
-                {
-                    dirInfo.Create();
-                }
-                dirInfo = new DirectoryInfo(path + @"\" + subpath);
 
-                if (!dirInfo.Exists)
-                {
-                    dirInfo.Create();
-                }
 
-                String sd = Time();
-                NameFile = NameFileWay + @"\" + subpath + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + tipPl + ".bin";
-                data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
-                data_w = new BinaryWriter(data_fs);
-                BDReadFile(NamKl + "_" + "Test" + "_" + sd, NameBAAK12, sd, BAAK12T.NameRan);
-                NameFileClose = NamKl + "_" + "Test" + "_" + sd + "_" + tipPl;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка открытия файла" + ex.ToString(), "Ошибка");
-            }
-            // }
-            КолПакетов = 0;
-            КолПакетовEr = 0;
-            КолПакетовОчер = 0;
-            КолПакетовОчер2 = 0;
-            КолПакетовN = 0;
-            if (!trigProg)//по длительности
-            {
-                CтатусБААК12 = "Тестовый набор по длительности";
+                CтатусБААК12 = "Подготовка к тестовому набору";
                 Thread.Sleep(500);
-                AllSetPorogAll(Convert.ToUInt32(porog));
-                Trigger(0x200006, Convert.ToUInt32(trig));
-                //TriggerStart();
 
-            }
-            else
-            {
-                CтатусБААК12 = "Тестовый набор по количеству";
-                TriggerProgramSetap();
+                TriggerStopОго();
+                CтатусБААК12 = "Вычитываем данные";
                 Thread.Sleep(500);
-                TriggerStart();
-                //TriggerProgramSetap();
+                // ВычитываемДанныеНужные();
+                ВычитываемДанныеНенужные();
 
+                //TriggerStop();
+                CтатусБААК12 = "вычитываем очередь";
+
+                Thread.Sleep(500);
+                int koloch = 0;
+                while (OcherediNaZapic.Count != 0 | koloch < 50)
+                {
+                    koloch++;
+                    //Thread.Sleep(500);
+                    CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
+                }
+                CтатусБААК12 = "Закрытие файла";
+                Thread.Sleep(1000);
+                CloseFile();
+                Flagtest = true;
+                CтатусБААК12 = "Открытие тестового файла";
+                Thread.Sleep(500);
+                //if (Conect300Statys)
+                // {
+                string tipPl = "V";
+
+                try
+                {
+                    string path = NameFileWay;
+                    string subpath = @"TestV";
+                    DirectoryInfo dirInfo = new DirectoryInfo(path);
+                    if (!dirInfo.Exists)
+                    {
+                        dirInfo.Create();
+                    }
+                    dirInfo = new DirectoryInfo(path + @"\" + subpath);
+
+                    if (!dirInfo.Exists)
+                    {
+                        dirInfo.Create();
+                    }
+
+                    String sd = Time();
+                    NameFile = NameFileWay + @"\" + subpath + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + tipPl + ".bin";
+                    data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
+                    data_w = new BinaryWriter(data_fs);
+                    BDReadFile(NamKl + "_" + "Test" + "_" + sd, NameBAAK12, sd, BAAK12T.NameRan);
+                    NameFileClose = NamKl + "_" + "Test" + "_" + sd + "_" + tipPl;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка открытия файла" + ex.ToString(), "Ошибка");
+                }
+                // }
+                КолПакетов = 0;
+                КолПакетовEr = 0;
+                КолПакетовОчер = 0;
+                КолПакетовОчер2 = 0;
+                КолПакетовN = 0;
+                if (!trigProg)//по длительности
+                {
+                    try
+                    {
+
+
+                        CтатусБААК12 = "Тестовый набор по длительности";
+                        Thread.Sleep(500);
+                        AllSetPorogAll(Convert.ToUInt32(porog));
+                        Trigger(0x200006, Convert.ToUInt32(trig));
+                        //TriggerStart();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+
+                }
+                else
+                {
+                    CтатусБААК12 = "Тестовый набор по количеству";
+                    TriggerProgramSetap();
+                    Thread.Sleep(500);
+                    TriggerStart();
+                    //TriggerProgramSetap();
+
+                }
             }
-
+            catch(Exception ex)
+            {
+                MessageBox.Show("TestRanПодготовка");
+            }
         }
         /// <summary>
         /// Завершение тестовго набора и возрат настроек обычного набора
@@ -778,7 +834,7 @@ namespace URAN_2017
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("BDReadTemP"+ex.Message);
                 }
                 finally
                 {

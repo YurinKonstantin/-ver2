@@ -19,6 +19,7 @@
             <TextBlock x:Name="Path"/>
             <Button Content="Открыть БД" Click="Button_Click"/>
             <Button Content="Создать БД" Click="Button_Click_1"/>
+            <Button Content="Отчет по детекторам" Click="Button_Click_2"/>
 
         </StackPanel>
         <TabControl Grid.Row="1">

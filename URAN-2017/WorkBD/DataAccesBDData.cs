@@ -14,9 +14,14 @@ namespace URAN_2017.WorkBD
     public static class DataAccesBDData
     {
         public static string Path { get; set; }
+        public static string Path100 { get; set; }
         static public async void CreateDB()
         {
             SQLiteConnection.CreateFile(Path);
+        }
+        static public async void CreateDB100()
+        {
+            SQLiteConnection.CreateFile(Path100);
         }
         public static void InitializeDatabase()
         {
@@ -79,10 +84,64 @@ namespace URAN_2017.WorkBD
            
             db.Close();
         }
+        public static void InitializeDatabase100()
+        {
+
+            SQLiteConnection db =
+                new SQLiteConnection("Data Source = " + Path100);
+
+            db.Open();
+            String tableCommand = String.Empty;
+            //  tableCommand = @"CREATE TABLE [workers] (
+            //   [id] integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+            //   [name] char(100) NOT NULL,
+            //   [family] char(100) NOT NULL,
+            //   [age] int NOT NULL,
+            //   [profession] char(100) NOT NULL
+            //   );"
+            using (SQLiteCommand createTable = new SQLiteCommand(tableCommand, db))
+            {
+                tableCommand = "CREATE TABLE IF NOT " +
+                "EXISTS Run (Primary_Key INTEGER PRIMARY KEY, " +
+                "НомерRun char(30) NOT NULL, Синхронизация int NOT NULL, ОбщийПорог int NOT NULL, Порог int NOT NULL, Триггер int NOT NULL, ЗначениеТаймера char(25), " +
+                "ВремяЗапуска char(25), ВремяСтоп char(25))";
+                createTable.ExecuteReader();// 18.12.2019 14:18:52:818
+            }
+            using (SQLiteCommand createTable = new SQLiteCommand(tableCommand, db))
+            {
+                tableCommand = "CREATE TABLE IF NOT " +
+                  "EXISTS Файлы (Primary_Key INTEGER PRIMARY KEY, " +
+                  "ИмяФайла char(30) NOT NULL, Плата char(2) NOT NULL, ВремяСоздания char(25), ВремяЗакрытия char(25), Run char(30))";
+                createTable.ExecuteReader();//19.12.2019 00.10.23
+            }
+            using (SQLiteCommand createTable = new SQLiteCommand(tableCommand, db))
+            {
+
+                tableCommand = "CREATE TABLE IF NOT " +
+                "EXISTS События (Primary_Key INTEGER PRIMARY KEY, Время NVARCHAR(256) NOT NULL, Run char(25) NOT NULL, ИмяФайла char(25) NOT NULL, Плата char(25), Кластер char(25), СумD int, " +
+                "АмпCh1 int, АмпCh2 int, АмпCh3 int, АмпCh4 int, АмпCh5 int, АмпCh6 int, АмпCh7 int, АмпCh8 int, АмпCh9 int, АмпCh10 int, АмпCh11 int, АмпCh12 int, " +
+                "TmaxACh1 int, TmaxACh2 int, TmaxACh3 int, TmaxACh4 int, TmaxACh5 int, TmaxACh6 int, TmaxACh7 int, TmaxACh8 int, TmaxACh9 int, TmaxACh10 int, TmaxACh11 int, TmaxACh12 int, " +
+                "TfACh1 int, TfACh2 int, TfACh3 int, TfACh4 int, TfACh5 int, TfACh6 int, TfACh7 int, TfACh8 int, TfACh9 int, TfACh10 int, TfACh11 int, TfACh12 int, " +
+                "TeACh1 int, TeACh2 int, TeACh3 int, TeACh4 int, TeACh5 int, TeACh6 int, TeACh7 int, TeACh8 int, TeACh9 int, TeACh10 int, TeACh11 int, TeACh12 int, " +
+                "TpmACh1 int, TpmACh2 int, TpmACh3 int, TpmACh4 int, TpmACh5 int, TpmACh6 int, TpmACh7 int, TpmACh8 int, TpmACh9 int, TpmACh10 int, TpmACh11 int, TpmACh12 int, " +
+                "TA1/4Ch1 int, TA1/4Ch2 int, TA1/4Ch3 int, TA1/4Ch4 int, TA1/4Ch5 int, TA1/4Ch6 int, TA1/4Ch7 int, TA1/4Ch8 int, TA1/4Ch9 int, TA1/4Ch10 int, TA1/4Ch11 int, TA1/4Ch12 int, " +
+                "TA3/4Ch1 int, TA3/4Ch2 int, TA3/4Ch3 int, TA3/4Ch4 int, TA3/4Ch5 int, TA3/4Ch6 int, TA3/4Ch7 int, TA3/4Ch8 int, TA3/4Ch9 int, TA3/4Ch10 int, TA3/4Ch11 int, TA3/4Ch12 int, " +
+                "QCh1 int, QCh2 int, QCh3 int, QCh4 int, QCh5 int, QCh6 int, QCh7 int, QCh8 int, QCh9 int, QCh10 int, QCh11 int, QCh12 int, " +
+                "SBCh1 int, SBCh2 int, SBCh3 int, SBCh4 int, SBCh5 int, SBCh6 int, SBCh7 int, SBCh8 int, SBCh9 int, SBCh10 int, SBCh11 int, SBCh12 int, " +
+                "SCh1 int, SCh2 int, SCh3 int, SCh4 int, SCh5 int, SCh6 int, SCh7 int, SCh8 int, SCh9 int, SCh10 int, SCh11 int, SCh12 int, " +
+                "Nul1 int, Nul2 int, Nul3 int, Nul4 int, Nul5 int, Nul6 int, Nul7 int, Nul8 int, Nul9 int, Nul10 int, Nul11 int, Nul12 int, " +
+                "s1 char(10), s2 char(10), s3 char(10), s4 char(10), s5 char(10), s6 char(10), s7 char(10), s8 char(10), s9 char(10), s10 char(10), s11 char(10), s12 char(10), bad int)";
+                createTable.ExecuteReader();
+            }
+   
+            
+
+            db.Close();
+        }
         public static void AddDataTablRun(ClassTablRun classTablPSBRun)
         {
             SQLiteConnection db =
-                 new SQLiteConnection("Data Source = " + Path);
+                 new SQLiteConnection("Data Source = " + Path, true);
 
             db.Open();
 
@@ -107,7 +166,7 @@ namespace URAN_2017.WorkBD
         public static void updateTimeZapuskDataTablRun(string time, string ran)
         {
             SQLiteConnection db =
-                 new SQLiteConnection("Data Source = " + Path);
+                 new SQLiteConnection("Data Source = " + Path, true);
 
             db.Open();
            // UPDATE COMPANY SET ADDRESS = NULL, SALARY = NULL where ID IN(6, 7);
@@ -132,7 +191,7 @@ namespace URAN_2017.WorkBD
         public static void updateTimeStopDataTablRun(string time, string ran)
         {
             SQLiteConnection db =
-                 new SQLiteConnection("Data Source = " + Path);
+                 new SQLiteConnection("Data Source = " + Path, true);
 
             db.Open();
             // UPDATE COMPANY SET ADDRESS = NULL, SALARY = NULL where ID IN(6, 7);
@@ -157,7 +216,7 @@ namespace URAN_2017.WorkBD
         public static List<ClassTablRun> GetDataRun()
         {
             List<ClassTablRun> entries = new List<ClassTablRun>();
-            MessageBox.Show(Path);
+         
             SQLiteConnection db =
                 new SQLiteConnection("Data Source = " + Path, true);
 
@@ -185,7 +244,7 @@ namespace URAN_2017.WorkBD
                
                
                 cl.ВремяСтоп = query[7] as string;
-                Debug.WriteLine(query.GetString(1)+"\n"+ query.GetString(2));
+               // Debug.WriteLine(query.GetString(1)+"\n"+ query.GetString(2));
                 entries.Add(cl);
             }
 
@@ -362,11 +421,94 @@ namespace URAN_2017.WorkBD
 
             return entries;
         }
+        public static List<ClassTablSob> GetDataSobTop10(string uslovie)
+        {
+            List<ClassTablSob> entries = new List<ClassTablSob>();
 
+            SQLiteConnection db =
+                new SQLiteConnection("Data Source = " + Path, true);
+
+            db.Open();
+
+            SQLiteCommand selectCommand = new SQLiteCommand
+                ("SELECT * from События order by Primary_Key desc limit " + uslovie, db);
+
+            SQLiteDataReader query = selectCommand.ExecuteReader();
+
+            while (query.Read())
+            {
+                int[] masAmp = new int[12];
+                for (int i = 7; i < 19; i++)
+                {
+                    masAmp[i - 7] = query.GetInt32(i);
+                }
+                int[] masN = new int[12];
+                for (int i = 19; i < 31; i++)
+                {
+                    masN[i - 19] = query.GetInt32(i);
+                }
+                int[] masNull = new int[12];
+                for (int i = 31; i < 43; i++)
+                {
+                    masNull[i - 31] = query.GetInt32(i);
+                }
+                double[] masS = new double[12];
+
+                for (int i = 43; i < 55; i++)
+                {
+                    try
+                    {
+
+
+                        IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+                        masS[i - 43] = Convert.ToDouble(query[i], formatter);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString() + i.ToString() + "\t" + query.GetString(i) + "\t" + query.GetString(i).Replace(",", "."));
+                    }
+                }
+                int badint = query.GetInt32(55);
+                bool bad = false;
+                if (badint == 1)
+                {
+                    bad = true;
+                }
+
+                var cl = new ClassTablSob()
+                {
+                    Time = query.GetString(1),
+                    ИмяФайла = query.GetString(2),
+                    Плата = query.GetString(3),
+                    Кластер = query.GetString(4),
+                    СумАмп = query.GetInt32(5),
+                    СумN = query.GetInt32(6),
+                    АмпCh = masAmp,
+                    NCh = masN,
+                    Nul = masNull,
+                    sig = masS,
+                    bad = bad
+
+
+
+                };
+
+
+
+
+
+                entries.Add(cl);
+            }
+
+            db.Close();
+
+
+            return entries;
+        }
         public static void AddDataTablФайлы(string nameFile, string nameBAAK, string timeFile, string nameRan)
         {
             SQLiteConnection db =
-                 new SQLiteConnection("Data Source = " + Path);
+                 new SQLiteConnection("Data Source = " + Path, true);
 
             db.Open();
 
@@ -387,33 +529,42 @@ namespace URAN_2017.WorkBD
         }
         public static void updateTimeStopDataTablФайл(string time, string nameF)
         {
-            SQLiteConnection db =
-                 new SQLiteConnection("Data Source = " + Path);
+            try
+            {
 
-            db.Open();
-            // UPDATE COMPANY SET ADDRESS = NULL, SALARY = NULL where ID IN(6, 7);
-            SQLiteCommand insertCommand = new SQLiteCommand();
-            insertCommand.Connection = db;
 
-            insertCommand.CommandText = "UPDATE Файлы SET ВремяЗакрытия='" + time + "' where ИмяФайла ='" + nameF + "';";
+                SQLiteConnection db =
+                     new SQLiteConnection("Data Source = " + Path, true);
 
-             insertCommand.Parameters.AddWithValue("@ВремяЗакрытия", time);
-            // insertCommand.Parameters.AddWithValue("@Синхронизация", classTablPSBRun.Синхронизация);
-            // insertCommand.Parameters.AddWithValue("@ОбщийПорог", classTablPSBRun.ОбщийПорог);
-            // insertCommand.Parameters.AddWithValue("@Порог", classTablPSBRun.Порог);
-            // insertCommand.Parameters.AddWithValue("@Триггер", classTablPSBRun.Триггер);
-            // insertCommand.Parameters.AddWithValue("@ЗначениеТаймера", classTablPSBRun.ЗначениеТаймер);
-            // insertCommand.Parameters.AddWithValue("@ВремяЗапуска", classTablPSBRun.ВремяЗапуска);
-            // insertCommand.Parameters.AddWithValue("@ВремяСтоп", classTablPSBRun.ВремяСтоп);
+                db.Open();
+                // UPDATE COMPANY SET ADDRESS = NULL, SALARY = NULL where ID IN(6, 7);
+                SQLiteCommand insertCommand = new SQLiteCommand();
+                insertCommand.Connection = db;
 
-            insertCommand.ExecuteReader();
-            db.Close();
+                insertCommand.CommandText = "UPDATE Файлы SET ВремяЗакрытия='" + time + "' where ИмяФайла ='" + nameF + "';";
+
+                insertCommand.Parameters.AddWithValue("@ВремяЗакрытия", time);
+                // insertCommand.Parameters.AddWithValue("@Синхронизация", classTablPSBRun.Синхронизация);
+                // insertCommand.Parameters.AddWithValue("@ОбщийПорог", classTablPSBRun.ОбщийПорог);
+                // insertCommand.Parameters.AddWithValue("@Порог", classTablPSBRun.Порог);
+                // insertCommand.Parameters.AddWithValue("@Триггер", classTablPSBRun.Триггер);
+                // insertCommand.Parameters.AddWithValue("@ЗначениеТаймера", classTablPSBRun.ЗначениеТаймер);
+                // insertCommand.Parameters.AddWithValue("@ВремяЗапуска", classTablPSBRun.ВремяЗапуска);
+                // insertCommand.Parameters.AddWithValue("@ВремяСтоп", classTablPSBRun.ВремяСтоп);
+
+                insertCommand.ExecuteReader();
+                db.Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
 
         }
         public static void AddDataTablSob(string nameFile, string nameBAAK, string time, int[] Amp, string nameklaster, int[] Nnut, int[] Nl, double[] sig, int bad)
         {
             SQLiteConnection db =
-                 new SQLiteConnection("Data Source = " + Path);
+                 new SQLiteConnection("Data Source = " + Path, true);
 
             db.Open();
 
@@ -491,7 +642,7 @@ namespace URAN_2017.WorkBD
         public static void AddDataTablSobNeutron(string nameFile, int D, int Amp, int TimeFirst, int TimeEnd, string time, int TimeAmp, int TimeFirst3, int TimeEnd3, int bad)
         {
             SQLiteConnection db =
-                   new SQLiteConnection("Data Source = " + Path);
+                   new SQLiteConnection("Data Source = " + Path, true);
 
             db.Open();
 

@@ -132,13 +132,8 @@ public System.Windows.Media.Brush Brushes
        {
             bool endd = false;
             int x = 0;
-           
-
                 while (!endd)
-            {
-               
-
-                    //MessageBox.Show("ghghdddd");
+                {
                     byte[] buf = new byte[2048];
                     int res = Read13007(out buf);//читаем с платы
                     CтатусБААК12 = res.ToString();
@@ -156,12 +151,8 @@ public System.Windows.Media.Brush Brushes
                     {
                         endd = true;
                     }
-           
-
+                Thread.Sleep(1000);
             }
-            
-           
-
         }
         
         /// <summary>
@@ -173,24 +164,23 @@ public System.Windows.Media.Brush Brushes
             int x = 0;
             while (!endd)
             {
-                    lock(OcherediNaZapic)
+                
+                lock (OcherediNaZapic)
                     {
-
-
-                    if (OcherediNaZapic.Count() == 0)
-                    {
-                        x++;
+                        if (OcherediNaZapic.Count() == 0)
+                        {
+                            x++;
+                        }
+                        else
+                        {
+                           x = 0;
+                        }
+                        if (x > 3)
+                        {
+                           endd = true;
+                        }
                     }
-                    else
-                    {
-                        x = 0;
-                    }
-                    if (x > 50)
-                    {
-                        endd = true;
-                    }
-                    }
-
+                Thread.Sleep(1000);
             }
             
 
@@ -205,7 +195,7 @@ public System.Windows.Media.Brush Brushes
                     {
                         DataYu clasdata = new DataYu();
                         OcherediNaZapic.TryDequeue(out clasdata);
-                        if (clasdata.ListData != null)
+                        if (clasdata !=null && clasdata.ListData != null)
                         {
                             int f = clasdata.ListData.Count;
                             byte[] d = new byte[f];
@@ -267,25 +257,11 @@ public System.Windows.Media.Brush Brushes
         {
             if (Синхронизация)
             {
-               // if (Conect300Statys)
-               // {
                     ПускКлок();
-              //  }
-               // else
-                //{
-                //    CтатусБААК12 = "НЕТ подключения";
-                //}
             }
         else
             {
-               // if (Conect300Statys)
-               // {
                     ПускБезКлок();
-               // }
-               // else
-               // {
-               //     CтатусБААК12 = "НЕТ подключения";
-               // }
             }
         }
         public void ПускБезКлок()
@@ -365,12 +341,21 @@ public System.Windows.Media.Brush Brushes
             
             
 
-        }      
+        }
+        public bool signalPozitif { get; set; } = true;
         public virtual void TriggerStart()//Разрешение выроботки триггерного сигнала
         {
             if (clientBAAK12T.Connected && ns != null)
             {
-                BlocAndPolarnost(8224);
+                if(signalPozitif)
+                {
+                    BlocAndPolarnost(8224);
+                }
+                else
+                {
+                    BlocAndPolarnost(8192);
+                }
+               
                 WreadReg3000(0x200200, 1);
             }
             else
@@ -384,7 +369,15 @@ public System.Windows.Media.Brush Brushes
         {
             if (clientBAAK12T.Connected && ns != null)
             {
-                BlocAndPolarnost(9252);
+                if (signalPozitif)
+                {
+
+                    BlocAndPolarnost(9252);
+                }
+                else
+                {
+                    BlocAndPolarnost(9220);
+                }
               //  Thread.Sleep(10);
                 WreadReg3000(0x200200, 0);
             }
@@ -713,7 +706,7 @@ public System.Windows.Media.Brush Brushes
                     {
                       //  Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                       //  {
-                        Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data, "Кластер" + namKl); });
+                        Application.Current.Dispatcher.Invoke((Action)delegate { MyGrafic.AddPointRaz(data, "Кластер" + namKl, masnul); });
                       //  }));
                     }
 
@@ -862,51 +855,62 @@ public System.Windows.Media.Brush Brushes
                 if (clientBAAK12TData.Connected && nsData != null)
                 { 
                     int res = Read13007(out byte[] buf);//читаем с платы
+                    if(nsData==null)
+                    {
+                        Brushes = System.Windows.Media.Brushes.Red;
+                        CтатусБААК12 = "nsData = null";
+                    }
                     if (res > 0)
                     {
                          for (int i = 0; i < res; i++)
                          {
                             if (buf[i] == 0xFF)
                             {
-                            CountFlagEnd++;
+                               CountFlagEnd++;
                             }
                             else
                             {
-                            CountFlagEnd = 0;
-                            }
-
-                            if (buf[i] == 0xFE)
-                            {
-                            CountFlagEndErroy++;
-                            }
-                            else
-                            {
-                            CountFlagEndErroy = 0;
+                               CountFlagEnd = 0;
                             }
                             DataBAAKList.Add(buf[i]);
-                            if (CountFlagEndErroy == 4)
-                            {
-                                //MessageBox.Show(DataBAAKList.Count.ToString());
-                                
-                                КолПакетовEr++;
-                                DataBAAKList.Clear();
-                                
-                                DataBAAKList = new List<byte>();
-                                CountFlagEnd = 0;
-                                CountFlagEndErroy = 0;
-                            }
+                           
                             if ((data_w != null) & (data_fs != null) & CountFlagEnd == 4)
                             {
-                            //MessageBox.Show(DataBAAKList.Count.ToString());
-                               OcherediNaZapic.Enqueue(new DataYu {ListData= DataBAAKList, tipDataTest= Flagtest });
-                                КолПакетов++;
-                                if (!Flagtest)
+                                if (DataBAAKList.ElementAt(DataBAAKList.Count-4) == 0xFF && DataBAAKList.ElementAt(DataBAAKList.Count-5) == 0xFF && DataBAAKList.ElementAt(DataBAAKList.Count-6) == 0xFF && DataBAAKList.ElementAt(DataBAAKList.Count-7) == 0xFF)
                                 {
-                                    Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPoint(Nkl, ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов); }));
+                                    КолПакетовEr++;
+                                    //DataBAAKList.Clear();
                                 }
-                                    DataBAAKList = new List<byte>();
+                                else
+                                {
+                                    КолПакетов++;
+                                    OcherediNaZapic.Enqueue(new DataYu { ListData = DataBAAKList, tipDataTest = Flagtest });
+                                    if (!Flagtest)
+                                    {
+                                        Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Render, new Action(() => { MyGrafic.AddTecPoint(Nkl, ТемпПакетов = Convert.ToInt32(КолПакетов) - Пакетов); }));
+                                    }
+                                }
+
+                                
+                                  
+                               
+                                  DataBAAKList = new List<byte>();
                                   CountFlagEnd = 0;
-                                  CountFlagEndErroy = 0;
+                              
+                            }
+                            else
+                            {
+                                if(data_w == null)
+                                {
+                                    Brushes = System.Windows.Media.Brushes.Red;
+                                    CтатусБААК12 = "data_w = null";
+                                }
+                                if (data_fs == null)
+                                {
+                                    Brushes = System.Windows.Media.Brushes.Red;
+                                    CтатусБААК12 = "data_fs = null";
+                                }
+
                             }
                     }
 

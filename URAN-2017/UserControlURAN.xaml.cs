@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.OleDb;
 using System.Diagnostics;
@@ -30,6 +31,7 @@ namespace URAN_2017
         {
             InitializeComponent();
             vizualDetectors();
+           
            // vizualDetectorA(1, Colors.Red);
         }
         Point capturePoint { get; set; }
@@ -69,7 +71,7 @@ namespace URAN_2017
             for(int i=0; i<72; i++)
             {
                 vizualDetectorA(i+1, new SolidColorBrush(Colors.White));
-                vizualDetectorN(i+1, new SolidColorBrush(Colors.White));
+                vizualDetectorN(i+1, new SolidColorBrush(Colors.White), false);
             }
        
     
@@ -149,8 +151,8 @@ namespace URAN_2017
 
         }
 
-      
 
+      public  ObservableCollection<BAAK12T> _DataColecViev = new ObservableCollection<BAAK12T>();
        
 
       
@@ -248,6 +250,29 @@ namespace URAN_2017
 
                              }
                         }
+                    List<WorkBD.ViewTaiblBDData.ClassTablSob> ff = (from s in ListSob where s.Кластер == "1" select s).ToList();
+                    if(ff.Count>0)
+                    TKl1.Text = ff.ElementAt(ff.Count-1).Time.ToString();
+
+                    ff = (from s in ListSob where s.Кластер == "2" select s).ToList();
+                    if (ff.Count > 0)
+                        TKl2.Text = ff.ElementAt(ff.Count - 1).Time.ToString();
+                  
+                    ff = (from s in ListSob where s.Кластер == "3" select s).ToList();
+                    if (ff.Count > 0)
+                        TKl3.Text = ff.ElementAt(ff.Count - 1).Time.ToString();
+
+                    ff = (from s in ListSob where s.Кластер == "4" select s).ToList();
+                    if (ff.Count > 0)
+                        TKl4.Text = ff.ElementAt(ff.Count - 1).Time.ToString();
+
+                    ff = (from s in ListSob where s.Кластер == "5" select s).ToList();
+                    if (ff.Count > 0)
+                        TKl5.Text = ff.ElementAt(ff.Count - 1).Time.ToString();
+
+                    ff = (from s in ListSob where s.Кластер == "6" select s).ToList();
+                    if (ff.Count > 0)
+                        TKl6.Text = ff.ElementAt(ff.Count - 1).Time.ToString();
 
                     sobs = (from s in sobs where s.dataTime.CompareTo(dateTime1) >= 0 select s).ToList<Sob>();
                     int colS = (from s in sobs where s.kl == 1 select s).Count();
@@ -285,13 +310,27 @@ namespace URAN_2017
               
                     try
                     {
+                        
+                        //ToDo
                         foreach (var d in detectors)
                         {
+                            Debug.WriteLine( d.Klaster().ToString());
+                            bool activ = false;
+                            foreach (var sd in _DataColecViev)
+                            {
+                                
+                                if(sd.NamKl== d.Klaster().ToString())
+                                {
+
+                                    activ = true;
+                                }
+                               
+                            }
                             d.ColS = (from x in sobs where x.kl == d.Klaster() && x.masA[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 5 select x).Count();
                             d.SumSobAll = (from s in sobs where s.kl == d.Klaster() select s).Count();
                             vizualDetectorA(d.nomerDetectora, d.ColorTextSob);
                             d.ColN = (from x in sobs where x.kl == d.Klaster() && x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 0 select x.masN[d.nomerDetectora - ((x.kl - 1) * 12) - 1]).Sum();
-                            vizualDetectorN(d.nomerDetectora, d.ColorTextNeutron);
+                            vizualDetectorN(d.nomerDetectora, d.ColorTextNeutron, activ);
                         }
                         // MessageBox.Show(chit.GetValue(2).ToString()+"\n"+ chit.GetValue(1).ToString()+"\n"+ dateTime1.ToString()+"\t"+s1.dataTime.ToString() +"\n"+ s1.dataTime.CompareTo(dateTime1).ToString());
                     }
@@ -487,9 +526,17 @@ namespace URAN_2017
                     try
                     {
 
-
+                        bool activ = false;
                         foreach (var d in detectors)
                         {
+                            foreach (var sd in _DataColecViev)
+                            {
+                                if (sd.NamKl == d.Klaster().ToString())
+                                {
+
+                                    activ = true;
+                                }
+                            }
                             d.ColS = (from x in sobs where x.kl == d.Klaster() && x.masA[d.nomerDetectora - ((x.kl - 1) * 12) - 1] > 5 select x).Count();
                             d.SumSobAll = (from s in sobs where s.kl == d.Klaster() select s).Count();
 
@@ -502,7 +549,7 @@ namespace URAN_2017
 
 
 
-                            vizualDetectorN(d.nomerDetectora, d.ColorTextNeutron);
+                            vizualDetectorN(d.nomerDetectora, d.ColorTextNeutron, activ);
 
 
                         }
@@ -523,7 +570,198 @@ namespace URAN_2017
 
                 podg.Close();
             }
-      
+            try
+            {
+
+
+                if (Convert.ToBoolean(checList.IsChecked))
+                {
+                    SobListBD();
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+           
+
+        }
+        public void SobListBD()
+        {
+
+            if (pathBD.Split('.')[1] == "db" || pathBD.Split('.')[1] == "db3")
+            {
+                DataAccesBDData.Path = pathBD;
+
+                string uslovietime = String.Empty;
+
+                string sz = "  order by Primary_Key";
+
+                // CommandText = "select * from [Событие] Where (ИмяФайла Like '%_" + dateTime.Day.ToString("00") + "."+ dateTime.Month.ToString("00")+".2019 %' ) order by Код desc"
+
+                var ListSob = DataAccesBDData.GetDataSobTop10(textColSobList.Text);
+                list.ItemsSource = ListSob;
+                try
+                {
+
+
+
+
+                    if (chekNoise.IsChecked == true)
+                    {
+
+
+
+                    }
+                    else
+                    {
+
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error1" + ex.ToString());
+                }
+            }
+            else
+            {
+                string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source =" + pathBD;
+                var podg = new OleDbConnection(connectionString);
+                podg.Open();
+                int timenaz = Convert.ToInt32(textH.Text);
+                DateTime dateTime = new DateTime();
+                dateTime = DateTime.UtcNow;
+                DateTime dateTime1 = new DateTime();
+                dateTime1 = DateTime.UtcNow;
+                dateTime1 = dateTime1.AddHours(-timenaz);
+                string uslovietime = String.Empty;
+
+
+
+
+
+
+                var camand = new OleDbCommand
+                {
+                    Connection = podg,
+                    CommandText = "select TOP 10 from [Событие] order by Код"
+                    // CommandText = "select * from [Событие] Where (ИмяФайла Like '%_" + dateTime.Day.ToString("00") + "."+ dateTime.Month.ToString("00")+".2019 %' ) order by Код desc"
+
+
+                };
+
+
+                try
+                {
+
+                    var chit = camand.ExecuteReader();
+
+                    while (chit.Read() == true)
+                    {
+                        if (chekNoise.IsChecked == true)
+                        {
+                            if (!String.IsNullOrEmpty(chit.GetValue(55).ToString()) && Convert.ToBoolean(chit.GetValue(55)))
+                            {
+
+                            }
+                            else
+                            {
+
+                                int[] masA = new int[12];
+                                int[] masN = new int[12];
+                                // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+
+                                masA[0] = Convert.ToInt32(chit.GetValue(5));
+                                masA[1] = Convert.ToInt32(chit.GetValue(6));
+                                masA[2] = Convert.ToInt32(chit.GetValue(7));
+                                masA[3] = Convert.ToInt32(chit.GetValue(8));
+                                masA[4] = Convert.ToInt32(chit.GetValue(9));
+                                masA[5] = Convert.ToInt32(chit.GetValue(10));
+                                masA[6] = Convert.ToInt32(chit.GetValue(11));
+                                masA[7] = Convert.ToInt32(chit.GetValue(12));
+                                masA[8] = Convert.ToInt32(chit.GetValue(13));
+                                masA[9] = Convert.ToInt32(chit.GetValue(14));
+                                masA[10] = Convert.ToInt32(chit.GetValue(15));
+                                masA[11] = Convert.ToInt32(chit.GetValue(16));
+
+                                masN[0] = Convert.ToInt32(chit.GetValue(18));
+                                masN[1] = Convert.ToInt32(chit.GetValue(19));
+                                masN[2] = Convert.ToInt32(chit.GetValue(20));
+                                masN[3] = Convert.ToInt32(chit.GetValue(21));
+                                masN[4] = Convert.ToInt32(chit.GetValue(22));
+                                masN[5] = Convert.ToInt32(chit.GetValue(23));
+                                masN[6] = Convert.ToInt32(chit.GetValue(24));
+                                masN[7] = Convert.ToInt32(chit.GetValue(25));
+                                masN[8] = Convert.ToInt32(chit.GetValue(26));
+                                masN[9] = Convert.ToInt32(chit.GetValue(27));
+                                masN[10] = Convert.ToInt32(chit.GetValue(28));
+                                masN[11] = Convert.ToInt32(chit.GetValue(29));
+
+                                // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                                // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                                // x = Convert.ToInt32(chit.GetValue(1));
+                                sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                            }
+
+                        }
+                        else
+                        {
+
+                            //Debug.WriteLine("dfgd"+chit.FieldCount.ToString());
+
+                            int[] masA = new int[12];
+                            int[] masN = new int[12];
+                            // MessageBox.Show((chit.GetValue(3)).ToString() + "\n" + (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+
+                            masA[0] = Convert.ToInt32(chit.GetValue(5));
+                            masA[1] = Convert.ToInt32(chit.GetValue(6));
+                            masA[2] = Convert.ToInt32(chit.GetValue(7));
+                            masA[3] = Convert.ToInt32(chit.GetValue(8));
+                            masA[4] = Convert.ToInt32(chit.GetValue(9));
+                            masA[5] = Convert.ToInt32(chit.GetValue(10));
+                            masA[6] = Convert.ToInt32(chit.GetValue(11));
+                            masA[7] = Convert.ToInt32(chit.GetValue(12));
+                            masA[8] = Convert.ToInt32(chit.GetValue(13));
+                            masA[9] = Convert.ToInt32(chit.GetValue(14));
+                            masA[10] = Convert.ToInt32(chit.GetValue(15));
+                            masA[11] = Convert.ToInt32(chit.GetValue(16));
+
+                            masN[0] = Convert.ToInt32(chit.GetValue(18));
+                            masN[1] = Convert.ToInt32(chit.GetValue(19));
+                            masN[2] = Convert.ToInt32(chit.GetValue(20));
+                            masN[3] = Convert.ToInt32(chit.GetValue(21));
+                            masN[4] = Convert.ToInt32(chit.GetValue(22));
+                            masN[5] = Convert.ToInt32(chit.GetValue(23));
+                            masN[6] = Convert.ToInt32(chit.GetValue(24));
+                            masN[7] = Convert.ToInt32(chit.GetValue(25));
+                            masN[8] = Convert.ToInt32(chit.GetValue(26));
+                            masN[9] = Convert.ToInt32(chit.GetValue(27));
+                            masN[10] = Convert.ToInt32(chit.GetValue(28));
+                            masN[11] = Convert.ToInt32(chit.GetValue(29));
+
+                            // MessageBox.Show((chit.GetValue(3)).ToString()+"\n"+ (chit.GetValue(4)).ToString() + "\n" + (chit.GetValue(5)).ToString());
+                            // sobs.Add(new Sob() { namePSB= chit.GetValue(3).ToString(), kl=Convert.ToInt32(chit.GetValue(2)), masA=masA, masN=masN, dataTime=new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                            // x = Convert.ToInt32(chit.GetValue(1));
+                            // sobs.Add(new Sob() { namePSB = chit.GetValue(3).ToString(), kl = Convert.ToInt32(chit.GetValue(4)), masA = masA, masN = masN, dataTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[1]), Convert.ToInt32(chit.GetValue(1).ToString().Split('.')[2]), 0, 0) });
+                        }
+
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error1" + ex.ToString());
+                }
+
+
+
+                podg.Close();
+            }
+
         }
         List<Sob> sobs = new List<Sob>();
         public class Sob
@@ -546,7 +784,7 @@ namespace URAN_2017
                 }
             }
         }
-        public void vizualDetectorN(int nomerDetector, SolidColorBrush color)
+        public void vizualDetectorN(int nomerDetector, SolidColorBrush color, bool activ)
         {
 
             //canvas.Children.RemoveAt(10+nomerDetector-1);
@@ -557,6 +795,7 @@ namespace URAN_2017
                 {
                     UserControlDetector detector = (UserControlDetector)d;
                     detector.Dnet = color;
+                    detector.Activ = activ;
                 }
                 x++;
             }
@@ -565,6 +804,7 @@ namespace URAN_2017
                 if (d.nomerDetectora == nomerDetector)
                 {
                     d.ColorNFil = color;
+                    d.activ = activ;
                 }
             }
 
@@ -763,7 +1003,10 @@ namespace URAN_2017
                     return solidColorBrush;
                 }
             }
-
+            public bool activ
+            {
+                get; set;
+            }
            
         }
         public class Coordinate
@@ -772,7 +1015,7 @@ namespace URAN_2017
             public int y { get; set; }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        public void Button_Click(object sender, RoutedEventArgs e)
         {
             scaleCanvas.ScaleX = scaleCanvas.ScaleX - .1;
             scaleCanvas.ScaleY = scaleCanvas.ScaleY - .1;
@@ -823,7 +1066,15 @@ namespace URAN_2017
 
         }
 
-      
+        private void checList_Checked(object sender, RoutedEventArgs e)
+        {
+            list.Visibility = Visibility.Visible;
+        }
+
+        private void checList_Unchecked(object sender, RoutedEventArgs e)
+        {
+            list.Visibility = Visibility.Collapsed;
+        }
     }
    
  

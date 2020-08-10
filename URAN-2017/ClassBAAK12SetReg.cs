@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace URAN_2017
 {
@@ -43,9 +44,15 @@ namespace URAN_2017
         }
         public virtual void SettingAll()
         {
-           
 
-            BlocAndPolarnost(9252);
+            if (signalPozitif)
+            {
+                BlocAndPolarnost(9252);
+            }
+            else
+            {
+                BlocAndPolarnost(9220);
+            }
             TriggerStop();           
             WreadReg3000(0x200004 + 8, 0xfff);//маска каналов  
             WreadReg3000(0x200202, 0xfa);
@@ -97,7 +104,7 @@ namespace URAN_2017
             
         }
         public void BlocAndPolarnost( uint x)//Полярность сигнала 8224 - запрос разрешен и положительная полярность, 9252 - запрос запрешен, и положительная полярность
-        {
+        {                                    //8192 - запрос разрешен и отрицательная полярность, 9220 - запрос запрешен, и отрицательная полярность
             WreadReg3000(0x90000, x);
 
             WreadReg3000(0x98000, x);
@@ -126,7 +133,16 @@ namespace URAN_2017
         }
         public void Trigger(uint Reg, uint tr)//Кратность совпадений и подверждение
         {
-            WreadReg3000(Reg, tr);
+            try
+            {
+
+
+                WreadReg3000(Reg, tr);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Trigger"); 
+            }
         }
         public void Winduws(uint Reg, uint wind)//окно совпадений дискретность 10 нс от 0 до 254
         {

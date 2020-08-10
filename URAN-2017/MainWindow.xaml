@@ -12,10 +12,12 @@
     Closing="Window_Closing" 
         mc:Ignorable="d"
     Activated="Window_Activated"
-        Title="УРАН (ver. Release 1.0.4.9)-2019"  Height="960" Width="1680" 
+        Title="УРАН (ver. Release 1.0.4.9)-2019"  Height="960" Width="1680" Top="10" Left="10"  WindowState="Maximized"
     HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" FontSize="16" >
 
     <Window.Resources>
+      
+            <local:VisibilityToCheckedConverter1 x:Key="VisibilityToCheckedConverter"/>
       
         <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
@@ -178,6 +180,17 @@
                     </Border.Effect>
                     <Button   Content="Button"   Click="Button_Click_2" RenderTransformOrigin="0.5,0.5" Background="Transparent" BorderThickness="0" Margin="0,0,0,2" />
                 </Border>
+                <Button  Margin="4" Click="Button_Click_11">
+                    <Button.Background>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+                    </Button.Background>
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/ImgSourse/arduino.jpg" Width="28" Height="28"/>
+                            <TextBlock Text="Ардуина" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
             </StackPanel>
             <Label Content="Основной режим" ToolBar.OverflowMode="Always"/>
             <ToggleSwitch:HorizontalToggleSwitch ToolBar.OverflowMode="Always" x:Name="ChecRez" Checked="HorizontalToggleSwitch_Checked" Unchecked="HorizontalToggleSwitch_Unchecked"/>
@@ -214,7 +227,6 @@
                     </ListView.Background>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-
                             <Grid UseLayoutRounding="True"  Margin="4" ShowGridLines="False">
                                 <Grid.Effect>
                                     <DropShadowEffect BlurRadius="4" ShadowDepth="0"/>
@@ -228,17 +240,14 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                
-                                <StackPanel Orientation="Vertical">
 
+                                <StackPanel Orientation="Vertical">
                                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                         <StackPanel Orientation="Horizontal" >
                                         <Label Content="Кластер №" Padding="1" Margin="4,0,2,0"/>
                                         <Label FontSize="14" Padding="1" Margin="0,0,2,0"  Content="{Binding NamKl}" VerticalAlignment="Center"/>
-                                      
-                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" Foreground="{Binding Brushes}" VerticalAlignment="Stretch"/>
-                                     
-                                    </StackPanel>
+                                        <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" Foreground="{Binding Brushes}" FontWeight="Bold"  VerticalAlignment="Stretch"/>
+                                        </StackPanel>
                                     </ScrollViewer>
                                     <Expander Header="События/нейтроны/среднее значение">
                                         <StackPanel>
@@ -292,7 +301,8 @@
                                 <MenuItem Header="по длительности" Click="MenuItem_Click"></MenuItem>
                                 <MenuItem Header="по колличеству" Click="MenuItem_Click_1" ></MenuItem>
                             </MenuItem>
-                            <MenuItem x:Name="context" Header="Информация" IsEnabled="False" >
+                            <MenuItem x:Name="context" Header="Информация"  >
+                                <MenuItem x:Name="context0" Header="Общая" Click="context0_Click" IsEnabled="True" ></MenuItem>
                                 <MenuItem x:Name="context1" Header="Порог" IsEnabled="True" ></MenuItem>
                                 <MenuItem x:Name="context2" Header="Триггер" IsEnabled="True" ></MenuItem>
                                 <MenuItem x:Name="context3" Header="Нулевая линия" IsEnabled="True" ></MenuItem>
@@ -331,7 +341,6 @@
                                 </Grid.Background>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="260"/>
-
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -340,10 +349,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Кластер №" Padding="1" Margin="4,0,2,0"/>
                                         <Label FontSize="14" Padding="1" Margin="0,0,2,0"  Content="{Binding NamKl}" VerticalAlignment="Center"/>
-                                        <Label FontSize="14" Padding="1" Margin="4,0,2,0" Content="{Binding Host}" VerticalAlignment="Stretch" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label FontSize="15" Padding="1" Margin="4,0,0,0" Content="Статус:" VerticalAlignment="Stretch"/>
+                                        <Label FontSize="14" Padding="1" Margin="4,0,2,0" Content="{Binding Host}" VerticalAlignment="Stretch" Visibility="Collapsed"/>
                                         <Label FontSize="14" Padding="1" Margin="4,0,0,0" Content="{Binding CтатусБААК12}" VerticalAlignment="Stretch"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
@@ -495,7 +501,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
             
-                        <local:UserControlURAN Margin="8" x:Name="controlDetector"/>
+                        <local:UserControlURAN Margin="8" x:Name="controlDetector11"/>
 
                  
                     <Button Width="40" Height="24" Content="reset" HorizontalAlignment="Left" Click="Button_ClickResetDetectors" Margin="16"/>
@@ -568,8 +574,7 @@
                                         <Label Name="Y"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                                        <Button  Width="40" Height="40" VerticalAlignment="Top"
-                    Click="Button_Click_4" Margin="0, 0, 0, 0" IsEnabled="True" Panel.ZIndex="4">
+                                        <Button  Width="40" Height="40" VerticalAlignment="Top" Click="Button_Click_4" Margin="0, 0, 0, 0" IsEnabled="True" Panel.ZIndex="4">
                                             <Button.Effect>
                                                 <DropShadowEffect BlurRadius="4" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="0"/>
                                             </Button.Effect>
@@ -607,11 +612,22 @@
                                                 <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,5">Развертка сигнала</TextBlock>
                                             </d3:Chart.Title>
                                             <d3:LineGraph x:Name="linegraph" />
-
+                                            <d3:Chart.LegendContent>
+                                                <d3:LegendItemsPanel>
+                                                    <d3:LegendItemsPanel.Resources>
+                                                        <DataTemplate x:Key="InteractiveDataDisplay.WPF.LineGraph">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <CheckBox IsChecked="{Binding Path=Visibility, Converter={StaticResource VisibilityToCheckedConverter}, Mode=TwoWay}"/>
+                                                                <Line Width="15" Height="15" X1="0" Y1="0" X2="15" Y2="15" Stroke="{Binding Path=Stroke}" StrokeThickness="2"/>
+                                                                <TextBlock Margin="5,0,0,0" Text="{Binding Path=Description}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </d3:LegendItemsPanel.Resources>
+                                                </d3:LegendItemsPanel>
+                                            </d3:Chart.LegendContent>
                                         </d3:Chart>
                                         <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                                            <Button  Width="40"  VerticalAlignment="Top"
-                    Margin="0, 0, 0, 0" IsEnabled="True" Panel.ZIndex="4" Content="Set" Click="Button_Click_8">
+                                            <Button  Width="40"  VerticalAlignment="Top" Margin="0, 0, 0, 0" IsEnabled="True" Panel.ZIndex="4" Content="Set" Click="Button_Click_8">
                                             </Button>
                                         </StackPanel>
                                     </Grid>
@@ -631,6 +647,9 @@
                                         <TextBox Text="0" x:Name="TextFY"  TextChanged="TextBox_TextChanged_2"/>
                                         <TextBlock Text="Конец оси Y"/>
                                         <TextBox Text="100" x:Name="TextEY"  TextChanged="TextBox_TextChanged_3"/>
+                                        <TextBlock Text="Вычитать нуливую линию"/>
+                                        <local1:ToggleButton x:Name="ToggleNull" Width="40" Height="40" HorizontalAlignment="Left"  MouseLeftButtonDown="ToggleNull_MouseLeftButtonDown"/>
+
                                     </StackPanel>
 
                                 </Grid>
@@ -752,6 +771,10 @@
                         <Label x:Name="LabFlagMC" Content="Выкл" Margin="-12,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
                     <Label x:Name="ServisMonitor" Margin="16,0,0,0" Content="служба мониторинга запущена" Visibility="Hidden"/>
+                    <StackPanel Visibility="Hidden">
+                        <Label x:Name="LabelTestMGVS"/>
+                        <Button Content="Test"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel  Grid.Column="0" Grid.Row="1" Background="White" Margin="8" x:Name="MS1View" Visibility="Collapsed">
@@ -768,9 +791,10 @@
                     <Label Content="MC 2 работает"/>
                     <Label x:Name="labMC2"/>
                 </StackPanel>
+               
             </Grid>
         </Border>
-        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="dfddg" Margin="8,4,4,4" FontSize="22" FontStyle="Normal" FontFamily="Arial" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <Label x:Name="rezimYst" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="dfddg" Margin="8,4,4,4" FontSize="22" FontStyle="Normal" FontFamily="Segoe UI" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
         
         <ProgressBar UseLayoutRounding="True" Grid.Row="1" Grid.Column="2" x:Name="progres"  Height="20" Margin="4"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Right" Width="122" >
             <ProgressBar.Effect>
@@ -799,7 +823,7 @@
                 <TextBlock x:Name="TimeTestO" FontFamily="Time" Foreground="White"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.ColumnSpan="3" Grid.RowSpan="5" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"    x:Name="GridStartInfo" VerticalAlignment="Stretch"  >
+        <Grid Grid.ColumnSpan="3" Grid.RowSpan="5" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"   x:Name="GridStartInfo" VerticalAlignment="Stretch"  >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="60"/>
@@ -824,14 +848,13 @@
        
         <Grid Grid.ColumnSpan="3" Grid.RowSpan="5" UseLayoutRounding="True" Background="WhiteSmoke" Visibility="Hidden"  x:Name="GridStartInfoError" VerticalAlignment="Stretch"  >
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="300"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
-
             </Grid.RowDefinitions>
 
             <Label Content="При старте возникли неисправности" FontFamily="Arial" Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Background="Red" Foreground="White" FontSize="22" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"/>
@@ -854,6 +877,10 @@
                 <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" Text="Выберите элемент из списка что бы просмотреть способ устранения:"/>
                 <TextBlock TextWrapping="Wrap" Text="{Binding ErrorIsprav}"/>
                 <Button Tag="{Binding ArduinoIP}" Content="Исправить автоматически?" Click="Button_Click_7" Margin="8" Background="WhiteSmoke"/>
+            </StackPanel>
+            <StackPanel Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="8" HorizontalAlignment="Left">
+                <Button Content="Менеджер Ардуино" Click="Button_Click_10" Margin="8"/>
+              
             </StackPanel>
             <StackPanel Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="8" HorizontalAlignment="Right">
                 <Button Content="Продолжить" Click="Button_Click_6" Margin="8"/>

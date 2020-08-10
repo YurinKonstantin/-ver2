@@ -456,6 +456,9 @@ namespace URAN_2017
 
 
         private bool _flagMS = false;
+        /// <summary>
+        ///  Ипользовать МС 
+        /// </summary>
         public bool FlagMS
         {
             get

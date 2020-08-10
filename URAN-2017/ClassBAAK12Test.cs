@@ -20,96 +20,104 @@ namespace URAN_2017
         /// <param name="trigProg">если =true, то по количеству</param>
         public virtual void TestRanПодготовка(int porog, int trig, Boolean trigProg)
         {
-            Flagtest = true;
-            CтатусБААК12 = "Подготовка к тестовому набору";
-          
-
-            TriggerStopОго();
-            CтатусБААК12 = "Вычитываем данные";
-          
-           // ВычитываемДанныеНужные();
-            ВычитываемДанныеНенужные();
-
-            //TriggerStop();
-            CтатусБААК12 = "вычитываем очередь";
-           
-            Thread.Sleep(500);
-            int koloch = 0;
-            while (OcherediNaZapic.Count != 0 | koloch < 50)
-            {
-                koloch++;
-                //Thread.Sleep(500);
-                CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
-            }
-            CтатусБААК12 = "Закрытие файла";
-          
-            CloseFile();
-            Flagtest = true;
-            CтатусБААК12 = "Открытие тестового файла";
-            Thread.Sleep(500);
-            //if (Conect300Statys)
-            // {
-            string tipPl;
-            if (!BAAKTAIL)
-            {
-                tipPl = "N";
-            }
-            else
-            {
-                tipPl = "T";
-            }
             try
-                {
-                string path = NameFileWay;
-                string subpath = @"Test";
-                DirectoryInfo dirInfo = new DirectoryInfo(path);
-                if (!dirInfo.Exists)
-                {
-                    dirInfo.Create();
-                }
-                dirInfo = new DirectoryInfo(path+@"\"+ subpath);
+            {
 
-               if(!dirInfo.Exists)
+
+                Flagtest = true;
+                CтатусБААК12 = "Подготовка к тестовому набору";
+
+
+                TriggerStopОго();
+                CтатусБААК12 = "Вычитываем данные";
+
+                // ВычитываемДанныеНужные();
+                ВычитываемДанныеНенужные();
+
+                //TriggerStop();
+                CтатусБААК12 = "вычитываем очередь";
+
+                Thread.Sleep(500);
+                int koloch = 0;
+                while (OcherediNaZapic.Count != 0 | koloch < 50)
                 {
-                    dirInfo.Create();
+                    koloch++;
+                    //Thread.Sleep(500);
+                    CтатусБААК12 = "вычитываем очередь" + " =" + OcherediNaZapic.Count;
                 }
-                
-                String sd = Time();
-                    NameFile = NameFileWay+@"\"+ subpath + @"\" + NamKl + "_" + "Test" + "_" + sd+"_"+tipPl + ".bin";
+                CтатусБААК12 = "Закрытие файла";
+
+                CloseFile();
+                Flagtest = true;
+                CтатусБААК12 = "Открытие тестового файла";
+                Thread.Sleep(500);
+                //if (Conect300Statys)
+                // {
+                string tipPl;
+                if (!BAAKTAIL)
+                {
+                    tipPl = "N";
+                }
+                else
+                {
+                    tipPl = "T";
+                }
+                try
+                {
+                    string path = NameFileWay;
+                    string subpath = @"Test";
+                    DirectoryInfo dirInfo = new DirectoryInfo(path);
+                    if (!dirInfo.Exists)
+                    {
+                        dirInfo.Create();
+                    }
+                    dirInfo = new DirectoryInfo(path + @"\" + subpath);
+
+                    if (!dirInfo.Exists)
+                    {
+                        dirInfo.Create();
+                    }
+
+                    String sd = Time();
+                    NameFile = NameFileWay + @"\" + subpath + @"\" + NamKl + "_" + "Test" + "_" + sd + "_" + tipPl + ".bin";
                     data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
                     data_w = new BinaryWriter(data_fs);
                     BDReadFile(NamKl + "_" + "Test" + "_" + sd, NameBAAK12, sd, BAAK12T.NameRan);
                     NameFileClose = NamKl + "_" + "Test" + "_" + sd + "_" + tipPl;
-            }
+                }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Ошибка открытия файла" + ex.ToString());
                 }
-            // }
-            КолПакетов = 0;
-            КолПакетовEr = 0;
-            КолПакетовОчер = 0;
-            КолПакетовОчер2 = 0;
-            КолПакетовN = 0;
-            if (!trigProg)//по длительности
-            {
-                CтатусБААК12 = "Тестовый набор по длительности";
-                Thread.Sleep(500);
-                AllSetPorogAll(Convert.ToUInt32(porog));
-                Trigger(0x200006, Convert.ToUInt32(trig));               
-               //TriggerStart();
-              
+                // }
+                КолПакетов = 0;
+                КолПакетовEr = 0;
+                КолПакетовОчер = 0;
+                КолПакетовОчер2 = 0;
+                КолПакетовN = 0;
+                if (!trigProg)//по длительности
+                {
+                    CтатусБААК12 = "Тестовый набор по длительности";
+                    Thread.Sleep(500);
+                    AllSetPorogAll(Convert.ToUInt32(porog));
+                    Trigger(0x200006, Convert.ToUInt32(trig));
+                    //TriggerStart();
+
+                }
+                else
+                {
+                    CтатусБААК12 = "Тестовый набор по количеству";
+                    TriggerProgramSetap();
+                    Thread.Sleep(500);
+                    TriggerStart();
+                    //TriggerProgramSetap();
+
+                }
             }
-           else
+            catch(Exception ex)
             {
-                CтатусБААК12 = "Тестовый набор по количеству";
-                TriggerProgramSetap();
-                Thread.Sleep(500);
-                TriggerStart();
-                //TriggerProgramSetap();
-                
+                MessageBox.Show(ex.ToString());
             }
-            
         }
         /// <summary>
         /// Завершение тестовго набора и возрат настроек обычного набора

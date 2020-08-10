@@ -178,7 +178,7 @@ namespace URAN_2017
                     }
                     else
                     {
-                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageSetBAAK100.xaml", UriKind.Relative));
+                        frameName.NavigationService.Navigate(new Uri("PageSetBAAK100.xaml", UriKind.Relative));
                     }
                 
                     break;

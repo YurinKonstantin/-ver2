@@ -11,6 +11,9 @@ namespace URAN_2017
 {
     public partial class MainWindow
     {
+        /// <summary>
+        /// Определяет имя Рана и записывает его в BAAK.NameRan
+        /// </summary>
         private void RanName()
         {
             DateTime taimer = DateTime.UtcNow;

@@ -7,7 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="50">
     <Grid MouseEnter="Dneutron_MouseEnter" MouseLeave="DSig_MouseLeave">
-        <Ellipse x:Name="DSig" Height="40" Width="40" StrokeThickness="2" Stroke="Black" Fill="Green" />
+        <Ellipse x:Name="DSig" Height="40" Width="40" StrokeThickness="2" Stroke="Black" Fill="Green"   />
         <Ellipse x:Name="Dneutron" Height="25" Width="25" StrokeThickness="2" Stroke="Black" Fill="Green" />
+        <Grid x:Name="gridViz" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#99FFFFFF" Visibility="Hidden" >
+            
+        </Grid>
     </Grid>
 </UserControl>

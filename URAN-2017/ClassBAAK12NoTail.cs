@@ -1654,7 +1654,7 @@ namespace URAN_2017
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("BDselect" + ex.Message);
             }
             finally
             {
