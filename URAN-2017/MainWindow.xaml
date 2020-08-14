@@ -174,12 +174,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <Border BorderBrush="Black"  Margin="16,4,4,4"  Background="White">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="1" ShadowDepth="0"   x:Name="Bor"/>
-                    </Border.Effect>
-                    <Button   Content="Button"   Click="Button_Click_2" RenderTransformOrigin="0.5,0.5" Background="Transparent" BorderThickness="0" Margin="0,0,0,2" />
-                </Border>
+              
                 <Button  Margin="4" Click="Button_Click_11">
                     <Button.Background>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
@@ -187,10 +182,16 @@
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/ImgSourse/arduino.jpg" Width="28" Height="28"/>
-                            <TextBlock Text="Ардуина" VerticalAlignment="Center"/>
+                            <TextBlock Text="Arduino" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button.Content>
                 </Button>
+                <Border BorderBrush="Black"  Margin="16,4,4,4"  Background="White" HorizontalAlignment="Right" >
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="1" ShadowDepth="0"   x:Name="Bor"/>
+                    </Border.Effect>
+                    <Button   Content="Button"   Click="Button_Click_2" RenderTransformOrigin="0.5,0.5" Background="Transparent" BorderThickness="0" Margin="0,0,0,2" />
+                </Border>
             </StackPanel>
             <Label Content="Основной режим" ToolBar.OverflowMode="Always"/>
             <ToggleSwitch:HorizontalToggleSwitch ToolBar.OverflowMode="Always" x:Name="ChecRez" Checked="HorizontalToggleSwitch_Checked" Unchecked="HorizontalToggleSwitch_Unchecked"/>
@@ -505,7 +506,7 @@
 
                  
                     <Button Width="40" Height="24" Content="reset" HorizontalAlignment="Left" Click="Button_ClickResetDetectors" Margin="16"/>
-                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="16"  x:Name="tecSos"/>
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="16"  x:Name="tecSos" FontWeight="Bold"/>
                     <ProgressBar Width="600" Height="20" x:Name="prog" Visibility="Collapsed" IsIndeterminate="True"/>
                 </Grid>
             </TabItem>

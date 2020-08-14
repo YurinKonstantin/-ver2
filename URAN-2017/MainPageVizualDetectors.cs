@@ -15,7 +15,7 @@ namespace URAN_2017
         public void DoReset(object sender, EventArgs e)
         {
             // Dispatcher.Invoke(DispatcherPriority.Render,)
-            tecSos.Text = "До обнавления состояния" + (60 - xTime).ToString();
+            tecSos.Text = "До обновления состояния" + (60 - xTime).ToString();
             xTime++;
             if (xTime >= 60)
             {

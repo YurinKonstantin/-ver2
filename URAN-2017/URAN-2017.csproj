@@ -31,7 +31,7 @@
     <ProductName>URAN</ProductName>
     <PublisherName>YuKO</PublisherName>
     <MinimumRequiredVersion>1.0.2.10</MinimumRequiredVersion>
-    <ApplicationRevision>25</ApplicationRevision>
+    <ApplicationRevision>26</ApplicationRevision>
     <ApplicationVersion>1.0.5.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -259,6 +259,9 @@
     <Compile Include="ClassTestRan.cs" />
     <Compile Include="ClassZapicBD.cs" />
     <Compile Include="ClassZapicBD100.cs" />
+    <Compile Include="FolderSetUp\PageAbout.xaml.cs">
+      <DependentUpon>PageAbout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FolderSetUp\PageVizyal.xaml.cs">
       <DependentUpon>PageVizyal.xaml</DependentUpon>
     </Compile>
@@ -406,6 +409,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FolderSetUp\AddTimeRanTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FolderSetUp\PageAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
