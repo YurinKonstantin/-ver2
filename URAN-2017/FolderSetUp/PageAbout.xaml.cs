@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +26,15 @@ namespace URAN_2017.FolderSetUp
         public PageAbout()
         {
             InitializeComponent();
+            //var version = ApplicationDeployment.CurrentDeployment.CurrentVersion;
+           // VersionNumber.Text = string.Format($"Version: {version.Major}.{version.Minor}.{version.Build}.{version.Revision}");
+        }
+      
+
+        private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+        {
+            Process.Start(@"https://github.com/YurinKonstantin/URAN/issues/new/choose");
+           // await Launcher.LaunchUriAsync(new Uri(@"https://github.com/YurinKonstantin/FolderFileCommander/issues/new/choose"));
         }
     }
 }

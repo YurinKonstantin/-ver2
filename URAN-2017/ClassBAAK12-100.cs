@@ -177,8 +177,9 @@ namespace URAN_2017
                 OcherediNaZapicBD.TryDequeue(out BDData);
                 if (BDData != null)
                 {
-                  
-                     //TODO   BDReadСобытие(BDData.nameFileBD, BDData.nameBAAKBD, BDData.timeBD, BDData.nameRanBD, BDData.AmpBD, BDData.nameklasterBD, BDData.NlBD, BDData.sigBDnew);//пишем в бд
+
+                    //TODO (string nameFile, string nameBAAK, string time, string nameRan, int Amp, string nameklaster, int Nl, Double sig, int nD, int TimeFirst, int TimeAmp)
+                    BDReadСобытие(BDData.nameFileBD, BDData.nameBAAKBD, BDData.timeBD, BDData.nameRanBD, BDData.AmpBD, BDData.nameklasterBD, BDData.NlBD, BDData.sigBDnew, BDData.DBD, BDData.TimeFirstBD, BDData.TimeAmpBD);//пишем в бд
                
 
                     КолПакетовОчер2++;

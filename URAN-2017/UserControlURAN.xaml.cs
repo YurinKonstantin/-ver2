@@ -152,7 +152,7 @@ namespace URAN_2017
         }
 
 
-      public  ObservableCollection<BAAK12T> _DataColecViev = new ObservableCollection<BAAK12T>();
+        public  ObservableCollection<BAAK12T> _DataColecViev = new ObservableCollection<BAAK12T>();
        
 
       

@@ -9,6 +9,59 @@
       Title="PageAbout">
 
     <Grid>
-        
+        <ScrollViewer>
+            <StackPanel Margin="12,12,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" >
+       
+                <StackPanel Orientation="Horizontal">
+                    <Image
+                        Width="60"
+                        Source="/Homegroup.ico"
+                        Stretch="Uniform" />
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock
+                        
+                            FontSize="16"
+                            FontWeight="Medium"
+                            Text="URAN" />
+                        <TextBlock
+                            x:Name="VersionNumber"
+                            Padding="0,4"
+                            FontSize="14"
+                            Opacity=".5"
+                            Text="Version number" />
+                    </StackPanel>
+                </StackPanel>
+
+
+                <ListView
+                    HorizontalAlignment="Left"
+                   
+                    >
+                    <ListViewItem
+                      Selected="ListViewItem_Selected"
+                        Padding="8,2"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        IsEnabled="True">
+                        <StackPanel Orientation="Horizontal">
+                            <Image />
+                            <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                                <TextBlock Text="Сообщить разработчику о проблеме/предлжить новую идею" />
+                                <TextBlock
+                                   
+                                    FontSize="12"
+                                    Foreground="Gray"
+                                    Text="Отправьте разработчикам отчет о проблеме или предложение с дополнительной информацией"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+
+
+                <TextBlock VerticalAlignment="Stretch" Text="Что нового" TextWrapping="WrapWithOverflow"/>
+                <TextBlock VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
