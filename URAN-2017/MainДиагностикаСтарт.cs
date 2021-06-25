@@ -222,6 +222,7 @@ namespace URAN_2017
                if(ConnnectURANDelegate != null)
                 {
                     ConnnectURANDelegate?.Invoke();
+                    НастройкаURANDelegate?.Invoke();
                 }
                 if (BAAK12T.ConnnectURANDelegate!=null)
                 {

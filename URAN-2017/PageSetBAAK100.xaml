@@ -30,6 +30,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
+                
                 <Label Content="Имя платы в каждом кластере"/>
                 <ListView x:Name="list" Grid.Row="2" BorderThickness="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" >
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace URAN_2017
 {
-    class ClassZapicBD100
+   public class ClassZapicBD100
     {
     
  
@@ -14,19 +14,32 @@ namespace URAN_2017
         public string nameBAAKBD = "У1";
         public string timeBD = "00.00";
         public string nameRanBD = "Ran00";
-        public int AmpBD = 0;
         public string nameklasterBD = "кл1";
-  
-   
-        public int NlBD = 0;
-   
-        public Double sigBDnew = 0;
+        public int[] SumD;
+        public int[] Amp;
+        public int[] TmaxACh;
+        public int[] TfACh;
+        public int[] TeACh;
+        public  int[] TpmA;
+        public  int[] TA14Ch;
+        public int[] TA34Ch;
+        public int[] QCh;
+        /// <summary>
+        /// Количество бинов
+        /// </summary>
+        public int[] SBCh;
+        /// <summary>
+        /// Количество сигналов после первого сигнала
+        /// </summary>
+        public int[] SCh;
+        public int[] Nl;
+        public double[] sig;
+        public int bad;
 
-        public int DBD = 0;
-        public int AmpSobBD = 0;
-        public int TimeFirstBD = 0;
 
-        public int TimeAmpBD = 0;
+
+
+
 
     }
 }

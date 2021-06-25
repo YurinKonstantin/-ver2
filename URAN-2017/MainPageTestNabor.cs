@@ -49,10 +49,10 @@ namespace URAN_2017
 
 
                     alarmNewRun = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1, 0, 0, 0, 0);
-                    if (DateTime.Compare(DateTime.UtcNow, alarmNewRun) > 0)
-                    {
+                  //  if (DateTime.Compare(DateTime.UtcNow, alarmNewRun) > 0)
+                  //  {
                         alarmNewRun = alarmNewRun.AddMonths(1);
-                    }
+                  //  }
                     temp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, 0, 0);
                     if (setP.FlagMainRezim)
                     {
@@ -105,8 +105,8 @@ namespace URAN_2017
                                 alarmNewFile = alarmNewFile.AddMinutes(IntervalNewFile1);
                             }
                         }
-                     
-                 
+
+                        NewRun();
 
                     }
                 }

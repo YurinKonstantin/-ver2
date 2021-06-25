@@ -10,7 +10,7 @@ namespace URAN_2017
 {
     public partial class MainWindow
     {
-        DateTime alarmNewRun;
+        DateTime alarmNewRun { get; set; }
         private void NewRun()
         {
             if (DateTime.Compare(DateTime.UtcNow, alarmNewRun) > 0)
@@ -39,6 +39,7 @@ namespace URAN_2017
         }
         private void NewRanWork()
         {
+            Log_left_accs();
           //  Dispatcher.Invoke(new ParametrizedMethodInvoker1(this.Log_left_accs));
         }
        

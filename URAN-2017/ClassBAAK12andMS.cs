@@ -753,11 +753,11 @@ public System.Windows.Media.Brush Brushes
             catch (NullReferenceException ee)
             {
               
-                File.AppendAllText("D:\\Erroy_URAN_file.txt", "Error 723" + "\n"); //допишет текст в конец файла
+              //  File.AppendAllText("D:\\Erroy_URAN_file.txt", "Error 723" + "\n"); //допишет текст в конец файла
             }
             catch (Exception ex)
             {
-                File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка обработки данных" + ex.Message.ToString() + "\n" + "Время " + time + "\n"); //допишет текст в конец файла
+              //  File.AppendAllText("D:\\Erroy_URAN_file.txt", "Ошибка обработки данных" + ex.Message.ToString() + "\n" + "Время " + time + "\n"); //допишет текст в конец файла
             }
            
        }

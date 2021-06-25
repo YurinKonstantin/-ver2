@@ -108,8 +108,8 @@ namespace URAN_2017
                     
                     Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка режима синхронизации"; }));
-
-                    await РежимСинхИлиНетТаск(set.DelayClok);//Подготавливает МС к запуску и МГВС если нужно
+                    await Task.Run(() => РежимСинхИлиНет(set.DelayClok));
+                   // await РежимСинхИлиНетТаск(set.DelayClok);//Подготавливает МС к запуску и МГВС если нужно
 
                     rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Разрешаем работу"; }));
 
@@ -171,7 +171,7 @@ namespace URAN_2017
                             }
                             try
                             {
-                                MS1.АвтономныйКлокРазрешен(0);
+                                //MS1.АвтономныйКлокРазрешен(0);
                             }
                             catch(Exception ex)
                             {
@@ -294,47 +294,14 @@ namespace URAN_2017
        public List<WindowChart> lstChart = new List<WindowChart>();
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            // List3
-            string s = String.Empty;
-            s += "Используемая полярность сигнала стала:" + "\n";
-           if(List3.Items.Count>0)
-            {
-                foreach (ClassBAAK12_100 ss in List3.Items)
-                {
-                    ss.signalPozitif = !ss.signalPozitif;
-                    if(ss.signalPozitif)
-                    {
-                        s += "Кластер:"+ss.NamKl +"\t"+"положителен"+ "\n";
-                    }
-                    else
-                    {
-                        s += "Кластер:" + ss.NamKl + "\t" + "отрицателен" + "\n";
-                    }
-                   
-                }
-            }
-           else
-            {
-                s = "Плат БААК12-100 для настройки не обноружено";
-            }
-            MessageBox.Show(s);
-            uint[] mas = new uint[12];
-            mas[0] = 50;
-            mas[1] = 50;
-            int[,] raz = new int[12, 1024];
-            raz[0, 1] = 100;
-            raz[1, 1] = 98;
-            raz[2, 1] = 102;
-            raz[3, 1] = 103;
-            raz[4, 1] = 107;
-            raz[5, 1] = 108;
-            raz[6, 1] = 104;
-            raz[7, 1] = 105;
-            raz[8, 1] = 106;
-            raz[9, 1] = 101;
-            raz[10, 1] = 110;
-            raz[11, 1] = 111;
-            MyGrafic.AddPointRaz(raz, "rkf", mas);
+            var macAddr =
+       (
+           from nic in NetworkInterface.GetAllNetworkInterfaces()
+           where nic.OperationalStatus == OperationalStatus.Up
+           select nic.GetPhysicalAddress().ToString()
+       ).FirstOrDefault();
+            MessageBox.Show(macAddr);
+
             /*
             try
             {

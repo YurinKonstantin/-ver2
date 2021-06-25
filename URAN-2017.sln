@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "URAN-2017", "URAN-2017\URAN-2017.csproj", "{C21600F7-8020-401A-8EF5-2B25D6CD985C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeutronObrabotka", "..\..\..\Users\yurin\source\repos\NeutronObrabotka\NeutronObrabotka\NeutronObrabotka.csproj", "{563B92B3-734A-4F59-90D3-610554A26891}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeutronObrabotka", "..\NeutronObrabotka\NeutronObrabotka\NeutronObrabotka.csproj", "{563B92B3-734A-4F59-90D3-610554A26891}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

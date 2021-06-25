@@ -1,0 +1,55 @@
+﻿<Window x:Class="URAN_2017.AddTimeRanTest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:URAN_2017"
+        mc:Ignorable="d"
+        Title="AddTimeRanTest" Width="579.715" Height="361.778" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label FontSize="18" Grid.ColumnSpan="4" HorizontalAlignment="Center">Введите параметры тестоого набора: </Label>
+        <Label Content="Время тест набора" FontSize="14" Grid.Column="0" Grid.Row="1"/>
+        <TextBox FontSize="14" Name="hors" Grid.Row="1" Grid.Column="1" MinWidth="27" HorizontalAlignment="Left">10</TextBox>
+        
+        <Label x:Name="kol" FontSize="14" Grid.Column="0" Grid.Row="4" Content="Количество событий"/>
+        <TextBox FontSize="14" x:Name="kolSob"  Grid.Row="4" Grid.Column="1" MinWidth="27" Text="100" HorizontalAlignment="Left"></TextBox>
+        <Label FontSize="14" Grid.Column="0" Grid.Row="5" Content="интервал событий"/>
+        <TextBox FontSize="14" Name="interval" Grid.Row="5" Grid.Column="1" MinWidth="27" HorizontalAlignment="Left">250</TextBox>
+        <Label FontSize="14" Grid.Column="2" Grid.Row="5" Content="мс"/>
+        <Label FontSize="14" Grid.Column="0" Grid.Row="6" Content="длительность набора"/>
+        <TextBox FontSize="14" Name="dlit" Grid.Row="6" Grid.Column="1" MinWidth="27" HorizontalAlignment="Left">10</TextBox>
+        <Label FontSize="14" Grid.Column="2" Grid.Row="6" Content="мин"/>
+        <Label FontSize="14" Grid.Column="0" Grid.Row="7" Content="порог набора"/>
+        <TextBox FontSize="14" Name="porog" Grid.Row="7" Grid.Column="1" MinWidth="27" HorizontalAlignment="Left">1</TextBox>
+        <Label FontSize="14" Grid.Column="0" Grid.Row="8" Content="триггер набора"/>
+        <TextBox FontSize="14" Name="trig" Grid.Row="8" Grid.Column="1" MinWidth="27" HorizontalAlignment="Left">1</TextBox>
+        <TextBox FontSize="14" Name="min" Grid.Row="1" MinWidth="27" Grid.Column="2">00</TextBox>
+        <Label FontSize="14" Grid.Column="0" Grid.Row="2" Content="Тип тестового набора"/>
+        <RadioButton x:Name="rad1" GroupName="tip" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Content="По длительности" FontSize="12" VerticalAlignment="Center" IsChecked="True" Unchecked="RadioButton_Unchecked" Checked="RadioButton_Checked"/>
+        <RadioButton GroupName="tip" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Content="По количеству"/>
+        <WrapPanel Grid.Row="9" Grid.Column="3" HorizontalAlignment="Center" Margin="0,15,0,0">
+            <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,0,0" Content="OK"/>
+            <Button IsCancel="True" MinWidth="60">Отмена</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

@@ -44,6 +44,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
+                
                 <Label/>
                 <Label  Content="Расположение Базы Данных"  FontSize="18" />
                 <Label  Content="Сохранять данные о работе установки в БД"/>
@@ -58,6 +59,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
+                <Button Margin="0,4,0,8" Content="Создать БД 100" HorizontalAlignment="Left" Click="Button_Click_1"/>
                 <Label/>
 
                 <Label  Content="Расположение Базы Данных Тестового набора"  FontSize="18" />

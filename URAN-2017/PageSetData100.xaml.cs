@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 using URAN_2017.FolderSetUp;
+using URAN_2017.WorkBD;
 
 namespace URAN_2017
 {
@@ -158,7 +159,7 @@ namespace URAN_2017
         {
             OpenFileDialog myDialog = new OpenFileDialog
             {
-                Filter = "База данных(*.MDB;*.MDB;*.accdb)|*.MDB;*.MDB;*.ACCDB" + "|Все файлы (*.*)|*.* ",
+                Filter = "База данных(*.MDB;*.MDB;*.accdb; *.db; *.db3)|*.MDB;*.MDB;*.ACCDB;*DB; *DB3;" + "|Все файлы (*.*)|*.* ",
                 CheckFileExists = true,
                 Multiselect = true
             };
@@ -177,7 +178,7 @@ namespace URAN_2017
         {
             OpenFileDialog myDialog = new OpenFileDialog
             {
-                Filter = "База данных(*.MDB;*.MDB;*.accdb)|*.MDB;*.MDB;*.ACCDB" + "|Все файлы (*.*)|*.* ",
+                Filter = "База данных(*.MDB;*.MDB;*.accdb; *.db; *.db3)|*.MDB;*.MDB;*.ACCDB;*DB; *DB3;" + "|Все файлы (*.*)|*.* ",
                 CheckFileExists = true,
                 Multiselect = true
             };
@@ -187,14 +188,30 @@ namespace URAN_2017
             }
         }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            DialogResult result = folderBrowser.ShowDialog();
+            if (!string.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
+            {
+                var dir = new System.IO.DirectoryInfo(folderBrowser.SelectedPath);
+                string pp = folderBrowser.SelectedPath + @"\BD_Data_100.db";
+                DataAccesBDData.Path = folderBrowser.SelectedPath + @"\BD_Data_100.db";
+                WayBd.Text = folderBrowser.SelectedPath;
+                set.WaySetup = WayBd.Text;
+                DataAccesBDData.CreateDB();
+                DataAccesBDData.InitializeDatabase100();
+
+            }
+            System.Windows.MessageBox.Show("База данных создана");
+        }
 
 
 
 
-   
-    
 
-  
+
+
         private void Bu_MouseLeftButtonDownFMR(object sender, MouseButtonEventArgs e)
         {
             if (BuchekTogleBinSave.Toggled1 == true)

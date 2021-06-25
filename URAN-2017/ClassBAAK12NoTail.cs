@@ -91,7 +91,7 @@ namespace URAN_2017
                 {
                     DataYu clasdata = new DataYu();
                     OcherediNaZapic.TryDequeue(out clasdata);
-                    if (clasdata.ListData != null)
+                    if (clasdata !=null && clasdata.ListData != null)
                     {
                         int f = clasdata.ListData.Count;
                         byte[] d = new byte[f];
@@ -404,9 +404,9 @@ namespace URAN_2017
         {
             try
             {
-                dataYu = new DataYu();
-                OcherediNaZapic.TryDequeue(out dataYu);
-                if (dataYu.ListData != null)
+               // dataYu = new DataYu();
+                OcherediNaZapic.TryDequeue(out DataYu dataYu);
+                if (dataYu !=null && dataYu.ListData != null)
                 {
                     byte[] d = new byte[dataYu.ListData.Count];
                     int x = 0;

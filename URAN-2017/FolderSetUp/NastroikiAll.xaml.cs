@@ -149,123 +149,136 @@ namespace URAN_2017
 
         private void ListView1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (listView1.SelectedIndex)
+            if (set.FlagMainRezim)
             {
-                case 0:
-                    if(set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetYstan.xaml", UriKind.Relative));
-                    }
-                  else
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetYstan100.xaml", UriKind.Relative));
-                    }
-                   
+                switch (listView1.SelectedIndex)
+                {
+                    case 0:
+                       
+                            frameName.NavigationService.Navigate(new Uri("PageSetYstan.xaml", UriKind.Relative));
+                        
+                      
 
 
-                    break;
-                case 1:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetRan.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetRan100.xaml", UriKind.Relative));
-                    }
+
+                        break;
+                    case 1:
+                     
+                            frameName.NavigationService.Navigate(new Uri("PageSetRan.xaml", UriKind.Relative));
+                     
+
+                        break;
+                    case 2:
+                     
+                            frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageSetBAAK.xaml", UriKind.Relative));
                    
-                    break;
-                case 2:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageSetBAAK.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetBAAK100.xaml", UriKind.Relative));
-                    }
-                
-                    break;
-                case 3:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetData.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetData100.xaml", UriKind.Relative));
-                    }
-             
-                    break;
-                case 5:                
+
+                        break;
+                    case 3:
+                       
+                            frameName.NavigationService.Navigate(new Uri("PageSetData.xaml", UriKind.Relative));
+                    
+
+                        break;
+                    case 5:
                         frameName.NavigationService.Navigate(new Uri("WorkBD/PageParametersBAAK.xaml", UriKind.Relative));
-                    break;
-                case 4:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetClok.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageSetClok100.xaml", UriKind.Relative));
-                    }
-                   
-                    break;
-                case 6:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageTestRAN.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
-                        frameName.NavigationService.Navigate(new Uri("PageTestRAN100.xaml", UriKind.Relative));
-                    }
-             
-                    break;
-                case 7:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageOtbor.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
+                        break;
+                    case 4:
+                       
+                            frameName.NavigationService.Navigate(new Uri("PageSetClok.xaml", UriKind.Relative));
+                        
+                     
 
-                    }
-                 
-                    break;
-                case 8:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageVizyal.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
+                        break;
+                    case 6:
+                    
+                            frameName.NavigationService.Navigate(new Uri("PageTestRAN.xaml", UriKind.Relative));
+                  
 
-                    }
-                    break;
-                case 9:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("WorkBD/PageBDData.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
+                        break;
+                    case 7:
+                       
+                            frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageOtbor.xaml", UriKind.Relative));
+                     
 
-                    }
+                        break;
+                    case 8:
+                     
+                            frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageVizyal.xaml", UriKind.Relative));
+                    
+                        break;
+                    case 9:
+                      
+                            frameName.NavigationService.Navigate(new Uri("WorkBD/PageBDData.xaml", UriKind.Relative));
+                    
 
-                    break;
-                case 10:
-                    if (set.FlagMainRezim)
-                    {
-                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageAbout.xaml", UriKind.Relative));
-                    }
-                    else
-                    {
+                        break;
+                    case 10:
+                      
+                            frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageAbout.xaml", UriKind.Relative));
+                     
 
-                    }
-
-                    break;
+                        break;
+                }
             }
+            else
+            {
+                switch (listView1.SelectedIndex)
+                {
+                    case 0:
+
+                        frameName.NavigationService.Navigate(new Uri("PageSetYstan100.xaml", UriKind.Relative));
+
+                        break;
+                    case 1:
+
+
+                        frameName.NavigationService.Navigate(new Uri("PageSetRan100.xaml", UriKind.Relative));
+
+
+                        break;
+                    case 2:
+                 
+                            frameName.NavigationService.Navigate(new Uri("PageSetBAAK100.xaml", UriKind.Relative));
+                        
+
+                        break;
+                    case 3:
+                     
+                            frameName.NavigationService.Navigate(new Uri("PageSetData100.xaml", UriKind.Relative));
+                        
+
+                        break;
+                    case 5:
+                        frameName.NavigationService.Navigate(new Uri("WorkBD/PageParametersBAAK.xaml", UriKind.Relative));
+                        break;
+                    case 4:
+                    
+                            frameName.NavigationService.Navigate(new Uri("PageSetClok100.xaml", UriKind.Relative));
+                        
+
+                        break;
+                    case 6:
+                   
+                            frameName.NavigationService.Navigate(new Uri("PageTestRAN100.xaml", UriKind.Relative));
+                        
+
+                        break;
+                    case 7:
+
+                        frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageAbout.xaml", UriKind.Relative));
+                        break;
+                    case 8:
+                      
+                            frameName.NavigationService.Navigate(new Uri("FolderSetUp/PageVizyal.xaml", UriKind.Relative));
+                       
+                        break;
+                 
+                    
+                }
+            }
+              
+               
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

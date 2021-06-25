@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -83,17 +84,18 @@ namespace URAN_2017
       
         private void RegistersInit_DRS4()
         {
-            WreadReg3000(0x60, 0);
-           // WreadReg3000(0, 1);	// 1 = Program Trigger, 0 = Ext. Auto, 0x10 = DRS Enable, 0x20 = DENABLE Always High
+            WreadReg3000(0x100, 0);
+            // WreadReg3000(0x60, 0);
+            // WreadReg3000(0, 0);	// 1 = Program Trigger, 0 = Ext. Auto, 0x10 = DRS Enable, 0x20 = DENABLE Always High
             //WreadReg3000(0, 0x31);	// 
-            WreadReg3000(34, 4);	// 4 = Stop without Data Останавливает DRS без передачи данных
-           // WreadReg3000(0x21, 0xDFF);  // Program DRS4
+            // WreadReg3000(34, 4);	// 4 = Stop without Data Останавливает DRS без передачи данных
+            // WreadReg3000(0x21, 0xDFF);  // Program DRS4
             //WreadReg3000(0x21, 0xBFF);  // Program DRS4
-           // WreadReg3000(0x21, 0xCFF);	// Program DRS4
-           // WreadReg3000(16, 1);    // DMA Enable
-           // WreadReg3000(0x10, 1); //MC start
-           // WreadReg3000(0x21, 1); //MC Event Number
-         // WreadReg3000(0x3, 10);    // Delay DRS Stop (50 = 500 ns)
+            // WreadReg3000(0x21, 0xCFF);	// Program DRS4
+            // WreadReg3000(16, 1);    // DMA Enable
+            // WreadReg3000(0x10, 1); //MC start
+            // WreadReg3000(0x21, 1); //MC Event Number
+            // WreadReg3000(0x3, 10);    // Delay DRS Stop (50 = 500 ns)
             WreadReg3000(0x30, 0);    // Offset 0 ch
             WreadReg3000(0x40, 1024);  // Length 0 ch
             WreadReg3000(0x31, 0);    // Offset 1 ch
@@ -112,15 +114,29 @@ namespace URAN_2017
             WreadReg3000(0x47, 1024);  // Length 7 ch
             WreadReg3000(0x38, 0);    // Offset 8 ch
             WreadReg3000(0x48, 1024);  // Length 8 ch
-            //num = XilWriteReg(0, 0x31);	// 1 = Program Trigger, 0 = Ext. Auto
-            WreadReg3000(0, 0x30);	// 1 = Program Trigger, 0 = Ext. Auto
-            if(flagMGVS)
+                                       //num = XilWriteReg(0, 0x31);	// 1 = Program Trigger, 0 = Ext. Auto
+                                       // 1 = Program Trigger, 0 = Ext. Auto
+        //    WreadReg3000(0, 0x30);
+            if (flagMGVS)
             {
+                WreadReg3000(0x2000026, 0x0);
+               // WreadReg3000(26, 0x0);
+                WreadReg3000(0, 0x10);
                 WreadReg3000(0x100, 1);
+
             }
             else
             {
-                WreadReg3000(0x100, 0);	// Trigger Enable 1- Разрешение внешнего триггера 
+
+
+               // WreadReg3000(0, 0x31);
+                WreadReg3000(0x2000026, 0x1);
+                WreadReg3000(0x60, 0);
+                //   WreadReg3000(0x100, 0); // Trigger Enable 1- Разрешение внешнего триггера 
+                Debug.WriteLine("RegistersInit_DRS4");
+                WreadReg3000(0, 0x10);
+                WreadReg3000(0x100, 1);
+
             }
             
 
