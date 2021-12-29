@@ -95,6 +95,40 @@ public System.Windows.Media.Brush Brushes
             
 
         }
+        public virtual void НастройкаКлокOld()
+        {
+            if (clientBAAK12T.Connected && ns != null)
+            {
+                Brushes = System.Windows.Media.Brushes.Black;
+                //TODO настройка регистров с синхронизацией
+                CтатусБААК12 = "Запись настроик с клок";
+
+                SettingCloc();
+                Thread.Sleep(50);
+                CтатусБААК12 = "Запись общих настроик";
+                SettingAll();
+                Thread.Sleep(50);
+                CтатусБААК12 = "Создаем файл";
+                OpenFileData();
+                Thread.Sleep(50);
+                CтатусБААК12 = "Разрешаем передачу данных";
+                StartdataReg();//Разрешает передачу данных
+                Thread.Sleep(50);
+                CтатусБААК12 = "Вычитываем ненужные файлы";
+                ВычитываемДанныеНенужные();
+                Thread.Sleep(50);
+                CтатусБААК12 = "Работает";
+                Brushes = System.Windows.Media.Brushes.Green;
+            }
+            else
+            {
+                CтатусБААК12 = "НЕТ подключения";
+                Brushes = System.Windows.Media.Brushes.Red;
+                InDe(false);
+            }
+
+
+        }
         public virtual void Настройка()
         {
             if(Синхронизация)
@@ -125,10 +159,40 @@ public System.Windows.Media.Brush Brushes
                // }
             }
         }
+        public virtual void НастройкаOld()
+        {
+            if (Синхронизация)
+            {
+                //if (Conect300Statys)
+                // {
+                TriggerStop();
+                НастройкаКлокOld();
+
+                // }
+                // else
+                // {
+                //    CтатусБААК12 = "НЕТ подключения";
+                //}
+            }
+            else
+            {
+                // if (Conect300Statys)
+                //{
+                TriggerStop();
+                //MessageBox.Show("Настройка без клок");
+                НастройкаБезКлокOld();
+
+                // }
+                //  else
+                //  {
+                //    CтатусБААК12 = "НЕТ подключения";
+                // }
+            }
+        }
         /// <summary>
         /// Вычитывает ненужные файлы
         /// </summary>
-       public void ВычитываемДанныеНенужные()
+        public void ВычитываемДанныеНенужные()
        {
             bool endd = false;
             int x = 0;
@@ -251,6 +315,32 @@ public System.Windows.Media.Brush Brushes
                 MessageBox.Show("Ошибка при старте"+"\n"+ex.ToString()+"\n"+ex.Message);    
             }
           
+
+        }
+        public virtual void НастройкаБезКлокOld()
+        {
+            try
+            {
+                Brushes = System.Windows.Media.Brushes.Black;
+                CтатусБААК12 = "Запись настроик без клок";
+                SettingNoCloc();
+                CтатусБААК12 = "Запись общих настроик";
+                SettingAll();
+                CтатусБААК12 = "Создаем файл";
+                OpenFileData();
+                CтатусБААК12 = "Разрешаем передачу данных";
+                StartdataReg();//Разрешает передачу данных
+                CтатусБААК12 = "Вычитываем ненужные файлы";
+                ВычитываемДанныеНенужные();
+                CтатусБААК12 = "Работает";
+                Brushes = System.Windows.Media.Brushes.Green;
+            }
+            catch (Exception ex)
+            {
+                InDe(false);
+                MessageBox.Show("Ошибка при старте" + "\n" + ex.ToString() + "\n" + ex.Message);
+            }
+
 
         }
         public void Пуск()
@@ -499,6 +589,27 @@ public System.Windows.Media.Brush Brushes
                 CтатусБААК12 = "Ошибка при создании файла";
                 }
           
+        }
+        public virtual void OpenFileData()
+        {
+            try
+            {
+                
+
+               
+               // NameFile = NameFileWay + @"\" + NamKl + "_" + sd + "_" + tipPl + ".bin";
+                data_fs = new FileStream(NameFile, FileMode.Append, FileAccess.Write, FileShare.Read);
+                data_w = new BinaryWriter(data_fs);
+              
+                
+            }
+            catch (Exception)
+            {
+                InDe(false);
+                Brushes = System.Windows.Media.Brushes.Red;
+                CтатусБААК12 = "Ошибка при создании файла";
+            }
+
         }
         /// <summary>
         /// закрытие файла
@@ -984,6 +1095,7 @@ public System.Windows.Media.Brush Brushes
             {
                 ConnnectURANDelegate += ConnectAll; //подписка на конект
                 НастройкаURANDelegate += Настройка; //подписка на запуск(загрузка регистров начало, создание файла и тд )
+                НастройкаURANOldDelegate += НастройкаOld; //подписка на запуск(загрузка регистров начало, создание файла и тд )
                 ПускURANDelegate += Пуск;//запускает тамер и разрешает триггер
                 ReadDataURANDelegate += ReadData;//подписка на чтение данных с платы
                 NewFileURANDelegate += NewFileData;//подписка на создание нового файла
@@ -1019,6 +1131,7 @@ public System.Windows.Media.Brush Brushes
             {
                 ConnnectURANDelegate -= ConnectAll;//подписка на конект
                 НастройкаURANDelegate -= Настройка;//подписка на запуск(загрузка регистров начало, создание файла и тд )
+                НастройкаURANOldDelegate -= НастройкаOld;
                 ReadDataURANDelegate -= ReadData;
                 NewFileURANDelegate -= NewFileData;
                 StopURANDelegate -= Stop;

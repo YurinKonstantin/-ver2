@@ -106,7 +106,7 @@ namespace URAN_2017
                             }
                         }
 
-                        NewRun();
+                        
 
                     }
                 }

@@ -49,6 +49,11 @@ namespace URAN_2017
         /// загрузка регистров начало, создание файла и тд
         /// </summary>
         public static НастройкаUranDelegate НастройкаURANDelegate;
+        public delegate void НастройкаUranOldDelegate();
+        /// <summary>
+        /// загрузка регистров начало, создание файла и тд
+        /// </summary>
+        public static НастройкаUranOldDelegate НастройкаURANOldDelegate;
         public static bool grafOtob = false;
         public static string otobKl = "0";
         

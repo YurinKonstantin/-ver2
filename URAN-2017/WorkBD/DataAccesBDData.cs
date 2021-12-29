@@ -555,112 +555,254 @@ namespace URAN_2017.WorkBD
             }
 
         }
-
+      static  int xcount = 0;
+        static int xcountN = 0;
         public static void AddDataTablSob(string nameFile, string nameBAAK, string time, int[] Amp, string nameklaster, int[] Nnut, int[] Nl, double[] sig, int bad)
         {
-            SQLiteConnection db =
-                 new SQLiteConnection("Data Source = " + Path, true);
-
-            db.Open();
-
-            SQLiteCommand insertCommand = new SQLiteCommand();
-            insertCommand.Connection = db;
-           
-
-            insertCommand.CommandText = "INSERT INTO События VALUES (NULL, @Время,  @ИмяФайла, @Плата, @Кластер, @СумАмп, @СумN, " +
-                "@АмпCh1, @АмпCh2, @АмпCh3, @АмпCh4, @АмпCh5, @АмпCh6, @АмпCh7, @АмпCh8, @АмпCh9, @АмпCh10, @АмпCh11, @АмпCh12," +
-                " @NCh1, @NCh2, @NCh3, @NCh4, @NCh5, @NCh6, @NCh7, @NCh8, @NCh9, @NCh10, @NCh11, @NCh12," +
-                " @Nul1, @Nul2, @Nul3, @Nul4, @Nul5, @Nul6, @Nul7, @Nul8, @Nul9, @Nul10, @Nul11, @Nul12," +
-                " @s1, @s2, @s3, @s4, @s5, @s6, @s7, @s8, @s9, @s10, @s11, @s12, @bad);";
-           
-            insertCommand.Parameters.AddWithValue("@Время", time);
-            insertCommand.Parameters.AddWithValue("@ИмяФайла", nameFile);
-            insertCommand.Parameters.AddWithValue("@Плата", nameBAAK);
-            insertCommand.Parameters.AddWithValue("@Кластер", nameklaster);
-            insertCommand.Parameters.AddWithValue("@СумАмп", Amp.Sum());
-            insertCommand.Parameters.AddWithValue("@СумN", Nnut.Sum());
-            insertCommand.Parameters.AddWithValue("@АмпCh1", Amp[0]);
-            insertCommand.Parameters.AddWithValue("@АмпCh2", Amp[1]);
-            insertCommand.Parameters.AddWithValue("@АмпCh3", Amp[2]);
-            insertCommand.Parameters.AddWithValue("@АмпCh4", Amp[3]);
-            insertCommand.Parameters.AddWithValue("@АмпCh5", Amp[4]);
-            insertCommand.Parameters.AddWithValue("@АмпCh6", Amp[5]);
-            insertCommand.Parameters.AddWithValue("@АмпCh7", Amp[6]);
-            insertCommand.Parameters.AddWithValue("@АмпCh8", Amp[7]);
-            insertCommand.Parameters.AddWithValue("@АмпCh9", Amp[8]);
-            insertCommand.Parameters.AddWithValue("@АмпCh10", Amp[9]);
-            insertCommand.Parameters.AddWithValue("@АмпCh11", Amp[10]);
-            insertCommand.Parameters.AddWithValue("@АмпCh12", Amp[11]);
-            insertCommand.Parameters.AddWithValue("@NCh1", Nnut[0]);
-            insertCommand.Parameters.AddWithValue("@NCh2", Nnut[1]);
-            insertCommand.Parameters.AddWithValue("@NCh3", Nnut[2]);
-            insertCommand.Parameters.AddWithValue("@NCh4", Nnut[3]);
-            insertCommand.Parameters.AddWithValue("@NCh5", Nnut[4]);
-            insertCommand.Parameters.AddWithValue("@NCh6", Nnut[5]);
-            insertCommand.Parameters.AddWithValue("@NCh7", Nnut[6]);
-            insertCommand.Parameters.AddWithValue("@NCh8", Nnut[7]);
-            insertCommand.Parameters.AddWithValue("@NCh9", Nnut[8]);
-            insertCommand.Parameters.AddWithValue("@NCh10", Nnut[9]);
-            insertCommand.Parameters.AddWithValue("@NCh11", Nnut[10]);
-            insertCommand.Parameters.AddWithValue("@NCh12", Nnut[11]); 
-            insertCommand.Parameters.AddWithValue("@Nul1", Nl[0]);
-            insertCommand.Parameters.AddWithValue("@Nul2", Nl[1]);
-            insertCommand.Parameters.AddWithValue("@Nul3", Nl[2]);
-            insertCommand.Parameters.AddWithValue("@Nul4", Nl[3]);
-            insertCommand.Parameters.AddWithValue("@Nul5", Nl[4]);
-            insertCommand.Parameters.AddWithValue("@Nul6", Nl[5]);
-            insertCommand.Parameters.AddWithValue("@Nul7", Nl[6]);
-            insertCommand.Parameters.AddWithValue("@Nul8", Nl[7]);
-            insertCommand.Parameters.AddWithValue("@Nul9", Nl[8]);
-            insertCommand.Parameters.AddWithValue("@Nul10", Nl[9]);
-            insertCommand.Parameters.AddWithValue("@Nul11", Nl[10]);
-            insertCommand.Parameters.AddWithValue("@Nul12", Nl[11]);
-            insertCommand.Parameters.AddWithValue("@s1", sig[0].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s2", sig[1].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s3", sig[2].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s4", sig[3].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s5", sig[4].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s6", sig[5].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s7", sig[6].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s8", sig[7].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s9", sig[8].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s10", sig[9].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s11", sig[10].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@s12", sig[11].ToString("0.0000"));
-            insertCommand.Parameters.AddWithValue("@bad", bad);
+            
+            try
+            {
 
 
-            insertCommand.ExecuteReader();
-            db.Close();
+                SQLiteConnection db =
+                     new SQLiteConnection("Data Source = " + Path, true);
+
+                db.Open();
+
+                SQLiteCommand insertCommand = new SQLiteCommand();
+                insertCommand.Connection = db;
+
+
+                insertCommand.CommandText = "INSERT INTO События VALUES (NULL, @Время,  @ИмяФайла, @Плата, @Кластер, @СумАмп, @СумN, " +
+                    "@АмпCh1, @АмпCh2, @АмпCh3, @АмпCh4, @АмпCh5, @АмпCh6, @АмпCh7, @АмпCh8, @АмпCh9, @АмпCh10, @АмпCh11, @АмпCh12," +
+                    " @NCh1, @NCh2, @NCh3, @NCh4, @NCh5, @NCh6, @NCh7, @NCh8, @NCh9, @NCh10, @NCh11, @NCh12," +
+                    " @Nul1, @Nul2, @Nul3, @Nul4, @Nul5, @Nul6, @Nul7, @Nul8, @Nul9, @Nul10, @Nul11, @Nul12," +
+                    " @s1, @s2, @s3, @s4, @s5, @s6, @s7, @s8, @s9, @s10, @s11, @s12, @bad);";
+
+                insertCommand.Parameters.AddWithValue("@Время", time);
+                insertCommand.Parameters.AddWithValue("@ИмяФайла", nameFile);
+                insertCommand.Parameters.AddWithValue("@Плата", nameBAAK);
+                insertCommand.Parameters.AddWithValue("@Кластер", nameklaster);
+                insertCommand.Parameters.AddWithValue("@СумАмп", Amp.Sum());
+                insertCommand.Parameters.AddWithValue("@СумN", Nnut.Sum());
+                insertCommand.Parameters.AddWithValue("@АмпCh1", Amp[0]);
+                insertCommand.Parameters.AddWithValue("@АмпCh2", Amp[1]);
+                insertCommand.Parameters.AddWithValue("@АмпCh3", Amp[2]);
+                insertCommand.Parameters.AddWithValue("@АмпCh4", Amp[3]);
+                insertCommand.Parameters.AddWithValue("@АмпCh5", Amp[4]);
+                insertCommand.Parameters.AddWithValue("@АмпCh6", Amp[5]);
+                insertCommand.Parameters.AddWithValue("@АмпCh7", Amp[6]);
+                insertCommand.Parameters.AddWithValue("@АмпCh8", Amp[7]);
+                insertCommand.Parameters.AddWithValue("@АмпCh9", Amp[8]);
+                insertCommand.Parameters.AddWithValue("@АмпCh10", Amp[9]);
+                insertCommand.Parameters.AddWithValue("@АмпCh11", Amp[10]);
+                insertCommand.Parameters.AddWithValue("@АмпCh12", Amp[11]);
+                insertCommand.Parameters.AddWithValue("@NCh1", Nnut[0]);
+                insertCommand.Parameters.AddWithValue("@NCh2", Nnut[1]);
+                insertCommand.Parameters.AddWithValue("@NCh3", Nnut[2]);
+                insertCommand.Parameters.AddWithValue("@NCh4", Nnut[3]);
+                insertCommand.Parameters.AddWithValue("@NCh5", Nnut[4]);
+                insertCommand.Parameters.AddWithValue("@NCh6", Nnut[5]);
+                insertCommand.Parameters.AddWithValue("@NCh7", Nnut[6]);
+                insertCommand.Parameters.AddWithValue("@NCh8", Nnut[7]);
+                insertCommand.Parameters.AddWithValue("@NCh9", Nnut[8]);
+                insertCommand.Parameters.AddWithValue("@NCh10", Nnut[9]);
+                insertCommand.Parameters.AddWithValue("@NCh11", Nnut[10]);
+                insertCommand.Parameters.AddWithValue("@NCh12", Nnut[11]);
+                insertCommand.Parameters.AddWithValue("@Nul1", Nl[0]);
+                insertCommand.Parameters.AddWithValue("@Nul2", Nl[1]);
+                insertCommand.Parameters.AddWithValue("@Nul3", Nl[2]);
+                insertCommand.Parameters.AddWithValue("@Nul4", Nl[3]);
+                insertCommand.Parameters.AddWithValue("@Nul5", Nl[4]);
+                insertCommand.Parameters.AddWithValue("@Nul6", Nl[5]);
+                insertCommand.Parameters.AddWithValue("@Nul7", Nl[6]);
+                insertCommand.Parameters.AddWithValue("@Nul8", Nl[7]);
+                insertCommand.Parameters.AddWithValue("@Nul9", Nl[8]);
+                insertCommand.Parameters.AddWithValue("@Nul10", Nl[9]);
+                insertCommand.Parameters.AddWithValue("@Nul11", Nl[10]);
+                insertCommand.Parameters.AddWithValue("@Nul12", Nl[11]);
+                insertCommand.Parameters.AddWithValue("@s1", sig[0].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s2", sig[1].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s3", sig[2].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s4", sig[3].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s5", sig[4].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s6", sig[5].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s7", sig[6].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s8", sig[7].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s9", sig[8].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s10", sig[9].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s11", sig[10].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s12", sig[11].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@bad", bad);
+
+
+                insertCommand.ExecuteReader();
+                db.Close();
+                xcount = 0;
+            }
+            catch(Exception  ex)
+            {
+                xcount++;
+                Task.Delay(1000);
+                if(xcount<100)
+                {
+                    DataAccesBDData.AddDataTablSob(nameFile, nameBAAK, time, Amp, nameklaster, Nnut, Nl, sig, bad);
+                }
+               
+            }
+            if(xcount>0)
+            {
+                SQLiteConnection db =
+                    new SQLiteConnection("Data Source = " + Path, true);
+
+                db.Open();
+
+                SQLiteCommand insertCommand = new SQLiteCommand();
+                insertCommand.Connection = db;
+
+
+                insertCommand.CommandText = "INSERT INTO События VALUES (NULL, @Время,  @ИмяФайла, @Плата, @Кластер, @СумАмп, @СумN, " +
+                    "@АмпCh1, @АмпCh2, @АмпCh3, @АмпCh4, @АмпCh5, @АмпCh6, @АмпCh7, @АмпCh8, @АмпCh9, @АмпCh10, @АмпCh11, @АмпCh12," +
+                    " @NCh1, @NCh2, @NCh3, @NCh4, @NCh5, @NCh6, @NCh7, @NCh8, @NCh9, @NCh10, @NCh11, @NCh12," +
+                    " @Nul1, @Nul2, @Nul3, @Nul4, @Nul5, @Nul6, @Nul7, @Nul8, @Nul9, @Nul10, @Nul11, @Nul12," +
+                    " @s1, @s2, @s3, @s4, @s5, @s6, @s7, @s8, @s9, @s10, @s11, @s12, @bad);";
+
+                insertCommand.Parameters.AddWithValue("@Время", time);
+                insertCommand.Parameters.AddWithValue("@ИмяФайла", nameFile);
+                insertCommand.Parameters.AddWithValue("@Плата", nameBAAK);
+                insertCommand.Parameters.AddWithValue("@Кластер", nameklaster);
+                insertCommand.Parameters.AddWithValue("@СумАмп", Amp.Sum());
+                insertCommand.Parameters.AddWithValue("@СумN", Nnut.Sum());
+                insertCommand.Parameters.AddWithValue("@АмпCh1", Amp[0]);
+                insertCommand.Parameters.AddWithValue("@АмпCh2", Amp[1]);
+                insertCommand.Parameters.AddWithValue("@АмпCh3", Amp[2]);
+                insertCommand.Parameters.AddWithValue("@АмпCh4", Amp[3]);
+                insertCommand.Parameters.AddWithValue("@АмпCh5", Amp[4]);
+                insertCommand.Parameters.AddWithValue("@АмпCh6", Amp[5]);
+                insertCommand.Parameters.AddWithValue("@АмпCh7", Amp[6]);
+                insertCommand.Parameters.AddWithValue("@АмпCh8", Amp[7]);
+                insertCommand.Parameters.AddWithValue("@АмпCh9", Amp[8]);
+                insertCommand.Parameters.AddWithValue("@АмпCh10", Amp[9]);
+                insertCommand.Parameters.AddWithValue("@АмпCh11", Amp[10]);
+                insertCommand.Parameters.AddWithValue("@АмпCh12", Amp[11]);
+                insertCommand.Parameters.AddWithValue("@NCh1", Nnut[0]);
+                insertCommand.Parameters.AddWithValue("@NCh2", Nnut[1]);
+                insertCommand.Parameters.AddWithValue("@NCh3", Nnut[2]);
+                insertCommand.Parameters.AddWithValue("@NCh4", Nnut[3]);
+                insertCommand.Parameters.AddWithValue("@NCh5", Nnut[4]);
+                insertCommand.Parameters.AddWithValue("@NCh6", Nnut[5]);
+                insertCommand.Parameters.AddWithValue("@NCh7", Nnut[6]);
+                insertCommand.Parameters.AddWithValue("@NCh8", Nnut[7]);
+                insertCommand.Parameters.AddWithValue("@NCh9", Nnut[8]);
+                insertCommand.Parameters.AddWithValue("@NCh10", Nnut[9]);
+                insertCommand.Parameters.AddWithValue("@NCh11", Nnut[10]);
+                insertCommand.Parameters.AddWithValue("@NCh12", Nnut[11]);
+                insertCommand.Parameters.AddWithValue("@Nul1", Nl[0]);
+                insertCommand.Parameters.AddWithValue("@Nul2", Nl[1]);
+                insertCommand.Parameters.AddWithValue("@Nul3", Nl[2]);
+                insertCommand.Parameters.AddWithValue("@Nul4", Nl[3]);
+                insertCommand.Parameters.AddWithValue("@Nul5", Nl[4]);
+                insertCommand.Parameters.AddWithValue("@Nul6", Nl[5]);
+                insertCommand.Parameters.AddWithValue("@Nul7", Nl[6]);
+                insertCommand.Parameters.AddWithValue("@Nul8", Nl[7]);
+                insertCommand.Parameters.AddWithValue("@Nul9", Nl[8]);
+                insertCommand.Parameters.AddWithValue("@Nul10", Nl[9]);
+                insertCommand.Parameters.AddWithValue("@Nul11", Nl[10]);
+                insertCommand.Parameters.AddWithValue("@Nul12", Nl[11]);
+                insertCommand.Parameters.AddWithValue("@s1", sig[0].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s2", sig[1].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s3", sig[2].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s4", sig[3].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s5", sig[4].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s6", sig[5].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s7", sig[6].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s8", sig[7].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s9", sig[8].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s10", sig[9].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s11", sig[10].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@s12", sig[11].ToString("0.0000"));
+                insertCommand.Parameters.AddWithValue("@bad", bad);
+
+
+                insertCommand.ExecuteReader();
+                db.Close();
+                xcount = 0;
+            }
+            xcount = 0;
 
         }
         public static void AddDataTablSobNeutron(string nameFile, int D, int Amp, int TimeFirst, int TimeEnd, string time, int TimeAmp, int TimeFirst3, int TimeEnd3, int bad)
         {
-            SQLiteConnection db =
-                   new SQLiteConnection("Data Source = " + Path, true);
+            try
+            {
 
-            db.Open();
 
-            SQLiteCommand insertCommand = new SQLiteCommand();
-            insertCommand.Connection = db;
+                SQLiteConnection db =
+                       new SQLiteConnection("Data Source = " + Path, true);
 
-            insertCommand.CommandText = "INSERT INTO Нейтроны VALUES (NULL, @ИмяФайла, @Время, @Dn, @Амп, @TimeFirst, @TimeEnd, @TimeFirst3, " +
-                "@TimeEnd3, @TimeAmp, @bad);";
+                db.Open();
 
-            insertCommand.Parameters.AddWithValue("@ИмяФайла", nameFile);
-            insertCommand.Parameters.AddWithValue("@Время", time);
-            insertCommand.Parameters.AddWithValue("@Dn", D);
-            insertCommand.Parameters.AddWithValue("@Амп", Amp);
-            insertCommand.Parameters.AddWithValue("@TimeFirst", TimeFirst);
-            insertCommand.Parameters.AddWithValue("@TimeEnd", TimeEnd);
-            insertCommand.Parameters.AddWithValue("@TimeFirst3", TimeFirst3);
-            insertCommand.Parameters.AddWithValue("@TimeEnd3", TimeEnd3);
-            insertCommand.Parameters.AddWithValue("@TimeAmp", TimeAmp);
-          
-            insertCommand.Parameters.AddWithValue("@bad", bad);
+                SQLiteCommand insertCommand = new SQLiteCommand();
+                insertCommand.Connection = db;
 
-            insertCommand.ExecuteReader();
-            db.Close();
+                insertCommand.CommandText = "INSERT INTO Нейтроны VALUES (NULL, @ИмяФайла, @Время, @Dn, @Амп, @TimeFirst, @TimeEnd, @TimeFirst3, " +
+                    "@TimeEnd3, @TimeAmp, @bad);";
+
+                insertCommand.Parameters.AddWithValue("@ИмяФайла", nameFile);
+                insertCommand.Parameters.AddWithValue("@Время", time);
+                insertCommand.Parameters.AddWithValue("@Dn", D);
+                insertCommand.Parameters.AddWithValue("@Амп", Amp);
+                insertCommand.Parameters.AddWithValue("@TimeFirst", TimeFirst);
+                insertCommand.Parameters.AddWithValue("@TimeEnd", TimeEnd);
+                insertCommand.Parameters.AddWithValue("@TimeFirst3", TimeFirst3);
+                insertCommand.Parameters.AddWithValue("@TimeEnd3", TimeEnd3);
+                insertCommand.Parameters.AddWithValue("@TimeAmp", TimeAmp);
+
+                insertCommand.Parameters.AddWithValue("@bad", bad);
+
+                insertCommand.ExecuteReader();
+                db.Close();
+                xcountN = 0;
+            }
+            catch(Exception ex)
+            {
+                xcountN++;
+                Task.Delay(1000);
+                if (xcountN < 100)
+                {
+                    DataAccesBDData.AddDataTablSobNeutron(nameFile, D, Amp, TimeFirst, TimeEnd, time, TimeAmp, TimeFirst3, TimeEnd3, bad);
+                }
+            }
+            if (xcountN >0)
+            {
+                SQLiteConnection db =
+                       new SQLiteConnection("Data Source = " + Path, true);
+
+                db.Open();
+
+                SQLiteCommand insertCommand = new SQLiteCommand();
+                insertCommand.Connection = db;
+
+                insertCommand.CommandText = "INSERT INTO Нейтроны VALUES (NULL, @ИмяФайла, @Время, @Dn, @Амп, @TimeFirst, @TimeEnd, @TimeFirst3, " +
+                    "@TimeEnd3, @TimeAmp, @bad);";
+
+                insertCommand.Parameters.AddWithValue("@ИмяФайла", nameFile);
+                insertCommand.Parameters.AddWithValue("@Время", time);
+                insertCommand.Parameters.AddWithValue("@Dn", D);
+                insertCommand.Parameters.AddWithValue("@Амп", Amp);
+                insertCommand.Parameters.AddWithValue("@TimeFirst", TimeFirst);
+                insertCommand.Parameters.AddWithValue("@TimeEnd", TimeEnd);
+                insertCommand.Parameters.AddWithValue("@TimeFirst3", TimeFirst3);
+                insertCommand.Parameters.AddWithValue("@TimeEnd3", TimeEnd3);
+                insertCommand.Parameters.AddWithValue("@TimeAmp", TimeAmp);
+
+                insertCommand.Parameters.AddWithValue("@bad", bad);
+
+                insertCommand.ExecuteReader();
+                db.Close();
+                xcountN = 0;
+            }
+            xcountN = 0;
 
         }
         public static void AddDataTablSob100(string Ran, string nameFile, string nameBAAK, string time, int[] SumD, string nameklaster, int[] Amp, int[] TmaxACh,

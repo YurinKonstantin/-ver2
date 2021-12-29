@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -52,6 +53,8 @@ namespace URAN_2017
                     MessageBox.Show("erTest" + ex.ToString());
                 }
                 rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; rezimYst.Foreground = System.Windows.Media.Brushes.Green; }));
+                File.AppendAllText("D:\\DiagnosticMGVS_file.txt", "Начало " + "\n"); //допишет текст в конец файла
+                NewRun();
             }
             catch(Exception ex)
             {

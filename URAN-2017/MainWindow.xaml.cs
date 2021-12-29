@@ -212,10 +212,135 @@ namespace URAN_2017
             }
 
         }
+        private async void StartRunOldFile()
+        {
+            if (BAAK12T.ConnnectURANDelegate != null)
+            {
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { progres.IsIndeterminate = true; }));
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Obnoviti.IsEnabled = false; }));
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+                try
+                {
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Подготовка к запуску"; }));
+                    cancellationTokenSource = new CancellationTokenSource();
+                    CancellationToken cancellationToken = cancellationTokenSource.Token;
+                    RanName();
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Загрузка регистров плат"; }));
+                    // await ЗапускНастройкиТаск();
+                    await Task.Run(() => BAAK12T.НастройкаURANOldDelegate?.Invoke());//устанавливает начальные значения регистров всех плат, создает файлы и тд
+
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = false; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка режима синхронизации"; }));
+                    await Task.Run(() => РежимСинхИлиНет(set.DelayClok));
+                    // await РежимСинхИлиНетТаск(set.DelayClok);//Подготавливает МС к запуску и МГВС если нужно
+
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Разрешаем работу"; }));
+
+                    //  await ПускURANDТаск();
+                    await Task.Run(() => BAAK12T.ПускURANDelegate?.Invoke());//разрешаем тригер платы, после этого плата начинает работать
+
+
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Запись в БД"; }));
+
+                    BDReadRAN(BAAK12T.NameRan, ClassParentsBAAK.Синхронизация, true, BAAK12T.PorogAll, BAAK12T.TrgAll, TimeTaimer1);//Записываем в БД информацию о РАН (о старте)
+                    BdAddRANTimeПуск(BAAK12T.NameRan, TimeПуск());//Добавляем в БД информацию о времени пуска
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Black; }));
+                    Task.Run(() => MainYpravlenia(IntervalNewFile, set.КолТригТест, set.ИнтервалТригТест, set.TimeRanHors, set.TimeRanMin, cancellationToken));
+                    ЗапускРеадТаск(cancellationToken);//pfgecrftn xntybt данные с плат
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = true; }));
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = true; }));
+                    // ZapicDataBDTasc1(cancellationToken);
+                    if (set.FlagSaveBD)
+                    {
+                        Task.Run(() => ZapicDataBDTasc(cancellationToken));//запускает запись данных в бд.
+                    }
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН запущена"; rezimYst.Foreground = System.Windows.Media.Brushes.Green; }));
+                    // await ZapicDataTasc1(cancellationToken);    
+                    await Task.Run(() => ZapicDataTasc(cancellationToken));
+
+
+                }
+                catch (NullReferenceException e)
+                {
+                    MessageBox.Show("Нет доступных плат" + e.ToString(), "Ошибка");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Произошла ошибка при СТАРТЕ" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
+                }
+                finally
+                {
+                    Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));//To Do             
+                    Start.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = true; }));
+                    Obnoviti.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Obnoviti.IsEnabled = true; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+                }
+                try
+                {
+
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Идет процесс завершения работы"; }));
+                    try
+                    {
+                        if (ClassParentsBAAK.Синхронизация)
+                        {
+                            try
+                            {
+                                MS.АвтономныйКлокРазрешен(0);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки", "Ошибка");
+                            }
+                            try
+                            {
+                                //MS1.АвтономныйКлокРазрешен(0);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Произошла ошибка при Остановке MS1" + "  " + "Имя ошибки", "Ошибка");
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Произошла ошибка при Остановке MS" + "  " + "Имя ошибки", "Ошибка");
+                    }
+                    BdAddRANTimeСтоп(BAAK12T.NameRan, TimeПуск());
+                    Start.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Start.IsEnabled = true; }));
+                    Stop.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { Stop.IsEnabled = false; }));
+                    contextTestRan.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { contextTestRan.IsEnabled = false; }));
+                    Obnoviti.IsEnabled = true;
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Установка УРАН Завершила работу"; rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Произошла ошибка при Остановке" + "  " + "Имя ошибки" + ex.ToString(), "Ошибка");
+                }
+                finally
+                {
+                    Stop.IsEnabled = false;
+                    Start.IsEnabled = true;
+                    contextTestRan.IsEnabled = false;
+                    Obnoviti.IsEnabled = true;
+                    rezimYst.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() => { rezimYst.Content = "Остановка УРАН"; rezimYst.Foreground = System.Windows.Media.Brushes.Red; }));
+                }
+                rezimYst.Content = "Установка УРАН остановлена";
+                progres.IsIndeterminate = false;
+            }
+            else
+            {
+                MessageBox.Show("Нет доступных плат", "Остановка программы");
+            }
+
+        }
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             StartRun();
         }
+    
         private async void Stop_Click(object sender, RoutedEventArgs e)
         {
             string msg = "Набор данных будет остановлен. Остановить набор?";
